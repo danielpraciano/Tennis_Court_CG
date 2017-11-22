@@ -12,3 +12,26 @@
   - Configure path to builds (release and debug)
   
   - Have fun!
+
+# Workflow to develop:
+1. Starting the development
+  $ git checkout master
+  $ git pull
+
+2. Creating a new work branch
+  $ git checkout –b <work_branch>
+
+3. Getting a updates from remote master
+  $ git checkout master
+  $ git pull
+
+4. Rebasing work branch
+  $ git checkout <work_branch>
+  $ git rebase master
+
+5. Merging
+  $ git checkout master
+  $ git merge <work_branch>
+
+6. Pushing
+  $ git push origin master
