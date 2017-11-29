@@ -86,9 +86,14 @@ void MainWindow::on_rc_button_clicked() {
 //    new scenario::object::Material { 100.0, k_a_ground, k_d_ground, k_s_ground } };
     new scenario::object::Material { 100.0, color_red, color_red, color_red } };
 
-    render::raycasting::Color k_a_court { 69.0/255, 114.0/255, 172.0/255 };
-    render::raycasting::Color k_d_court { 69.0/255, 114.0/255, 172.0/255 };
-    render::raycasting::Color k_s_court { 69.0/255, 114.0/255, 172.0/255 };
+    //azulado
+//    render::raycasting::Color k_a_court { 69.0/255, 114.0/255, 172.0/255 };
+//    render::raycasting::Color k_d_court { 69.0/255, 114.0/255, 172.0/255 };
+//    render::raycasting::Color k_s_court { 69.0/255, 114.0/255, 172.0/255 };
+
+    render::raycasting::Color k_a_court { 196.0/255, 102.0/255, 70.0/255 };
+    render::raycasting::Color k_d_court { 196.0/255, 102.0/255, 70.0/255 };
+    render::raycasting::Color k_s_court { 196.0/255, 102.0/255, 70.0/255 };
 
     std::shared_ptr<scenario::object::Material> material_court {
     new scenario::object::Material { 100.0, k_a_court, k_d_court, k_s_court } };
@@ -113,13 +118,13 @@ void MainWindow::on_rc_button_clicked() {
 
     //
 
-//    std::shared_ptr<scenario::object::Object> ground = get_cube(material_ground, 40.0, 40.0, 1.0);
-//    scenario::object::Transformation t_ground;
+    std::shared_ptr<scenario::object::Object> ground = get_cube(material_ground, 2 * 10.974, 2 * 23.77, 0.001);
+    scenario::object::Transformation t_ground;
 
-////    t_ground.add_translation(-ground->get_vertice(0)->get_coordinates());
-//    t_ground.add_translation(core::util::Vector3 { 10.974/2, 23.77/2, -0.2 });
-//    t_ground.add_to_apply(ground);
-//    t_ground.make_apply();
+    t_ground.add_translation(-ground->get_vertice(0)->get_coordinates());
+    t_ground.add_translation(core::util::Vector3 { -10.974/2, -23.77/2, -0.002 });
+    t_ground.add_to_apply(ground);
+    t_ground.make_apply();
 
     std::shared_ptr<scenario::object::Object> court = get_cube(material_court, 10.974, 23.77, 0.001);
     scenario::object::Transformation t_court;
@@ -202,7 +207,8 @@ void MainWindow::on_rc_button_clicked() {
 
     //NET
 
-    std::shared_ptr<scenario::object::Object> left_support_net = get_cube(material_white, 7.62/100, 0.1, 0.91);
+//    std::shared_ptr<scenario::object::Object> left_support_net = get_cube(material_white, 7.62/100, 0.1, 0.91);
+    std::shared_ptr<scenario::object::Object> left_support_net = get_cube(material_white, 0.114, 0.1, 0.91);
     scenario::object::Transformation t_left_support_net;
 
     t_left_support_net.add_translation(-left_support_net->get_vertice(0)->get_coordinates());
@@ -220,12 +226,12 @@ void MainWindow::on_rc_button_clicked() {
 
     std::vector<std::shared_ptr<scenario::object::Object>> net_lines;
 
-    for (int i = 0; i < 8; i++) {
-        std::shared_ptr<scenario::object::Object> net_line = get_cube(material_white, 0.914 + 10.974 + 0.914, 0.1, 0.01);
+    for (int i = 0; i < 4; i++) {
+        std::shared_ptr<scenario::object::Object> net_line = get_cube(material_white, 0.914 + 10.974 + 0.914, 0.1, 0.1);
         scenario::object::Transformation t_net_line;
 
         t_net_line.add_translation(-net_line->get_vertice(0)->get_coordinates());
-        t_net_line.add_translation(core::util::Vector3 { -0.914, 23.77/2, i*0.10 });
+        t_net_line.add_translation(core::util::Vector3 { -0.914, 23.77/2, i*0.2 });
         t_net_line.add_to_apply(net_line);
         t_net_line.make_apply();
 
@@ -234,22 +240,22 @@ void MainWindow::on_rc_button_clicked() {
 
     std::vector<std::shared_ptr<scenario::object::Object>> net_columns;
 
-    for (int j = 0; j < 8; j++) {
-        std::shared_ptr<scenario::object::Object> net_column = get_cube(material_white, 0.80, 0.1, 0.01);
+    for (int j = 0; j < 62; j++) {
+        std::shared_ptr<scenario::object::Object> net_column = get_cube(material_white, 0.1, 0.1, 0.91);
         scenario::object::Transformation t_net_column;
 
-        t_net_column.add_translation(-net_column->get_vertice(2)->get_coordinates());
-        t_net_column.add_translation(core::util::Vector3 { -0.914 + (j+1)*0.10, 23.77/2, 0.01 });
+        t_net_column.add_translation(-net_column->get_vertice(0)->get_coordinates());
+        t_net_column.add_translation(core::util::Vector3 { -0.914 + 0.114 + 0.14 + j*0.2, 23.77/2, 0.01 });
         t_net_column.add_to_apply(net_column);
         t_net_column.make_apply();
 
         net_columns.push_back(net_column);
     }
 
-    std::shared_ptr<scenario::object::Object> right_support_net = get_cube(material_white, 7.62/100, 0.1, 0.91);
+    std::shared_ptr<scenario::object::Object> right_support_net = get_cube(material_white, 0.114, 0.1, 0.91);
     scenario::object::Transformation t_right_support_net;
 
-    t_right_support_net.add_translation(-right_support_net->get_vertice(0)->get_coordinates());
+    t_right_support_net.add_translation(-right_support_net->get_vertice(1)->get_coordinates());
     t_right_support_net.add_translation(core::util::Vector3 { 10.974+0.914, 23.77/2, 0.0 });
     t_right_support_net.add_to_apply(right_support_net);
     t_right_support_net.make_apply();
@@ -300,7 +306,7 @@ void MainWindow::on_rc_button_clicked() {
 
     scenario::Scenario sc { amb_l.get() };
 
-//    sc.add_object(*ground);
+    sc.add_object(*ground);
     sc.add_object(*court);
     sc.add_object(*left_doubles_sideline);
     sc.add_object(*left_singles_sideline);
@@ -313,8 +319,8 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_object(*after_service_line);
     sc.add_object(*left_support_net);
     sc.add_object(*above_support_net);
-    for (int i = 0; i < 8; i++) sc.add_object(*net_lines[i]);
-    for (int j = 0; j < 8; j++) sc.add_object(*net_columns[j]);
+    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
+    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
     sc.add_object(*right_support_net);
     sc.add_object(*before_service_line);
     sc.add_object(*after_baseline);
