@@ -75,6 +75,7 @@ void MainWindow::on_rc_button_clicked() {
     render::raycasting::Color color_blue { 0.0, 0.0, 1.0 };
     render::raycasting::Color color_green { 0.0, 1.0, 0.0 };
     render::raycasting::Color color_white { 1.0, 1.0, 1.0 };
+    render::raycasting::Color color_black { 0.0, 0.0, 0.0 };
     render::raycasting::Color color_yellow { 1.0, 1.0, 0.0 };
     render::raycasting::Color color_orange { 1.0, 140.0/255.0, 0.0 };
 
@@ -83,8 +84,7 @@ void MainWindow::on_rc_button_clicked() {
     render::raycasting::Color k_s_ground { 101.0/255, 179.0/255, 253.0/255 };
 
     std::shared_ptr<scenario::object::Material> material_ground {
-//    new scenario::object::Material { 100.0, k_a_ground, k_d_ground, k_s_ground } };
-    new scenario::object::Material { 100.0, color_red, color_red, color_red } };
+    new scenario::object::Material { 100.0, k_a_ground, k_d_ground, k_s_ground } };
 
     //azulado
 //    render::raycasting::Color k_a_court { 69.0/255, 114.0/255, 172.0/255 };
@@ -109,6 +109,9 @@ void MainWindow::on_rc_button_clicked() {
 
     std::shared_ptr<scenario::object::Material> material_white {
     new scenario::object::Material { 100.0, color_white, color_white, color_white } };
+
+    std::shared_ptr<scenario::object::Material> material_black {
+    new scenario::object::Material { 100.0, color_black, color_black, color_black } };
 
     std::shared_ptr<scenario::object::Material> material_yellow {
     new scenario::object::Material { 100.0, color_yellow, color_yellow, color_yellow } };
@@ -207,7 +210,6 @@ void MainWindow::on_rc_button_clicked() {
 
     //NET
 
-//    std::shared_ptr<scenario::object::Object> left_support_net = get_cube(material_white, 7.62/100, 0.1, 0.91);
     std::shared_ptr<scenario::object::Object> left_support_net = get_cube(material_white, 0.114, 0.1, 0.91);
     scenario::object::Transformation t_left_support_net;
 
@@ -224,10 +226,11 @@ void MainWindow::on_rc_button_clicked() {
     t_above_support_net.add_to_apply(above_support_net);
     t_above_support_net.make_apply();
 
-    std::vector<std::shared_ptr<scenario::object::Object>> net_lines;
+    std::shared_ptr<scenario::object::Object> net_lines[4];
 
+    #pragma omp parallel for
     for (int i = 0; i < 4; i++) {
-        std::shared_ptr<scenario::object::Object> net_line = get_cube(material_white, 0.914 + 10.974 + 0.914, 0.1, 0.1);
+        std::shared_ptr<scenario::object::Object> net_line = get_cube(material_black, 0.914 + 10.974 + 0.914, 0.1, 0.1);
         scenario::object::Transformation t_net_line;
 
         t_net_line.add_translation(-net_line->get_vertice(0)->get_coordinates());
@@ -235,13 +238,14 @@ void MainWindow::on_rc_button_clicked() {
         t_net_line.add_to_apply(net_line);
         t_net_line.make_apply();
 
-        net_lines.push_back(net_line);
+        net_lines[i] = net_line;
     }
 
-    std::vector<std::shared_ptr<scenario::object::Object>> net_columns;
+    std::shared_ptr<scenario::object::Object> net_columns[62];
 
+    #pragma omp parallel for
     for (int j = 0; j < 62; j++) {
-        std::shared_ptr<scenario::object::Object> net_column = get_cube(material_white, 0.1, 0.1, 0.91);
+        std::shared_ptr<scenario::object::Object> net_column = get_cube(material_black, 0.1, 0.1, 0.91);
         scenario::object::Transformation t_net_column;
 
         t_net_column.add_translation(-net_column->get_vertice(0)->get_coordinates());
@@ -249,7 +253,7 @@ void MainWindow::on_rc_button_clicked() {
         t_net_column.add_to_apply(net_column);
         t_net_column.make_apply();
 
-        net_columns.push_back(net_column);
+        net_columns[j] = net_column;
     }
 
     std::shared_ptr<scenario::object::Object> right_support_net = get_cube(material_white, 0.114, 0.1, 0.91);
@@ -275,23 +279,6 @@ void MainWindow::on_rc_button_clicked() {
     t_before_baseline.add_to_apply(before_baseline);
     t_before_baseline.make_apply();
 
-
-//    std::cout << left_singles_line->get_vertice(0)->get_coordinates() - left_doubles_line->get_vertice(0)->get_coordinates() << std::endl;
-
-//    std::cout << left_doubles_line->get_vertice(2)->get_coordinates() << std::endl;
-
-//    std::cout << left_singles_line->get_vertice(0)->get_coordinates() << std::endl;
-
-//    std::cout << right_singles_line->get_vertice(1)->get_coordinates() << std::endl;
-
-//    std::cout << right_doubles_line->get_vertice(1)->get_coordinates() << std::endl;
-//    for (int i = 0; i < 8; i++)
-//    std::cout << after_baseline->get_vertice(i)->get_coordinates() << std::endl;
-//    std::cout << before_baseline->get_vertice(0)->get_coordinates() << std::endl;
-//    std::cout << before_baseline->get_vertice(1)->get_coordinates() - before_baseline->get_vertice(0)->get_coordinates() << std::endl;
-
-//    std::cout << after_baseline->get_vertice(2)->get_coordinates() << std::endl;
-
     core::util::Vector3 pos { 10.0, 10.0, -5.0 };
 
     render::raycasting::Color cor { 0.5, 0.5, 0.5 };
@@ -300,9 +287,17 @@ void MainWindow::on_rc_button_clicked() {
 
     amb_l.reset(new scenario::light::PunctualLight { pos, cor });
 
-    std::unique_ptr<scenario::light::Light> pl;
+    std::unique_ptr<scenario::light::Light> pl_left_before;
+    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
 
-    pl.reset(new scenario::light::PunctualLight { core::util::Vector3 { 5.0, 1.5, 0.5 } , render::raycasting::Color { 1.0, 0.0, 0.0 } });
+    std::unique_ptr<scenario::light::Light> pl_right_before;
+    pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+
+    std::unique_ptr<scenario::light::Light> pl_left_after;
+    pl_left_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+
+    std::unique_ptr<scenario::light::Light> pl_right_after;
+    pl_right_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
 
     scenario::Scenario sc { amb_l.get() };
 
@@ -325,7 +320,10 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_object(*before_service_line);
     sc.add_object(*after_baseline);
 
-//    sc.add_light(pl.get());
+    sc.add_light(pl_left_before.get());
+    sc.add_light(pl_right_before.get());
+    sc.add_light(pl_left_after.get());
+    sc.add_light(pl_right_after.get());
 
     //blue face
 //    core::util::Vector3 eye { 5.0, 0.5, 0.5 };
@@ -387,7 +385,7 @@ void MainWindow::on_rc_button_clicked() {
     double h = 1.0;
 
 //    render::raycasting::Color bg { 101.0/255, 179.0/255, 253.0/255 };
-    render::raycasting::Color bg { 0.0, 0.0, 0.0 };
+    render::raycasting::Color bg { 1.0, 0.0, 0.0 };
 
     render::raycasting::RayCasting rc { d, w, h, bg };
 
