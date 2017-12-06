@@ -13,13 +13,15 @@ void RayCasting::render(Camera camera, scenario::Scenario scenario) {
 //    for (int i = 0; i < _rows_pixels; i++) {
     #pragma omp parallel for
     for (int i = 0; i < core::constants::ROWS_PIXELS; i++) {
+//    for (int i = 0; i < core::constants::COLS_PIXELS; i++) {
         double y_i = (_height / 2) - (_delta_col / 2) - i * _delta_col;
 
 //        for (int j = 0; j < _cols_pixels; j++) {
         #pragma omp parallel for
         for (int j = 0; j < core::constants::COLS_PIXELS; j++) {
+//        for (int j = 0; j < core::constants::ROWS_PIXELS; j++) {
             double x_ij = (-_width / 2) + (_delta_row / 2) + j * _delta_row;
-
+//            std::cout << i << " " << j << std::endl;
             core::util::Vector3 p_ij { x_ij, y_i, -_distance };
 
             _frame_buffer[i][j] = calculate_color(p_ij, scenario);

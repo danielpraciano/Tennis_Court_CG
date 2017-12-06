@@ -12,7 +12,7 @@ void Boundary::generate(const core::util::Vector3 &coord_min, const core::util::
     auto distance_y = std::abs(coord_max(1)) + std::abs(coord_min(1));
     auto distance_z = std::abs(coord_max(2)) + std::abs(coord_min(2));
 
-    _radius_square = std::pow(std::max(distance_x, std::max(distance_y,  distance_z)), 2);
+    _radius_square = std::pow(std::max(distance_x, std::max(distance_y,  distance_z)) / 2, 2);
 
 //    _radius_square = std::pow(coord_max(0) - _center(0), 2) + std::pow(coord_max(1) - _center(1), 2) +
 //            std::pow(coord_max(2) - _center(2), 2);

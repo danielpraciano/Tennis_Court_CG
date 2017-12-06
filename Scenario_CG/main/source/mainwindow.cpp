@@ -16,6 +16,9 @@
 #include <render/include/raycasting/ray.h>
 #include <render/include/raycasting/ray_casting.h>
 
+#include <core/include/io_module.h>
+#include <scenario/include/object/chair_meuOBJ.h>
+
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 }
@@ -68,6 +71,32 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
     t_resize.make_apply();
 
     return cube;
+}
+
+std::shared_ptr<scenario::object::Object> get_chair(std::shared_ptr<scenario::object::Material> mat) {
+//    double m = 96.078;
+//    render::raycasting::Color k_a { 0.00, 0.00, 0.00 };
+//    render::raycasting::Color k_d { 0.640, 0.640, 0.640 };
+//    render::raycasting::Color k_s { 0.500, 0.500, 0.500 };
+
+//    std::shared_ptr<scenario::object::Material> material {
+//    new scenario::object::Material { m, k_a, k_d, k_s } };
+
+    std::shared_ptr<scenario::object::Object> chair { new scenario::object::Object { mat } };
+
+    for (unsigned int i = 0; i < 3*chair_meuOBJNumVerts; i += 3)
+        chair->add_vertex(scenario::object::Vertex { chair_meuOBJVerts[i], chair_meuOBJVerts[i + 1], chair_meuOBJVerts[i + 2] });
+
+    for (unsigned int i = 0; i < chair_meuOBJNumVerts; i += 3)
+        chair->add_face(i, i + 1, i + 2);
+
+//    core::io_module::ObjReader reader;
+
+//    const std::string path = "/home/daniel/chair_novo.obj";
+
+//    auto chair = reader.read(path, mat);
+
+    return chair;
 }
 
 void MainWindow::on_rc_button_clicked() {
@@ -301,6 +330,40 @@ void MainWindow::on_rc_button_clicked() {
 
     scenario::Scenario sc { amb_l.get() };
 
+    auto chair = get_chair(material_black);
+
+    scenario::object::Transformation t_chair;
+
+    auto center = chair->get_boundary().get_center();
+
+    t_chair.add_translation(-center);
+    t_chair.add_rotation(core::util::Vector3 { 1.0, 0.0, 0.0 }, 180);
+    t_chair.add_rotation(core::util::Vector3 { 0.0, 1.0, 0.0 }, 180);
+    t_chair.add_translation(core::util::Vector3 { 5.0, 5.0, 0.0 });
+//    t_chair.add_scale(core::util::Vector3 { 3.0, 3.0, 3.0 });
+    t_chair.add_to_apply(chair);
+    t_chair.make_apply();
+
+    std::cout << chair->get_boundary().get_radius() << std::endl;
+
+    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
+
+    sc.add_object(*cubee);
+
+    sc.add_object(*chair);
+
+//        core::util::Vector3 eye     { center(0) - 3.0, center(1), center(2) + 5.0 };
+//        core::util::Vector3 look_at { center(0), center(1) +3.0, center(2) };
+//        core::util::Vector3 view_up { center(0), center(1) + 5.0, center(2) };
+
+//                core::util::Vector3 eye     { 0, 0, -2 };
+//                core::util::Vector3 look_at { center(0), center(1), center(2) };
+//                core::util::Vector3 view_up { center(0), center(1) + 2.0, center(2) };
+
+//    double d = 1.4;
+//    double w = 1.0;
+//    double h = 1.0;
+
     sc.add_object(*ground);
     sc.add_object(*court);
     sc.add_object(*left_doubles_sideline);
@@ -326,9 +389,13 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
-    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
+    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
+    core::util::Vector3 view_up { 0.0, 5.0,     0.0 };
+
+//    core::util::Vector3 eye     { 0, 20, 0.0 };
+//    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
+//    core::util::Vector3 view_up { 1, 30, 1.0 };
 
     //COURT'S FRONT
 //    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };

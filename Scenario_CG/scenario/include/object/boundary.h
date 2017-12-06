@@ -17,6 +17,10 @@ public:
                 4 * dot(p_ij, p_ij) * (_center_square - _radius_square) >= 0 ? true : false;
     }
 
+    inline const core::util::Vector3& get_center() const { return _center; }
+
+    inline double get_radius() const { return std::sqrt(_radius_square); }
+
 private:
     core::util::Vector3 _center;
     double _radius_square, _center_square;

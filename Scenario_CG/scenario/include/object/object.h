@@ -43,7 +43,8 @@ public:
 
 //    inline const std::vector<core::util::Shared<Vertex>> &get_vertices() const { return _vertices; }
 
-    inline const std::shared_ptr<Vertex> &get_vertice(int id) { return _vertices[id]; }
+    inline const std::shared_ptr<Vertex> &get_vertice(int id) const { return _vertices[id]; }
+    inline const Boundary& get_boundary() const { return boundary; }
 
     /**
      * @brief get_intercept
