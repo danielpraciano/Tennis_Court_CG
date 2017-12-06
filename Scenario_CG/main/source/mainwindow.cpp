@@ -230,11 +230,11 @@ void MainWindow::on_rc_button_clicked() {
 
     #pragma omp parallel for
     for (int i = 0; i < 4; i++) {
-        std::shared_ptr<scenario::object::Object> net_line = get_cube(material_black, 0.914 + 10.974 + 0.914, 0.1, 0.1);
+        std::shared_ptr<scenario::object::Object> net_line = get_cube(material_black, (0.914-0.114) + 10.974 + (0.914-0.114), 0.1, 0.1);
         scenario::object::Transformation t_net_line;
 
         t_net_line.add_translation(-net_line->get_vertice(0)->get_coordinates());
-        t_net_line.add_translation(core::util::Vector3 { -0.914, 23.77/2, i*0.2 });
+        t_net_line.add_translation(core::util::Vector3 { -0.914 + 0.114, 23.77/2, i*0.2 });
         t_net_line.add_to_apply(net_line);
         t_net_line.make_apply();
 
@@ -245,7 +245,7 @@ void MainWindow::on_rc_button_clicked() {
 
     #pragma omp parallel for
     for (int j = 0; j < 62; j++) {
-        std::shared_ptr<scenario::object::Object> net_column = get_cube(material_black, 0.1, 0.1, 0.91);
+        std::shared_ptr<scenario::object::Object> net_column = get_cube(material_black, 0.1, 0.1, 0.91 - 0.11);
         scenario::object::Transformation t_net_column;
 
         t_net_column.add_translation(-net_column->get_vertice(0)->get_coordinates());
@@ -325,58 +325,15 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_light(pl_left_after.get());
     sc.add_light(pl_right_after.get());
 
-    //blue face
-//    core::util::Vector3 eye { 5.0, 0.5, 0.5 };
-//    core::util::Vector3 look_at { 0.5, 0.5, 0.5 };
-//    core::util::Vector3 view_up { 0.5, 3.0, 0.5 };
-
-    //court
-//    core::util::Vector3 eye { 10.973/2, 23.77/2, 40.0 };
-//    core::util::Vector3 look_at { 10.973/2, 23.77/2, 0.0 };
-//    core::util::Vector3 view_up { 10.973/2, 1.0, 0.0 };
-
-    //ground
-//    core::util::Vector3 eye { 40.0/2, 40.0/2, 90.0 };
-//    core::util::Vector3 look_at { 40.0/2, 40.0/2, 0.0 };
-//    core::util::Vector3 view_up { 40.0/2, 1.0, 0.0 };
-
     //COURT'S ABOVE ok
-//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
-//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
 
     //COURT'S FRONT
-    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
-
-//    core::util::Vector3 eye { 5.0, 5.0, 0.25 };
-//    core::util::Vector3 look_at { 0.5, 5.0, 0.25 };
-//    core::util::Vector3 view_up { 0.5, 5.0, 1.5 };
-
-//    //green face
-//    core::util::Vector3 eye { 0.5, -5.0, 0.5 };
-//    core::util::Vector3 look_at { 0.5, 0.5, 0.5 };
-//    core::util::Vector3 view_up { 3.0, 0.5, 0.5 };
-
-//    //yellow face
-//    core::util::Vector3 eye { 0.5, 5.0, 0.5 };
-//    core::util::Vector3 look_at { 0.5, 0.5, 0.5 };
-//    core::util::Vector3 view_up { 3.0, 0.5, 0.5 };
-
-//    //orange face
-//    core::util::Vector3 eye { 0.5, 0.5, -5.0 };
-//    core::util::Vector3 look_at { 0.5, 0.5, 0.5 };
-//    core::util::Vector3 view_up { 0.5, 3.0, 0.5 };
-
-    //red face
-//    core::util::Vector3 eye { 0.5, 0.5, 5.0 };
-//    core::util::Vector3 look_at { 0.5, 0.5, 0.5 };
-//    core::util::Vector3 view_up { 0.5, 3.0, 0.5 };
-
-//    core::util::Vector3 eye { 5.0, 0.0, 5.0 };
-//    core::util::Vector3 look_at { 0.0, 0.0, 0.0 };
-//    core::util::Vector3 view_up { 0.5, 3.0, 3.5 };
+//    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 
