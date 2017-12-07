@@ -1,5 +1,7 @@
 #pragma once
 
+#include <exception>
+
 #include <scenario/include/light/light.h>
 #include <scenario/include/object/face.h>
 
@@ -15,6 +17,9 @@ public:
     virtual render::raycasting::Color get_light_color(const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const override;
 
     inline core::util::Vector3 get_direction_point() const { return _direction_point; }
+
+    inline virtual const core::util::Vector3 &get_position() const override { throw std::logic_error("PunctualInfinityLight doesn't have a position!"); }
+//    inline virtual const core::util::Vector3 &get_position() const override { return core::util::Vector3 { -1, -1, -1 }; }
 
     inline virtual void apply_matrix(const core::util::Matrix4 &matrix) override {
         core::util::Vector4 direction4;

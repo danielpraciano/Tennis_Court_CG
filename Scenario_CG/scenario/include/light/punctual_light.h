@@ -14,7 +14,9 @@ public:
 
     virtual render::raycasting::Color get_light_color(const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const override;
 
-    inline core::util::Vector3 get_position() const { return _position; }
+//    inline core::util::Vector3 get_position() const { return _position; }
+
+    inline virtual const core::util::Vector3 &get_position() const override { return _position; }
 
     inline virtual void apply_matrix(const core::util::Matrix4 &matrix) override {
         core::util::Vector4 position4;

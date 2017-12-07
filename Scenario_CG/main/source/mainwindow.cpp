@@ -317,7 +317,8 @@ void MainWindow::on_rc_button_clicked() {
     amb_l.reset(new scenario::light::PunctualLight { pos, cor });
 
     std::unique_ptr<scenario::light::Light> pl_left_before;
-    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 5.0, 0.0, 2.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
 
     std::unique_ptr<scenario::light::Light> pl_right_before;
     pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
@@ -330,25 +331,37 @@ void MainWindow::on_rc_button_clicked() {
 
     scenario::Scenario sc { amb_l.get() };
 
-    auto chair = get_chair(material_black);
+//    auto chair = get_chair(material_black);
 
-    scenario::object::Transformation t_chair;
+//    scenario::object::Transformation t_chair;
 
-    auto center = chair->get_boundary().get_center();
+//    auto center = chair->get_boundary().get_center();
 
-    t_chair.add_translation(-center);
-    t_chair.add_rotation(core::util::Vector3 { 1.0, 0.0, 0.0 }, 180);
-    t_chair.add_rotation(core::util::Vector3 { 0.0, 1.0, 0.0 }, 180);
-    t_chair.add_translation(core::util::Vector3 { 5.0, 5.0, 0.0 });
-//    t_chair.add_scale(core::util::Vector3 { 3.0, 3.0, 3.0 });
-    t_chair.add_to_apply(chair);
-    t_chair.make_apply();
+//    t_chair.add_translation(-center);
+//    t_chair.add_rotation(core::util::Vector3 { 1.0, 0.0, 0.0 }, 180);
+//    t_chair.add_rotation(core::util::Vector3 { 0.0, 1.0, 0.0 }, 180);
+//    t_chair.add_translation(core::util::Vector3 { 5.0, 5.0, 0.0 });
+////    t_chair.add_scale(core::util::Vector3 { 3.0, 3.0, 3.0 });
+//    t_chair.add_to_apply(chair);
+//    t_chair.make_apply();
 
-    std::cout << chair->get_boundary().get_radius() << std::endl;
+//    std::cout << chair->get_boundary().get_radius() << std::endl;
 
-//    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
+    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
 
-//    sc.add_object(*cubee);
+        scenario::object::Transformation t_cube;
+
+        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
+        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+//        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
+        t_cube.add_to_apply(cubee);
+        t_cube.make_apply();
+
+        for (int i = 0; i < cubee->get_vertices_size(); ++i) {
+            std::cout << cubee->get_vertice(i)->get_coordinates() << std::endl;
+        }
+
+    sc.add_object(*cubee);
 
 //    sc.add_object(*chair);
 
@@ -384,15 +397,16 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_object(*after_baseline);
 
     sc.add_light(pl_left_before.get());
-    sc.add_light(pl_right_before.get());
-    sc.add_light(pl_left_after.get());
-    sc.add_light(pl_right_after.get());
+//    sc.add_light(pl_right_before.get());
+//    sc.add_light(pl_left_after.get());
+//    sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
-    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
-//    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
+//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+
+    //    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
 //    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
 //    core::util::Vector3 view_up { 0.0, 5.0,     0.0 };
 
@@ -401,9 +415,9 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 view_up { 1, 30, 1.0 };
 
     //COURT'S FRONT
-//    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
-//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 

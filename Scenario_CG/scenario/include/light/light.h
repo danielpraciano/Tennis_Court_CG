@@ -17,6 +17,8 @@ public:
         return _intensity;
     }
 
+    inline virtual const core::util::Vector3 &get_position() const = 0;
+
     inline virtual void apply_matrix(const core::util::Matrix4 &matrix) = 0;
 
 protected:

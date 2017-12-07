@@ -33,10 +33,10 @@ void RayCasting::render(Camera camera, scenario::Scenario scenario) {
 
 Color RayCasting::calculate_color_prova(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario,
                                         scenario::object::Face& face_int, double t_int) const {
-    Ray ray { p_ij };
+    Ray ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
 
 //    core::util::Vector3 p_int = ray.get_point(t_int);
-    core::util::Vector3 p_int = ray.get_point_pij_normalized(t_int);
+    core::util::Vector3 p_int = ray.get_point_destiny_normalized(t_int);
 
     core::util::Vector3 normal = core::util::Vector3 { -4.0, 4.0, -3.0 } - p_int;
     // face_int.set_normal(normalise(cam.get_world_to_camera() * normal));
@@ -61,7 +61,7 @@ Color RayCasting::calculate_color_prova(const core::util::Vector3 &p_ij, const s
 }
 
 Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario) const {
-    Ray ray { p_ij };
+    Ray ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
 
     double t_int = std::numeric_limits<double>::max();
     const scenario::object::Face *face_int = nullptr;
@@ -86,7 +86,23 @@ Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenari
     core::util::Vector3 color_values = face_int->get_material().get_k_ambient().get_values() % ambient_intensity;
 
     for (const auto &light : scenario.get_lights()) {
-        color_values += light->get_light_color(*face_int, p_int).get_values();
+
+        Ray ray_pint_to_light { p_int, light->get_position() };
+
+        bool there_is_another_obj = false;
+
+        for (const scenario::object::Object &obj : scenario.get_objects()) {
+            auto inter_obj = obj.get_intercept(ray_pint_to_light);
+
+            if (inter_obj.first >= 0.0 && inter_obj.first <= 1.0 && inter_obj.second != face_int) {
+                there_is_another_obj = true;
+                break;
+            }
+
+        }
+
+        if (!there_is_another_obj)
+            color_values += light->get_light_color(*face_int, p_int).get_values();
 //        color_values += light.get_light_color(*face_int, p_int).get_values();
     }
 

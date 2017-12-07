@@ -8,26 +8,27 @@ namespace raycasting {
 class Ray {
 
 public:
-    Ray(core::util::Vector3 p_ij) : _p_ij(p_ij), _p_ij_normalized(normalise(p_ij)) {}
+    //ray obs: source = Po and destiny = P_ij
+    Ray(core::util::Vector3 source, core::util::Vector3 destiny) : _source(source), _destiny(destiny), _destiny_normalized(normalise(destiny)) {}
 
-    inline core::util::Vector3 get_point_pij_normalized(double t) const {
-        return t * _p_ij_normalized;
+    inline core::util::Vector3 get_point_destiny_normalized(double t) const {
+        return _source + t * (_destiny_normalized - _source);
     }
 
     inline core::util::Vector3 get_point(double t) const {
-        return t * _p_ij;
+        return _source + t * (_destiny - _source);
     }
 
-    inline const core::util::Vector3 &get_p_ij() const {
-        return _p_ij;
+    inline const core::util::Vector3 &get_destiny() const {
+        return _destiny;
     }
 
-    inline const core::util::Vector3 &get_p_ij_normalized() const {
-        return _p_ij_normalized;
+    inline const core::util::Vector3 &get_destiny_normalized() const {
+        return _destiny_normalized;
     }
 
 private:
-    core::util::Vector3 _p_ij, _p_ij_normalized;
+    core::util::Vector3 _source, _destiny, _destiny_normalized;
 
 };
 
