@@ -389,9 +389,9 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
-//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
-//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
 //    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
 //    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
 //    core::util::Vector3 view_up { 0.0, 5.0,     0.0 };
@@ -401,9 +401,9 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 view_up { 1, 30, 1.0 };
 
     //COURT'S FRONT
-    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+//    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 
