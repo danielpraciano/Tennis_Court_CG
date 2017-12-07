@@ -13,7 +13,7 @@ class RayCasting {
 public:
     RayCasting(double distance, double width, double height, Color background_color = Color {}) :
         _distance(distance), _width(width), _height(height), _background_color(background_color) {
-        _delta_row = _width / core::constants::COLS_PIXELS; _delta_col = _height / core::constants::ROWS_PIXELS;
+        _delta_row = _height / core::constants::ROWS_PIXELS; _delta_col = _width / core::constants::COLS_PIXELS;
 
         _frame_buffer = new Color*[core::constants::ROWS_PIXELS];
 

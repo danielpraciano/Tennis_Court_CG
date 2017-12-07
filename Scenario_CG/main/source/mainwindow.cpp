@@ -346,11 +346,11 @@ void MainWindow::on_rc_button_clicked() {
 
     std::cout << chair->get_boundary().get_radius() << std::endl;
 
-    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
+//    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
 
-    sc.add_object(*cubee);
+//    sc.add_object(*cubee);
 
-    sc.add_object(*chair);
+//    sc.add_object(*chair);
 
 //        core::util::Vector3 eye     { center(0) - 3.0, center(1), center(2) + 5.0 };
 //        core::util::Vector3 look_at { center(0), center(1) +3.0, center(2) };
@@ -389,18 +389,21 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
-    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
-    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
-    core::util::Vector3 view_up { 0.0, 5.0,     0.0 };
+//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+//    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
+//    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
+//    core::util::Vector3 view_up { 0.0, 5.0,     0.0 };
 
 //    core::util::Vector3 eye     { 0, 20, 0.0 };
 //    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
 //    core::util::Vector3 view_up { 1, 30, 1.0 };
 
     //COURT'S FRONT
-//    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
-//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 
@@ -420,7 +423,7 @@ void MainWindow::on_rc_button_clicked() {
     int n = core::constants::ROWS_PIXELS;
     int m = core::constants::COLS_PIXELS;
 
-    QImage img = QImage(n, m, QImage::Format_RGB888);
+    QImage img = QImage(m, n, QImage::Format_RGB888);
 
     #pragma omp parallel for
     for(int i = 0; i < n; i++) {
