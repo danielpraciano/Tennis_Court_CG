@@ -4,10 +4,10 @@ namespace scenario {
 namespace object {
 
 double Face::get_intercept(const render::raycasting::Ray &ray) const {
-    if (dot(_normal_vec, ray.get_destiny_normalized()) >= 0)
+    if (dot(_normal_vec, ray.get_direction_normalized()) >= 0)
         return -1.0;
 
-    double t_int = _v1_dot_normal / dot(ray.get_destiny(), _normal_vec);
+    double t_int = _v1_dot_normal / dot(ray.get_direction(), _normal_vec);
     core::util::Vector3 point_int = ray.get_point(t_int);
 
     core::util::Vector3 p1 = cross(_v1->get_coordinates() - point_int, _v2->get_coordinates() - point_int);

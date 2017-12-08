@@ -41,7 +41,7 @@ std::pair<double, const Face*> Object::get_intercept(const render::raycasting::R
     double t_int_result = std::numeric_limits<double>::max();
     const Face *face_result = nullptr;
 //verify this method!!!
-    if (boundary.is_intercepted(ray.get_destiny())) {
+    if (boundary.is_intercepted(ray)) {
         for (const Face &face : _faces) {
 
             double t_int = face.get_intercept(ray);

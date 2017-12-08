@@ -73,32 +73,6 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
     return cube;
 }
 
-std::shared_ptr<scenario::object::Object> get_chair(std::shared_ptr<scenario::object::Material> mat) {
-//    double m = 96.078;
-//    render::raycasting::Color k_a { 0.00, 0.00, 0.00 };
-//    render::raycasting::Color k_d { 0.640, 0.640, 0.640 };
-//    render::raycasting::Color k_s { 0.500, 0.500, 0.500 };
-
-//    std::shared_ptr<scenario::object::Material> material {
-//    new scenario::object::Material { m, k_a, k_d, k_s } };
-
-    std::shared_ptr<scenario::object::Object> chair { new scenario::object::Object { mat } };
-
-    for (unsigned int i = 0; i < 3*chair_meuOBJNumVerts; i += 3)
-        chair->add_vertex(scenario::object::Vertex { chair_meuOBJVerts[i], chair_meuOBJVerts[i + 1], chair_meuOBJVerts[i + 2] });
-
-    for (unsigned int i = 0; i < chair_meuOBJNumVerts; i += 3)
-        chair->add_face(i, i + 1, i + 2);
-
-//    core::io_module::ObjReader reader;
-
-//    const std::string path = "/home/daniel/chair_novo.obj";
-
-//    auto chair = reader.read(path, mat);
-
-    return chair;
-}
-
 void MainWindow::on_rc_button_clicked() {
     render::raycasting::Color color_red { 1.0, 0.0, 0.0 };
     render::raycasting::Color color_blue { 0.0, 0.0, 1.0 };
@@ -331,39 +305,21 @@ void MainWindow::on_rc_button_clicked() {
 
     scenario::Scenario sc { amb_l.get() };
 
-//    auto chair = get_chair(material_black);
+//    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
 
-//    scenario::object::Transformation t_chair;
+//        scenario::object::Transformation t_cube;
 
-//    auto center = chair->get_boundary().get_center();
+//        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
+//        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+////        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
+//        t_cube.add_to_apply(cubee);
+//        t_cube.make_apply();
 
-//    t_chair.add_translation(-center);
-//    t_chair.add_rotation(core::util::Vector3 { 1.0, 0.0, 0.0 }, 180);
-//    t_chair.add_rotation(core::util::Vector3 { 0.0, 1.0, 0.0 }, 180);
-//    t_chair.add_translation(core::util::Vector3 { 5.0, 5.0, 0.0 });
-////    t_chair.add_scale(core::util::Vector3 { 3.0, 3.0, 3.0 });
-//    t_chair.add_to_apply(chair);
-//    t_chair.make_apply();
+//        for (int i = 0; i < cubee->get_vertices_size(); ++i) {
+//            std::cout << cubee->get_vertice(i)->get_coordinates() << std::endl;
+//        }
 
-//    std::cout << chair->get_boundary().get_radius() << std::endl;
-
-    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
-
-        scenario::object::Transformation t_cube;
-
-        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
-        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
-//        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
-        t_cube.add_to_apply(cubee);
-        t_cube.make_apply();
-
-        for (int i = 0; i < cubee->get_vertices_size(); ++i) {
-            std::cout << cubee->get_vertice(i)->get_coordinates() << std::endl;
-        }
-
-    sc.add_object(*cubee);
-
-//    sc.add_object(*chair);
+//    sc.add_object(*cubee);
 
 //        core::util::Vector3 eye     { center(0) - 3.0, center(1), center(2) + 5.0 };
 //        core::util::Vector3 look_at { center(0), center(1) +3.0, center(2) };

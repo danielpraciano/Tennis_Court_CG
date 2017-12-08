@@ -36,7 +36,7 @@ Color RayCasting::calculate_color_prova(const core::util::Vector3 &p_ij, const s
     Ray ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
 
 //    core::util::Vector3 p_int = ray.get_point(t_int);
-    core::util::Vector3 p_int = ray.get_point_destiny_normalized(t_int);
+    core::util::Vector3 p_int = ray.get_point_direction_normalized(t_int);
 
     core::util::Vector3 normal = core::util::Vector3 { -4.0, 4.0, -3.0 } - p_int;
     // face_int.set_normal(normalise(cam.get_world_to_camera() * normal));
@@ -61,13 +61,13 @@ Color RayCasting::calculate_color_prova(const core::util::Vector3 &p_ij, const s
 }
 
 Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario) const {
-    Ray ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
+    Ray viewing_ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
 
     double t_int = std::numeric_limits<double>::max();
     const scenario::object::Face *face_int = nullptr;
 
     for (const scenario::object::Object &obj : scenario.get_objects()) {
-        auto inter_obj = obj.get_intercept(ray);
+        auto inter_obj = obj.get_intercept(viewing_ray);
 //std::cout << inter_obj.first << std::endl;
         //>= or only >???
         if (inter_obj.first >= 1.0 && inter_obj.first < t_int) {
@@ -79,7 +79,7 @@ Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenari
     if (t_int == std::numeric_limits<double>::max())
         return Color { _background_color.get_values()(0) * 255, _background_color.get_values()(1) * 255, _background_color.get_values()(2) * 255 };
 //std::cout << t_int << std::endl;
-    core::util::Vector3 p_int = ray.get_point(t_int);
+    core::util::Vector3 p_int = viewing_ray.get_point(t_int);
 
     core::util::Vector3 ambient_intensity = scenario.get_ambient_light()->get_intensity().get_values();
 //    core::util::Vector3 ambient_intensity = scenario.get_ambient_light().get_intensity().get_values();
@@ -87,12 +87,12 @@ Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenari
 
     for (const auto &light : scenario.get_lights()) {
 
-        Ray ray_pint_to_light { p_int, light->get_position() };
+        Ray shadow_ray { p_int, light->get_position() - p_int };
 
         bool there_is_another_obj = false;
 
         for (const scenario::object::Object &obj : scenario.get_objects()) {
-            auto inter_obj = obj.get_intercept(ray_pint_to_light);
+            auto inter_obj = obj.get_intercept(shadow_ray);
 
             if (inter_obj.first >= 0.0 && inter_obj.first <= 1.0 && inter_obj.second != face_int) {
                 there_is_another_obj = true;
