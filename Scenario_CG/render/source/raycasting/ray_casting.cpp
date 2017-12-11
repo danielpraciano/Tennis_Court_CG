@@ -5,7 +5,7 @@
 namespace render {
 namespace raycasting {
 
-void RayCasting::render(Camera camera, scenario::Scenario scenario) {
+void RayCasting::render(Camera camera, scenario::Scenario scenario, ) {
     camera.to_camera(scenario);
 
     scenario.make();
@@ -23,8 +23,11 @@ void RayCasting::render(Camera camera, scenario::Scenario scenario) {
             double x_ij = (-_width / 2) + (_delta_row / 2) + j * _delta_row;
 //            std::cout << i << " " << j << std::endl;
             core::util::Vector3 p_ij { x_ij, y_i, -_distance };
+            Ray viewing_ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
 
-            _frame_buffer[i][j] = calculate_color(p_ij, scenario);
+            viewing_ray = { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
+
+            _frame_buffer[i][j] = calculate_color(viewing_ray, scenario);
 
         }
     }
@@ -60,9 +63,7 @@ Color RayCasting::calculate_color_prova(const core::util::Vector3 &p_ij, const s
 
 }
 
-Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario) const {
-    Ray viewing_ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
-
+Color RayCasting::calculate_color(const Ray &viewing_ray, const scenario::Scenario &scenario) const {
     double t_int = std::numeric_limits<double>::max();
     const scenario::object::Face *face_int = nullptr;
 
@@ -96,6 +97,7 @@ Color RayCasting::calculate_color(const core::util::Vector3 &p_ij, const scenari
 
             if (inter_obj.first >= 0.0 && inter_obj.first <= 1.0 && inter_obj.second != face_int) {
                 there_is_another_obj = true;
+                std::cout << "entruou!" << std::endl;
                 break;
             }
 

@@ -292,7 +292,7 @@ void MainWindow::on_rc_button_clicked() {
 
     std::unique_ptr<scenario::light::Light> pl_left_before;
 //    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
-    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 5.0, 0.0, 2.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
+    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 5.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
 
     std::unique_ptr<scenario::light::Light> pl_right_before;
     pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
@@ -305,21 +305,21 @@ void MainWindow::on_rc_button_clicked() {
 
     scenario::Scenario sc { amb_l.get() };
 
-//    auto cubee = get_cube(material_black, 1.0, 1.0, 1.0);
+    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0);
 
-//        scenario::object::Transformation t_cube;
+        scenario::object::Transformation t_cube;
 
-//        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
-//        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
-////        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
-//        t_cube.add_to_apply(cubee);
-//        t_cube.make_apply();
+        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
+        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+//        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
+        t_cube.add_to_apply(cubee);
+        t_cube.make_apply();
 
 //        for (int i = 0; i < cubee->get_vertices_size(); ++i) {
 //            std::cout << cubee->get_vertice(i)->get_coordinates() << std::endl;
 //        }
 
-//    sc.add_object(*cubee);
+    sc.add_object(*cubee);
 
 //        core::util::Vector3 eye     { center(0) - 3.0, center(1), center(2) + 5.0 };
 //        core::util::Vector3 look_at { center(0), center(1) +3.0, center(2) };
@@ -334,23 +334,23 @@ void MainWindow::on_rc_button_clicked() {
 //    double h = 1.0;
 
     sc.add_object(*ground);
-    sc.add_object(*court);
-    sc.add_object(*left_doubles_sideline);
-    sc.add_object(*left_singles_sideline);
-    sc.add_object(*before_center_mark);
-    sc.add_object(*center_service_line);
-    sc.add_object(*after_center_mark);
-    sc.add_object(*right_singles_sideline);
-    sc.add_object(*right_doubles_sideline);
-    sc.add_object(*before_baseline);
-    sc.add_object(*after_service_line);
-    sc.add_object(*left_support_net);
-    sc.add_object(*above_support_net);
-    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
-    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
-    sc.add_object(*right_support_net);
-    sc.add_object(*before_service_line);
-    sc.add_object(*after_baseline);
+//    sc.add_object(*court);
+//    sc.add_object(*left_doubles_sideline);
+//    sc.add_object(*left_singles_sideline);
+//    sc.add_object(*before_center_mark);
+//    sc.add_object(*center_service_line);
+//    sc.add_object(*after_center_mark);
+//    sc.add_object(*right_singles_sideline);
+//    sc.add_object(*right_doubles_sideline);
+//    sc.add_object(*before_baseline);
+//    sc.add_object(*after_service_line);
+//    sc.add_object(*left_support_net);
+//    sc.add_object(*above_support_net);
+//    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
+//    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
+//    sc.add_object(*right_support_net);
+//    sc.add_object(*before_service_line);
+//    sc.add_object(*after_baseline);
 
     sc.add_light(pl_left_before.get());
 //    sc.add_light(pl_right_before.get());

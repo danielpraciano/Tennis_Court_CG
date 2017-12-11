@@ -41,7 +41,7 @@ private:
     double _distance, _width, _height, _delta_row, _delta_col;
     Color **_frame_buffer, _background_color;
 
-    Color calculate_color(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario) const;
+    Color calculate_color(const Ray &viewing_ray, const scenario::Scenario &scenario) const;
 
 };
 
