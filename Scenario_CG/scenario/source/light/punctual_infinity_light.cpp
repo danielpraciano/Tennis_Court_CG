@@ -3,12 +3,12 @@
 namespace scenario {
 namespace light {
 
-render::raycasting::Color PunctualInfinityLight::get_light_color(const object::Face &face_int, const core::util::Vector3 &p_int, bool prova) const {
+render::raycasting::Color PunctualInfinityLight::get_light_color(const core::util::Vector3 &eye, const object::Face &face_int, const core::util::Vector3 &p_int, bool prova) const {
     const object::Material &face_mat = face_int.get_material();
     core::util::Vector3 face_normal = face_int.get_normal();
 
     core::util::Vector3 l = -_direction_point;
-    core::util::Vector3 v = normalise(-p_int);
+    core::util::Vector3 v = normalise(eye-p_int);
     core::util::Vector3 r = 2 * dot(l, face_normal) * face_normal - l;
 
     if (prova) {

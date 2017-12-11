@@ -30,10 +30,10 @@ public:
         delete[] _frame_buffer;
     }
 
-    Color calculate_color_prova(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario,
-                                scenario::object::Face& face_int, double t_int) const;
+//    Color calculate_color_prova(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario,
+//                                scenario::object::Face& face_int, double t_int) const;
 
-    void render(Camera camera, scenario::Scenario scenario);
+    void render(Camera camera, scenario::Scenario scenario, bool Falta_Escolher_Qual_Tipo_Projecao = true);
 
     inline Color** get_frame_buffer() const { return _frame_buffer; }
 

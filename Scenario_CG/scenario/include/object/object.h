@@ -52,7 +52,7 @@ public:
      * @return <t_int, face> if intercepted, <-1.0, nullptr> otherwise.
      */
 
-    std::pair<double, const Face*> get_intercept(const render::raycasting::Ray &ray) const;
+    std::pair<double, const Face*> get_intercept(const render::raycasting::Ray &ray, double t_int_minimum = 1.0) const;
 
 private:
     std::shared_ptr<Material> _material;

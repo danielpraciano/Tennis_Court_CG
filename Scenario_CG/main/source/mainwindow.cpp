@@ -284,15 +284,15 @@ void MainWindow::on_rc_button_clicked() {
 
     core::util::Vector3 pos { 10.0, 10.0, -5.0 };
 
-    render::raycasting::Color cor { 0.5, 0.5, 0.5 };
+    render::raycasting::Color cor { 0.1, 0.1, 0.1 };
 
     std::unique_ptr<scenario::light::Light> amb_l;
 
     amb_l.reset(new scenario::light::PunctualLight { pos, cor });
 
     std::unique_ptr<scenario::light::Light> pl_left_before;
-//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
-    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 5.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
+    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
 
     std::unique_ptr<scenario::light::Light> pl_right_before;
     pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
@@ -310,7 +310,7 @@ void MainWindow::on_rc_button_clicked() {
         scenario::object::Transformation t_cube;
 
         t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
-        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+//        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
 //        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
         t_cube.add_to_apply(cubee);
         t_cube.make_apply();
@@ -333,7 +333,7 @@ void MainWindow::on_rc_button_clicked() {
 //    double w = 1.0;
 //    double h = 1.0;
 
-    sc.add_object(*ground);
+//    sc.add_object(*ground);
 //    sc.add_object(*court);
 //    sc.add_object(*left_doubles_sideline);
 //    sc.add_object(*left_singles_sideline);
@@ -353,9 +353,9 @@ void MainWindow::on_rc_button_clicked() {
 //    sc.add_object(*after_baseline);
 
     sc.add_light(pl_left_before.get());
-//    sc.add_light(pl_right_before.get());
-//    sc.add_light(pl_left_after.get());
-//    sc.add_light(pl_right_after.get());
+    sc.add_light(pl_right_before.get());
+    sc.add_light(pl_left_after.get());
+    sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
 //    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
@@ -371,15 +371,20 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 view_up { 1, 30, 1.0 };
 
     //COURT'S FRONT
-    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+//    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+
+    core::util::Vector3 eye     { 81.0, 81.0, 81.0 };
+    core::util::Vector3 look_at { 3.0, 3.0,  3.0 };
+    core::util::Vector3 view_up { 3.0, 4.0,  3.0 };
+
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 
     double d = 1.4;
-    double w = 1.0;
-    double h = 1.0;
+    double w = 9.0;
+    double h = 9.0;
 
 //    render::raycasting::Color bg { 101.0/255, 179.0/255, 253.0/255 };
     render::raycasting::Color bg { 1.0, 0.0, 0.0 };

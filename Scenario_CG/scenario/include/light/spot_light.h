@@ -14,7 +14,7 @@ public:
         Light(intensity), _openning_angle(openning_angle), _position(position),
         _direction_point(direction_point), _direction_vec(_direction_point - _position) {}
 
-    virtual render::raycasting::Color get_light_color(const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const override;
+    virtual render::raycasting::Color get_light_color(const core::util::Vector3 &eye, const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const override;
 
 //    inline const core::util::Vector3 &get_position() const { return _position; }
 

@@ -37,7 +37,7 @@ void Object::make_ready() {
         face.calculate_normal();
 }
 
-std::pair<double, const Face*> Object::get_intercept(const render::raycasting::Ray &ray) const {
+std::pair<double, const Face*> Object::get_intercept(const render::raycasting::Ray &ray, double t_int_minimum) const {
     double t_int_result = std::numeric_limits<double>::max();
     const Face *face_result = nullptr;
 //verify this method!!!
@@ -47,7 +47,7 @@ std::pair<double, const Face*> Object::get_intercept(const render::raycasting::R
             double t_int = face.get_intercept(ray);
 
             // > or > only ???
-            if (t_int >= 1.0 && t_int < t_int_result) {
+            if (t_int >= t_int_minimum && t_int < t_int_result) {
                 t_int_result  = t_int;
                 face_result = &face;
             }

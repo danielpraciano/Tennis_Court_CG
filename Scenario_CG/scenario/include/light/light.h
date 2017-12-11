@@ -11,7 +11,7 @@ class Light {
 public:
     virtual ~Light() {}
 
-    virtual render::raycasting::Color get_light_color(const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const = 0;
+    virtual render::raycasting::Color get_light_color(const core::util::Vector3 &eye, const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const = 0;
 
     inline const render::raycasting::Color &get_intensity() const {
         return _intensity;
