@@ -3,24 +3,17 @@
 namespace scenario {
 namespace light {
 
-render::raycasting::Color PunctualLight::get_light_color(const core::util::Vector3 &origin, const object::Face &face_int, const core::util::Vector3 &p_int, bool prova) const {
-    const object::Material &face_mat = face_int.get_material();
-    core::util::Vector3 face_normal = face_int.get_normal();
+render::raycasting::Color PunctualLight::get_light_color(const core::util::Vector3 &ray_origin,
+                                                         const object::Face &face_int, const core::util::Vector3 &p_int) const {
+    const object::Material    &face_mat    = face_int.get_material();
+    const core::util::Vector3 &face_normal = face_int.get_normal();
 
-    core::util::Vector3 l = normalise(_position - p_int);
-    core::util::Vector3 v = normalise(origin-p_int);
-//    core::util::Vector3 v = normalise(eye);
-    core::util::Vector3 r = 2 * dot(l, face_normal) * face_normal - l;
+    const core::util::Vector3 l = normalise(position_ - p_int);
+    const core::util::Vector3 v = normalise(ray_origin - p_int);
+    const core::util::Vector3 r = 2 * dot(l, face_normal) * face_normal - l;
 
-    if (prova) {
-        std::cout << "VECTOR_n:" << std::endl << face_normal << std::endl;
-        std::cout << "VECTOR_l:" << std::endl << l << std::endl;
-        std::cout << "VECTOR_v:" << std::endl << v << std::endl;
-        std::cout << "VECTOR_r:" << std::endl << r << std::endl;
-    }
-
-    double n_dot_l = dot(face_normal, l);
-    double v_dot_r_m = std::pow(dot(v, r), face_mat.get_m());
+    double n_dot_l   = dot(face_normal, l);
+    double v_dot_r_m = std::pow(dot(v, r), face_mat.get_reflexive_coef());
 
     core::util::Vector3 diffuse;
     core::util::Vector3 specular;
@@ -41,13 +34,8 @@ render::raycasting::Color PunctualLight::get_light_color(const core::util::Vecto
 //        return render::raycasting::Color { 0.0, 0.0, 0.0 };
 
     if (n_dot_l > 0) {
-        diffuse  = n_dot_l * ( face_mat.get_k_diffuse().get_values() % _intensity.get_values() );
-        specular = std::max(0.0, v_dot_r_m) * ( face_mat.get_k_specular().get_values() % _intensity.get_values() );
-    }
-
-    if (prova) {
-        std::cout << "COLOR_DIFFUSE:" << std::endl << diffuse << std::endl;
-        std::cout << "COLOR_SPECULAR:" << std::endl << specular << std::endl;
+        diffuse  = n_dot_l * ( face_mat.get_k_diffuse().get_values() % intensity_.get_values() );
+        specular = std::max(0.0, v_dot_r_m) * ( face_mat.get_k_specular().get_values() % intensity_.get_values() );
     }
 
     return render::raycasting::Color { diffuse + specular };

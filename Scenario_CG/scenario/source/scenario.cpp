@@ -3,14 +3,14 @@
 namespace scenario {
 
 void Scenario::apply_matrix(const core::util::Matrix4 &matrix) {
-    _ambient_light->apply_matrix(matrix);
+    ambient_light->apply_matrix(matrix);
 //    _ambient_light.apply_matrix(matrix);
 
-    for (auto &light : _lights)
+    for (auto &light : lights)
         light->apply_matrix(matrix);
 //        light.apply_matrix(matrix);
 
-    for (object::Object &obj : _objects)
+    for (object::Object &obj : objects)
         obj.apply_matrix(matrix);
 }
 

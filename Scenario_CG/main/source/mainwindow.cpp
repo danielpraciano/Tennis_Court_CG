@@ -15,16 +15,18 @@
 #include <render/include/raycasting/color.h>
 #include <render/include/raycasting/ray.h>
 #include <render/include/raycasting/ray_casting.h>
+#include <render/include/raycasting/projection_type.h>
 
 #include <core/include/io_module.h>
-#include <scenario/include/object/chair_meuOBJ.h>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    scene = new QGraphicsScene(this);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete scene;
 }
 
 std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z) {
@@ -232,7 +234,7 @@ void MainWindow::on_rc_button_clicked() {
     std::shared_ptr<scenario::object::Object> net_lines[4];
 
     #pragma omp parallel for
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; ++i) {
         std::shared_ptr<scenario::object::Object> net_line = get_cube(material_black, (0.914-0.114) + 10.974 + (0.914-0.114), 0.1, 0.1);
         scenario::object::Transformation t_net_line;
 
@@ -247,7 +249,7 @@ void MainWindow::on_rc_button_clicked() {
     std::shared_ptr<scenario::object::Object> net_columns[62];
 
     #pragma omp parallel for
-    for (int j = 0; j < 62; j++) {
+    for (int j = 0; j < 62; ++j) {
         std::shared_ptr<scenario::object::Object> net_column = get_cube(material_black, 0.1, 0.1, 0.91 - 0.11);
         scenario::object::Transformation t_net_column;
 
@@ -282,13 +284,18 @@ void MainWindow::on_rc_button_clicked() {
     t_before_baseline.add_to_apply(before_baseline);
     t_before_baseline.make_apply();
 
-    core::util::Vector3 pos { 10.0, 10.0, -5.0 };
+    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0);
 
-    render::raycasting::Color cor { 0.1, 0.1, 0.1 };
+        scenario::object::Transformation t_cube;
 
-    std::unique_ptr<scenario::light::Light> amb_l;
+        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
+//        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+//        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
+        t_cube.add_to_apply(cubee);
+        t_cube.make_apply();
 
-    amb_l.reset(new scenario::light::PunctualLight { pos, cor });
+    std::unique_ptr<scenario::light::Light> ambient_light { new scenario::light::PunctualLight { core::util::Vector3 { 0.0, 0.0, 0.0 },
+                    render::raycasting::Color { 0.1, 0.1, 0.1 } } };
 
     std::unique_ptr<scenario::light::Light> pl_left_before;
     pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
@@ -303,36 +310,9 @@ void MainWindow::on_rc_button_clicked() {
     std::unique_ptr<scenario::light::Light> pl_right_after;
     pl_right_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
 
-    scenario::Scenario sc { amb_l.get() };
-
-    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0);
-
-        scenario::object::Transformation t_cube;
-
-        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
-//        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
-//        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
-        t_cube.add_to_apply(cubee);
-        t_cube.make_apply();
-
-//        for (int i = 0; i < cubee->get_vertices_size(); ++i) {
-//            std::cout << cubee->get_vertice(i)->get_coordinates() << std::endl;
-//        }
+    scenario::Scenario sc { ambient_light.get() };
 
     sc.add_object(*cubee);
-
-//        core::util::Vector3 eye     { center(0) - 3.0, center(1), center(2) + 5.0 };
-//        core::util::Vector3 look_at { center(0), center(1) +3.0, center(2) };
-//        core::util::Vector3 view_up { center(0), center(1) + 5.0, center(2) };
-
-//                core::util::Vector3 eye     { 0, 0, -2 };
-//                core::util::Vector3 look_at { center(0), center(1), center(2) };
-//                core::util::Vector3 view_up { center(0), center(1) + 2.0, center(2) };
-
-//    double d = 1.4;
-//    double w = 1.0;
-//    double h = 1.0;
-
 //    sc.add_object(*ground);
 //    sc.add_object(*court);
 //    sc.add_object(*left_doubles_sideline);
@@ -391,7 +371,7 @@ void MainWindow::on_rc_button_clicked() {
 
     render::raycasting::RayCasting rc { d, w, h, bg };
 
-    rc.render(cam, sc);
+    rc.render(cam, sc, render::raycasting::ProjectionType::ORTHOGRAPHIC, 15.0);
 
     auto frame = rc.get_frame_buffer();
 
@@ -404,12 +384,11 @@ void MainWindow::on_rc_button_clicked() {
     for(int i = 0; i < n; i++) {
         #pragma omp parallel for
         for(int j = 0; j < m; j++) {
-            render::raycasting::Color color = frame[i][j];
+            const render::raycasting::Color &color = frame[i][j];
             img.setPixel(j, i, qRgb(color.get_r(), color.get_g(), color.get_b()));
         }
     }
 
-    QGraphicsScene *scene = new QGraphicsScene(this);
     scene->addPixmap(QPixmap::fromImage(img));
 
     ui->graphics_view->setScene(scene);

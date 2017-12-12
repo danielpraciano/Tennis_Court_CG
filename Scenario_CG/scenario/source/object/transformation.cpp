@@ -6,11 +6,11 @@
 namespace scenario {
 namespace object {
 
-void Transformation::add_rotation(const core::util::Vector3 axis, const double angle, const bool inDegrees) {
-    double angle_rad = inDegrees ? angle * arma::datum::pi / 180 : angle;
+void Transformation::add_rotation(const core::util::Vector3 &axis, double angle, bool in_degrees) {
+    double angle_rad = in_degrees ? angle * arma::datum::pi / 180 : angle;
 
     if (axis(0) == 1.0 && axis(1) == 0.0 && axis(2) == 0.0) { // x
-        _transformations_text.append("Rx(" + std::to_string(angle_rad) + ")");
+        transformations_text_.append("Rx(" + std::to_string(angle_rad) + ")");
 
         core::util::Matrix4 R;
 
@@ -21,10 +21,10 @@ void Transformation::add_rotation(const core::util::Vector3 axis, const double a
         R(2, 1) =  sin(angle_rad);
         R(2, 2) =  cos(angle_rad);
 
-        _matrices.push_back(R);
+        matrices_.push_back(R);
 
     } else if (axis(0) == 0.0 && axis(1) == 1.0 && axis(2) == 0.0) { // y
-        _transformations_text.append("Ry(" + std::to_string(angle_rad) + ")");
+        transformations_text_.append("Ry(" + std::to_string(angle_rad) + ")");
 
         core::util::Matrix4 R;
 
@@ -35,10 +35,10 @@ void Transformation::add_rotation(const core::util::Vector3 axis, const double a
         R(2, 0) = -sin(angle_rad);
         R(2, 2) =  cos(angle_rad);
 
-        _matrices.push_back(R);
+        matrices_.push_back(R);
 
     } else if (axis(0) == 0.0 && axis(1) == 0.0 && axis(2) == 1.0) { // z
-        _transformations_text.append("Rz(" + std::to_string(angle_rad) + ")");
+        transformations_text_.append("Rz(" + std::to_string(angle_rad) + ")");
 
         core::util::Matrix4 R;
 
@@ -49,10 +49,10 @@ void Transformation::add_rotation(const core::util::Vector3 axis, const double a
         R(1, 0) =  sin(angle_rad);
         R(1, 1) =  cos(angle_rad);
 
-        _matrices.push_back(R);
+        matrices_.push_back(R);
 
     } else { // quaternion
-        _transformations_text.append("Rarb(" + std::to_string(angle_rad) + ")");
+        transformations_text_.append("Rarb(" + std::to_string(angle_rad) + ")");
 
         angle_rad /= 2;
 
@@ -81,13 +81,13 @@ void Transformation::add_rotation(const core::util::Vector3 axis, const double a
         Rq_.row(2) = core::util::Vector3 { q_(1), -q_(0),  q_(3),  q_(2) };
         Rq_.row(3) = core::util::Vector3 {-q_(0), -q_(1), -q_(2),  q_(3) };
 
-        _matrices.push_back(Lq * Rq_);
+        matrices_.push_back(Lq * Rq_);
 
         add_translation(axis);
     }
 }
 
-void Transformation::add_scale(const core::util::Vector3 scale_factors) {
+void Transformation::add_scale(const core::util::Vector3 &scale_factors) {
     core::util::Matrix4 S;
 
     S.eye();
@@ -96,46 +96,46 @@ void Transformation::add_scale(const core::util::Vector3 scale_factors) {
     S(1, 1) = scale_factors(1);
     S(2, 2) = scale_factors(2);
 
-    _matrices.push_back(S);
+    matrices_.push_back(S);
 }
 
-void Transformation::add_translation(const core::util::Vector3 translate_vector) {
+void Transformation::add_translation(const core::util::Vector3 &translate_vector) {
     core::util::Matrix4 T;
 
     T.eye();
 
     T.col(3).head(3) = translate_vector;
 
-    _matrices.push_back(T);
+    matrices_.push_back(T);
 }
 
 void Transformation::add_to_apply(std::shared_ptr<Object> obj) {
-    _objects_to_apply.push_back(obj);
+    objects_to_apply.push_back(obj);
 }
 
 void Transformation::make_apply() {
-    if (_was_applied)
+    if (was_applied_)
         throw std::logic_error("Transformation could only be applied once!");
 
     calculate_final_matrix();
 
-    for (auto obj : _objects_to_apply)
-        obj->apply_matrix(_final_matrix);
+    for (auto obj : objects_to_apply)
+        obj->apply_matrix(final_matrix_);
 
-    _was_applied = true;
-    _objects_to_apply.clear();
+    was_applied_ = true;
+    objects_to_apply.clear();
 }
 
 void Transformation::calculate_final_matrix() {
-    if (_matrices.empty())
+    if (matrices_.empty())
         throw std::logic_error("Transformation need to have at least one kind of scale, translation, etc!");
 
-    _final_matrix.eye();
+    final_matrix_.eye();
 
-    for (auto matrix : _matrices)
-        _final_matrix *= matrix;
+    for (auto matrix : matrices_)
+        final_matrix_ *= matrix;
 
-    _matrices.clear();
+    matrices_.clear();
 }
 
 }

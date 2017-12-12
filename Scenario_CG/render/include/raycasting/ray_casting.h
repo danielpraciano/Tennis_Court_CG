@@ -2,6 +2,7 @@
 
 #include <render/include/raycasting/color.h>
 #include <render/include/raycasting/camera.h>
+#include <render/include/raycasting/projection_type.h>
 #include <scenario/include/scenario.h>
 #include <core/include/constants.h>
 
@@ -12,34 +13,32 @@ class RayCasting {
 
 public:
     RayCasting(double distance, double width, double height, Color background_color = Color {}) :
-        _distance(distance), _width(width), _height(height), _background_color(background_color) {
-//        _delta_row = _height / core::constants::ROWS_PIXELS; _delta_col = _width / core::constants::COLS_PIXELS;
-          _delta_row = _width / core::constants::COLS_PIXELS; _delta_col = _height / core::constants::ROWS_PIXELS;
+        distance_(distance), width_(width), height_(height), background_color_(background_color) {
+          delta_row_ = width_ / core::constants::COLS_PIXELS;
+          delta_col_ = height_ / core::constants::ROWS_PIXELS;
 
-        _frame_buffer = new Color*[core::constants::ROWS_PIXELS];
+        frame_buffer_ = new Color*[core::constants::ROWS_PIXELS];
 
         for (uint64_t i = 0; i < core::constants::ROWS_PIXELS; ++i)
-            _frame_buffer[i] = new Color[core::constants::COLS_PIXELS];
+            frame_buffer_[i] = new Color[core::constants::COLS_PIXELS];
 
          }
 
     ~RayCasting() {
         for (uint64_t i = 0; i < core::constants::ROWS_PIXELS; ++i)
-            delete[] _frame_buffer[i];
+            delete[] frame_buffer_[i];
 
-        delete[] _frame_buffer;
+        delete[] frame_buffer_;
     }
 
-//    Color calculate_color_prova(const core::util::Vector3 &p_ij, const scenario::Scenario &scenario,
-//                                scenario::object::Face& face_int, double t_int) const;
+    inline Color** get_frame_buffer() const { return frame_buffer_; }
 
-    void render(Camera camera, scenario::Scenario scenario, bool Falta_Escolher_Qual_Tipo_Projecao = true);
-
-    inline Color** get_frame_buffer() const { return _frame_buffer; }
+    void render(const Camera &camera, scenario::Scenario scenario, ProjectionType proj = ProjectionType::PERSPECTIVE,
+                double oblique_angle = 0.0, double oblique_factor = 1.0);
 
 private:
-    double _distance, _width, _height, _delta_row, _delta_col;
-    Color **_frame_buffer, _background_color;
+    double distance_, width_, height_, delta_row_, delta_col_;
+    Color background_color_, **frame_buffer_;
 
     Color calculate_color(const Ray &viewing_ray, const scenario::Scenario &scenario) const;
 

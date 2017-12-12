@@ -4,21 +4,18 @@ namespace scenario {
 namespace object {
 
 double Face::get_intercept(const render::raycasting::Ray &ray) const {
-    if (dot(_normal_vec, ray.get_direction_normalized()) >= 0)
+    if (dot(normal_vec_, ray.get_direction()) >= 0)
         return -1.0;
 
-    double t_int = dot(_v1->get_coordinates() - ray.get_origin(), _normal_vec) / dot(ray.get_direction(), _normal_vec);
+    double t_int = dot(v1->get_coordinates() - ray.get_origin(), normal_vec_) / dot(ray.get_direction(), normal_vec_);
 
-//    double t_int = _v1_dot_normal / dot(ray.get_direction(), _normal_vec);
-    core::util::Vector3 point_int = ray.get_point(t_int);
+    const core::util::Vector3 point_int = ray.get_point(t_int);
 
-    core::util::Vector3 p1 = cross(_v1->get_coordinates() - point_int, _v2->get_coordinates() - point_int);
-    core::util::Vector3 p2 = cross(_v2->get_coordinates() - point_int, _v3->get_coordinates() - point_int);
-    core::util::Vector3 p3 = cross(_v3->get_coordinates() - point_int, _v1->get_coordinates() - point_int);
-//if ( dot(p1, p2) >= 0.0 && dot(p2, p3) >= 0.0 )
-//std::cout << "t " << t_int << std::endl;
-//    return ( dot(p1, p2) >= 0.0 && dot(p2, p3) >= 0.0 ) ? t_int : -1.0;
-    return ( dot(_normal_vec, p1) >= 0.0 && dot(_normal_vec, p2) >= 0.0 && dot(_normal_vec, p3) >= 0.0 ) ? t_int : -1.0;
+    const core::util::Vector3 p1 = cross(v1->get_coordinates() - point_int, v2->get_coordinates() - point_int);
+    const core::util::Vector3 p2 = cross(v2->get_coordinates() - point_int, v3->get_coordinates() - point_int);
+    const core::util::Vector3 p3 = cross(v3->get_coordinates() - point_int, v1->get_coordinates() - point_int);
+
+    return ( dot(normal_vec_, p1) >= 0.0 && dot(normal_vec_, p2) >= 0.0 && dot(normal_vec_, p3) >= 0.0 ) ? t_int : -1.0;
 
 }
 

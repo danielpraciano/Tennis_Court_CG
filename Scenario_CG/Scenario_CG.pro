@@ -13,9 +13,7 @@ TEMPLATE = app
 
 CONFIG += c++14
 
-#QMAKE_CXXFLAGS+= -openmp -fopenmp -DARMA_DONT_USE_WRAPPER -lopenblas -llapack -lglut -lGL -lGLU -lm
 QMAKE_CXXFLAGS+= -O3 -fopenmp -DARMA_DONT_USE_WRAPPER
-#QMAKE_LFLAGS +=  -openmp
 LIBS += -fopenmp -lopenblas -llapack -lglut -lGL -lGLU -lm
 
 # The following define makes your compiler emit warnings if you use
@@ -29,17 +27,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-#LIBS += -DARMA_DONT_USE_WRAPPER -lopenblas -llapack\
-#LIBS += -larmadillo -lopenblas -llapack\
-#        -lglut -lGL -lGLU -lm
-
-#SOURCES += main.cpp\
-#        mainwindow.cpp
-
-#HEADERS  += mainwindow.h
-
-#FORMS    += mainwindow.ui
-#
 SOURCES = $$files(*.cpp, true)
 HEADERS = $$files(*.h  , true)
 FORMS   = $$files(*.ui , true)

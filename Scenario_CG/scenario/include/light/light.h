@@ -11,20 +11,21 @@ class Light {
 public:
     virtual ~Light() {}
 
-    virtual render::raycasting::Color get_light_color(const core::util::Vector3 &eye, const object::Face &face_int, const core::util::Vector3 &p_int, bool prova=false) const = 0;
+    virtual render::raycasting::Color get_light_color(const core::util::Vector3 &ray_origin,
+                                                      const object::Face &face_int, const core::util::Vector3 &p_int) const = 0;
 
     inline const render::raycasting::Color &get_intensity() const {
-        return _intensity;
+        return intensity_;
     }
 
-    inline virtual const core::util::Vector3 &get_position() const = 0;
+    virtual const core::util::Vector3 &get_position() const = 0;
 
-    inline virtual void apply_matrix(const core::util::Matrix4 &matrix) = 0;
+    virtual void apply_matrix(const core::util::Matrix4 &matrix) = 0;
 
 protected:
-    render::raycasting::Color _intensity;
+    render::raycasting::Color intensity_;
 
-    Light(render::raycasting::Color intensity) : _intensity(intensity) {}
+    Light(render::raycasting::Color intensity) : intensity_(intensity) {}
 
 };
 

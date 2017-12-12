@@ -10,19 +10,19 @@ class Camera {
 
 public:
     Camera(core::util::Vector3 eye, core::util::Vector3 look_at, core::util::Vector3 view_up) :
-        _eye(eye), _look_at(look_at), _view_up(view_up) { calculate_matrices(); }
+        eye_(eye), look_at_(look_at), view_up_(view_up) { calculate_matrices(); }
     ~Camera() {}
 
-    inline void to_world(scenario::Scenario &sc) { sc.apply_matrix(_M_c_to_w); }
-    inline void to_camera(scenario::Scenario &sc) { sc.apply_matrix(_M_w_to_c); }
+    inline void to_world(scenario::Scenario &sc)  const { sc.apply_matrix(M_c_to_w_); }
+    inline void to_camera(scenario::Scenario &sc) const { sc.apply_matrix(M_w_to_c_); }
 
-    inline const core::util::Matrix4 &get_world_to_camera() const { return _M_w_to_c; }
-    inline const core::util::Matrix4 &get_camera_to_world() const { return _M_c_to_w; }
+    inline const core::util::Matrix4 &get_world_to_camera() const { return M_w_to_c_; }
+    inline const core::util::Matrix4 &get_camera_to_world() const { return M_c_to_w_; }
 
 private:
-    core::util::Vector3 _eye, _look_at, _view_up;
-    core::util::Vector3 _ic, _jc, _kc;
-    core::util::Matrix4 _M_w_to_c, _M_c_to_w;
+    core::util::Vector3 eye_, look_at_, view_up_;
+    core::util::Vector3 ic_, jc_, kc_;
+    core::util::Matrix4 M_w_to_c_, M_c_to_w_;
 
     void calculate_matrices();
 

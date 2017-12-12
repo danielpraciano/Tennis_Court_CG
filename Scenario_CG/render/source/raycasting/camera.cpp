@@ -13,23 +13,23 @@ namespace raycasting {
 //}
 
 void Camera::calculate_matrices() {
-    _kc = normalise(_eye - _look_at);
-    _ic = normalise(cross(_view_up - _eye, _kc));
-    _jc = cross(_kc, _ic);
+    kc_ = normalise(eye_ - look_at_);
+    ic_ = normalise(cross(view_up_ - eye_, kc_));
+    jc_ = cross(kc_, ic_);
 
-    _M_c_to_w.eye();
+    M_c_to_w_.eye();
 
-    _M_c_to_w.col(0).head(3) = _ic;
-    _M_c_to_w.col(1).head(3) = _jc;
-    _M_c_to_w.col(2).head(3) = _kc;
-    _M_c_to_w.col(3).head(3) = _eye;
+    M_c_to_w_.col(0).head(3) = ic_;
+    M_c_to_w_.col(1).head(3) = jc_;
+    M_c_to_w_.col(2).head(3) = kc_;
+    M_c_to_w_.col(3).head(3) = eye_;
 
-    _M_w_to_c.eye();
+    M_w_to_c_.eye();
 
-    _M_w_to_c.row(0).head(3) = _ic.t();
-    _M_w_to_c.row(1).head(3) = _jc.t();
-    _M_w_to_c.row(2).head(3) = _kc.t();
-    _M_w_to_c.col(3).head(3) = core::util::Vector3 {-dot(_ic, _eye), -dot(_jc, _eye), -dot(_kc, _eye)};
+    M_w_to_c_.row(0).head(3) = ic_.t();
+    M_w_to_c_.row(1).head(3) = jc_.t();
+    M_w_to_c_.row(2).head(3) = kc_.t();
+    M_w_to_c_.col(3).head(3) = core::util::Vector3 {-dot(ic_, eye_), -dot(jc_, eye_), -dot(kc_, eye_)};
 
 }
 
