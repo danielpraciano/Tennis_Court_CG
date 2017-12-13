@@ -10,6 +10,7 @@
 #include <scenario/include/object/vertex.h>
 #include <scenario/include/object/face.h>
 #include <scenario/include/object/boundary.h>
+#include <scenario/include/object/texture.h>
 #include <render/include/raycasting/ray.h>
 
 namespace scenario {
@@ -31,7 +32,8 @@ public:
 
     inline void add_vertex(Vertex v) { vertices.push_back(std::make_shared<Vertex>(v)); }
 
-    void add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<Material> mat = nullptr);
+    void add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<Material> mat = nullptr,
+                  int index_vertex_left_ref_to_tex = -1, int index_vertex_right_ref_to_tex = -1, const Texture *tex = nullptr);
 
     void apply_matrix(const core::util::Matrix4 &transformation);
 

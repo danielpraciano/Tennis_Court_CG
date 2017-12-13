@@ -17,6 +17,8 @@
 #include <render/include/raycasting/ray_casting.h>
 #include <render/include/raycasting/projection_type.h>
 
+#include <scenario/include/object/texture.h>
+
 #include <core/include/io_module.h>
 
 MainWindow::MainWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MainWindow) {
@@ -29,7 +31,53 @@ MainWindow::~MainWindow() {
     delete scene;
 }
 
-std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z) {
+//std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z) {
+//    std::shared_ptr<scenario::object::Object> cube { new scenario::object::Object { mat } };
+
+//    cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 0.0 }); //0
+//    cube->add_vertex(scenario::object::Vertex { 1.0, 0.0, 0.0 }); //1
+//    cube->add_vertex(scenario::object::Vertex { 0.0, 1.0, 0.0 }); //2
+//    cube->add_vertex(scenario::object::Vertex { 1.0, 1.0, 0.0 }); //3
+//    cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 1.0 }); //4
+//    cube->add_vertex(scenario::object::Vertex { 1.0, 0.0, 1.0 }); //5
+//    cube->add_vertex(scenario::object::Vertex { 0.0, 1.0, 1.0 }); //6
+//    cube->add_vertex(scenario::object::Vertex { 1.0, 1.0, 1.0 }); //7
+
+//    //trás
+//    cube->add_face(0, 3, 1);
+//    cube->add_face(0, 2, 3);
+
+//    //direita
+//    cube->add_face(1, 7, 5);
+//    cube->add_face(1, 3, 7);
+
+//    //frente
+//    cube->add_face(4, 5, 7);
+//    cube->add_face(4, 7, 6);
+
+//    //esquerda
+//    cube->add_face(0, 4, 6);
+//    cube->add_face(0, 6, 2);
+
+//    //baixo
+//    cube->add_face(0, 1, 5);
+//    cube->add_face(0, 5, 4);
+
+//    //cima
+//    cube->add_face(2, 6, 7);
+//    cube->add_face(2, 7, 3);
+
+//    scenario::object::Transformation t_resize;
+
+//    t_resize.add_translation(core::util::Vector3 {-0.5, -0.5, -0.5});
+//    t_resize.add_scale(core::util::Vector3 { x, y, z });
+//    t_resize.add_to_apply(cube);
+//    t_resize.make_apply();
+
+//    return cube;
+//}
+
+std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z, scenario::object::Texture *tex = nullptr) {
     std::shared_ptr<scenario::object::Object> cube { new scenario::object::Object { mat } };
 
     cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 0.0 }); //0
@@ -41,29 +89,55 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
     cube->add_vertex(scenario::object::Vertex { 0.0, 1.0, 1.0 }); //6
     cube->add_vertex(scenario::object::Vertex { 1.0, 1.0, 1.0 }); //7
 
-    //trás
-    cube->add_face(0, 3, 1);
-    cube->add_face(0, 2, 3);
+    if (tex != nullptr) {
+        //trás
+        cube->add_face(0, 3, 1, mat, 0, 3, tex);
+        cube->add_face(0, 2, 3, mat, 0, 3, tex);
 
-    //direita
-    cube->add_face(1, 7, 5);
-    cube->add_face(1, 3, 7);
+        //direita
+        cube->add_face(1, 3, 7, mat, 1, 3, tex);
+        cube->add_face(1, 7, 5, mat, 1, 3, tex);
 
-    //frente
-    cube->add_face(4, 5, 7);
-    cube->add_face(4, 7, 6);
+        //frente
+        cube->add_face(4, 5, 7, mat, 4, 5, tex);
+        cube->add_face(4, 7, 6, mat, 4, 5, tex);
 
-    //esquerda
-    cube->add_face(0, 4, 6);
-    cube->add_face(0, 6, 2);
+        //esquerda
+        cube->add_face(0, 4, 6, mat, 0, 4, tex);
+        cube->add_face(0, 6, 2, mat, 0, 4, tex);
 
-    //baixo
-    cube->add_face(0, 1, 5);
-    cube->add_face(0, 5, 4);
+        //baixo
+        cube->add_face(0, 1, 5, mat, 0, 1, tex);
+        cube->add_face(0, 5, 4, mat, 0, 1, tex);
 
-    //cima
-    cube->add_face(2, 6, 7);
-    cube->add_face(2, 7, 3);
+        //cima
+        cube->add_face(2, 6, 7, mat, 2, 6, tex);
+        cube->add_face(2, 7, 3, mat, 2, 6, tex);
+    } else {
+        //trás
+        cube->add_face(0, 3, 1);
+        cube->add_face(0, 2, 3);
+
+        //direita
+        cube->add_face(1, 7, 5);
+        cube->add_face(1, 3, 7);
+
+        //frente
+        cube->add_face(4, 5, 7);
+        cube->add_face(4, 7, 6);
+
+        //esquerda
+        cube->add_face(0, 4, 6);
+        cube->add_face(0, 6, 2);
+
+        //baixo
+        cube->add_face(0, 1, 5);
+        cube->add_face(0, 5, 4);
+
+        //cima
+        cube->add_face(2, 6, 7);
+        cube->add_face(2, 7, 3);
+    }
 
     scenario::object::Transformation t_resize;
 
@@ -76,6 +150,8 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
 }
 
 void MainWindow::on_rc_button_clicked() {
+    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/491830606.jpg" };
+
     render::raycasting::Color color_red { 1.0, 0.0, 0.0 };
     render::raycasting::Color color_blue { 0.0, 0.0, 1.0 };
     render::raycasting::Color color_green { 0.0, 1.0, 0.0 };
@@ -284,7 +360,7 @@ void MainWindow::on_rc_button_clicked() {
     t_before_baseline.add_to_apply(before_baseline);
     t_before_baseline.make_apply();
 
-    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0);
+    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0, tex);
 
         scenario::object::Transformation t_cube;
 

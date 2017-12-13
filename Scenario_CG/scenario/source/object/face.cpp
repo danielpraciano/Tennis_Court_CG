@@ -1,3 +1,5 @@
+#include <exception>
+
 #include <scenario/include/object/face.h>
 
 namespace scenario {
@@ -17,6 +19,23 @@ double Face::get_intercept(const render::raycasting::Ray &ray) const {
 
     return ( dot(normal_vec_, p1) >= 0.0 && dot(normal_vec_, p2) >= 0.0 && dot(normal_vec_, p3) >= 0.0 ) ? t_int : -1.0;
 
+}
+
+render::raycasting::Color Face::get_rgb_tex(const core::util::Vector3 &p_int) const {
+    if (tex == nullptr)
+        throw new std::logic_error("Not exist texture in this face.");
+
+    if (vertex_left_ref_to_tex == nullptr)
+        throw new std::logic_error("Not exist vertex reference for texture in this face.");
+
+    core::util::Vector3 distance = p_int - vertex_left_ref_to_tex->get_coordinates();
+
+    auto dimensions = tex->get_dimensions();
+
+    uint64_t u = std::floor(distance(0) / dx_ * dimensions.first);
+    uint64_t v = std::floor(distance(1) / dy_ * dimensions.second);
+
+    return tex->get_rgb_tex(u, v);
 }
 
 //double Face::get_intercept(const render::raycasting::Ray &ray) const {
