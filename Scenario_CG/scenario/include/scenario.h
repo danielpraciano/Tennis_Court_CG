@@ -31,8 +31,13 @@ public:
     void apply_matrix(const core::util::Matrix4 &matrix);
 
     inline void make() {
-        for (object::Object &obj : objects)
-            obj.make_ready();
+        #pragma omp parallel for
+        for (size_t i = 0; i < objects.size(); ++i)
+            objects[i].make_ready();
+
+
+//        for (object::Object &obj : objects)
+//            obj.make_ready();
     }
 
 private:

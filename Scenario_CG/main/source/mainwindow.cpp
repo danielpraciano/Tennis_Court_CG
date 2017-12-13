@@ -355,14 +355,15 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
 //    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
-    core::util::Vector3 eye     { 81.0, 81.0, 81.0 };
+//    core::util::Vector3 eye     { 81.0, 81.0, 81.0 };
+    core::util::Vector3 eye     { 3.5, 3.5, 3.5 };
     core::util::Vector3 look_at { 3.0, 3.0,  3.0 };
     core::util::Vector3 view_up { 3.0, 4.0,  3.0 };
 
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 
-    double d = 1.4;
+    double d = 0.0;
     double w = 9.0;
     double h = 9.0;
 
@@ -371,7 +372,7 @@ void MainWindow::on_rc_button_clicked() {
 
     render::raycasting::RayCasting rc { d, w, h, bg };
 
-    rc.render(cam, sc, render::raycasting::ProjectionType::ORTHOGRAPHIC, 15.0);
+    rc.render(cam, sc, render::raycasting::ProjectionType::CABINET, 5.0, 10.0);
 
     auto frame = rc.get_frame_buffer();
 

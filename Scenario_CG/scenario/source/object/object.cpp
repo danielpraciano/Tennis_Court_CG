@@ -33,8 +33,12 @@ void Object::make_ready() {
 
     boundary_.generate(coordinates_min_, coordinates_max_);
 
-    for (Face &face : faces_)
-        face.calculate_normal();
+    #pragma omp parallel for
+    for (size_t i = 0; i < faces_.size(); ++i)
+        faces_[i].calculate_normal();
+
+//    for (Face &face : faces_)
+//        face.calculate_normal();
 }
 
 std::pair<double, const Face*> Object::get_intercept(const render::raycasting::Ray &ray, double t_int_minimum) const {

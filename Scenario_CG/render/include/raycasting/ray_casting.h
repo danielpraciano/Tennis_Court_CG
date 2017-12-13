@@ -19,12 +19,14 @@ public:
 
         frame_buffer_ = new Color*[core::constants::ROWS_PIXELS];
 
+        #pragma omp parallel for
         for (uint64_t i = 0; i < core::constants::ROWS_PIXELS; ++i)
             frame_buffer_[i] = new Color[core::constants::COLS_PIXELS];
 
          }
 
     ~RayCasting() {
+        #pragma omp parallel for
         for (uint64_t i = 0; i < core::constants::ROWS_PIXELS; ++i)
             delete[] frame_buffer_[i];
 
