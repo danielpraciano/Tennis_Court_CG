@@ -6,10 +6,12 @@ namespace scenario {
 namespace object {
 
 double Face::get_intercept(const render::raycasting::Ray &ray) const {
-    if (dot(normal_vec_, ray.get_direction()) >= 0)
+    double normal_dot_direction = dot(normal_vec_, ray.get_direction());
+
+    if (normal_dot_direction >= 0)
         return -1.0;
 
-    double t_int = dot(v1->get_coordinates() - ray.get_origin(), normal_vec_) / dot(ray.get_direction(), normal_vec_);
+    double t_int = dot(v1->get_coordinates() - ray.get_origin(), normal_vec_) / normal_dot_direction;
 
     const core::util::Vector3 point_int = ray.get_point(t_int);
 
@@ -28,12 +30,41 @@ render::raycasting::Color Face::get_rgb_tex(const core::util::Vector3 &p_int) co
     if (vertex_left_ref_to_tex == nullptr)
         throw new std::logic_error("Not exist vertex reference for texture in this face.");
 
-    core::util::Vector3 distance = p_int - vertex_left_ref_to_tex->get_coordinates();
+    core::util::Vector3 distance = arma::abs(arma::abs(p_int) - arma::abs(vertex_left_ref_to_tex->get_coordinates()));
 
     auto dimensions = tex->get_dimensions();
 
-    uint64_t u = std::floor(distance(0) / dx_ * dimensions.first);
-    uint64_t v = std::floor(distance(1) / dy_ * dimensions.second);
+    int i = 0, j = 0;
+
+    switch (plan_to_tex_) {
+    case 0:
+        i = 2;
+        j = 1;
+        break;
+
+    case 1:
+        i = 0;
+        j = 2;
+        break;
+
+    case 2:
+        i = 0;
+        j = 1;
+        break;
+    }
+
+    if (distance(i) > 1)
+        std::cout << "test" << std::endl;
+
+    if (distance(j) > 1)
+        std::cout << "test" << std::endl;
+
+    uint64_t u = std::floor(distance(i) / dx_ * dimensions.first);
+    uint64_t v = std::floor(distance(j) / dy_ * dimensions.second);
+
+//    std::cout << dx_ << " " << dy_ << std::endl;
+
+//    std::cout << dimensions.first << " " << dimensions.second << std::endl;
 
     return tex->get_rgb_tex(u, v);
 }

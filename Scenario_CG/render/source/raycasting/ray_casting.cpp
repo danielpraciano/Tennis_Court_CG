@@ -9,6 +9,50 @@ void RayCasting::render(const Camera &camera, scenario::Scenario scenario, Proje
 
     scenario.make();
 
+    oblique_angle = oblique_angle * arma::datum::pi / 180.0;
+
+    switch (proj) {
+    case ProjectionType::PERSPECTIVE:
+        break;
+
+    case ProjectionType::ORTHOGRAPHIC:
+        oblique_factor = 0.0;
+//        viewing_ray = { p_ij, core::util::Vector3 { 0.0, 0.0, -1.0 } };
+        break;
+
+    case ProjectionType::OBLIQUE:
+    {
+//        double x = -oblique_factor * std::cos(oblique_angle);
+//        double y = -oblique_factor * std::sin(oblique_angle);
+//        double z = -1;
+
+//        viewing_ray = { p_ij, core::util::Vector3 { x, y, z } };
+        break;
+    }
+
+    case ProjectionType::CAVALIER:
+    {
+        oblique_factor = 1;
+//        double x = -std::sqrt(2.0) / 2.0 * std::cos(oblique_angle);
+//        double y = -std::sqrt(2.0) / 2.0 * std::sin(oblique_angle);
+//        double z = -std::sqrt(2.0) / 2.0;
+
+//        viewing_ray = { p_ij, core::util::Vector3 { x, y, z } };
+        break;
+    }
+
+    case ProjectionType::CABINET:
+    {
+        oblique_factor = 0.5;
+//        double x = -1.0 / std::sqrt(5.0) * std::cos(oblique_angle);
+//        double y = -1.0 / std::sqrt(5.0) * std::sin(oblique_angle);
+//        double z = -1.0 / std::sqrt(5.0) * 2;
+
+//        viewing_ray = { p_ij, core::util::Vector3 { x, y, z } };
+        break;
+    }
+    }
+
     #pragma omp parallel for
     for (int i = 0; i < core::constants::ROWS_PIXELS; ++i) {
         double y_i = (height_ / 2) - (delta_col_ / 2) - i * delta_col_;
@@ -21,43 +65,12 @@ void RayCasting::render(const Camera &camera, scenario::Scenario scenario, Proje
 
             Ray viewing_ray { core::util::Vector3 { 0.0, 0.0, 0.0 }, p_ij };
 
-            switch (proj) {
-            case ProjectionType::PERSPECTIVE:
-                break;
-
-            case ProjectionType::ORTHOGRAPHIC:
-                viewing_ray = { p_ij, core::util::Vector3 { 0.0, 0.0, -1.0 } };
-                break;
-
-            case ProjectionType::OBLIQUE:
-            {
+            if (proj != ProjectionType::PERSPECTIVE) {
                 double x = -oblique_factor * std::cos(oblique_angle);
                 double y = -oblique_factor * std::sin(oblique_angle);
-                double z = -oblique_factor;
+                double z = -1;
 
                 viewing_ray = { p_ij, core::util::Vector3 { x, y, z } };
-                break;
-            }
-
-            case ProjectionType::CAVALIER:
-            {
-                double x = -std::sqrt(2.0) / 2.0 * std::cos(oblique_angle);
-                double y = -std::sqrt(2.0) / 2.0 * std::sin(oblique_angle);
-                double z = -std::sqrt(2.0) / 2.0;
-
-                viewing_ray = { p_ij, core::util::Vector3 { x, y, z } };
-                break;
-            }
-
-            case ProjectionType::CABINET:
-            {
-                double x = -1.0 / std::sqrt(5.0) * std::cos(oblique_angle);
-                double y = -1.0 / std::sqrt(5.0) * std::sin(oblique_angle);
-                double z = -1.0 / std::sqrt(5.0) * 2;
-
-                viewing_ray = { p_ij, core::util::Vector3 { x, y, z } };
-                break;
-            }
             }
 
             frame_buffer_[i][j] = calculate_color(viewing_ray, scenario);

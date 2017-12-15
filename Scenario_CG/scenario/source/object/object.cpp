@@ -4,7 +4,7 @@
 namespace scenario {
 namespace object {
 
-void Object::add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<Material> mat,
+void Object::add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<Material> mat, int plan_to_tex,
                       int index_vertex_left_ref_to_tex, int index_vertex_right_ref_to_tex, const Texture *tex) {
 //    auto v1 = std::make_shared<Vertex> ( _vertices[index_v1] );
 //    auto v2 = std::make_shared<Vertex> ( _vertices[index_v2] );
@@ -19,7 +19,7 @@ void Object::add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<
             auto left_vertex  = vertices[index_vertex_left_ref_to_tex];
             auto right_vertex = vertices[index_vertex_right_ref_to_tex];
 
-            faces_.push_back(Face { mat, v1, v2, v3, left_vertex.get(), right_vertex.get(), tex });
+            faces_.push_back(Face { mat, v1, v2, v3, plan_to_tex, left_vertex.get(), right_vertex.get(), tex });
         } else {
             faces_.push_back(Face { mat, v1, v2, v3 });
         }
@@ -28,7 +28,7 @@ void Object::add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<
             auto left_vertex  = vertices[index_vertex_left_ref_to_tex];
             auto right_vertex = vertices[index_vertex_right_ref_to_tex];
 
-            faces_.push_back(Face { material, v1, v2, v3, left_vertex.get(), right_vertex.get(), tex });
+            faces_.push_back(Face { material, v1, v2, v3, plan_to_tex, left_vertex.get(), right_vertex.get(), tex });
         } else {
             faces_.push_back(Face { material, v1, v2, v3 });
         }

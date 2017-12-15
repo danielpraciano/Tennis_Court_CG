@@ -78,7 +78,7 @@ MainWindow::~MainWindow() {
 //}
 
 std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z, scenario::object::Texture *tex = nullptr) {
-    std::shared_ptr<scenario::object::Object> cube { new scenario::object::Object { mat } };
+    auto cube = std::make_shared<scenario::object::Object>(mat);
 
     cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 0.0 }); //0
     cube->add_vertex(scenario::object::Vertex { 1.0, 0.0, 0.0 }); //1
@@ -91,28 +91,28 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
 
     if (tex != nullptr) {
         //trás
-        cube->add_face(0, 3, 1, mat, 0, 3, tex);
-        cube->add_face(0, 2, 3, mat, 0, 3, tex);
+        cube->add_face(0, 3, 1, mat, 2, 0, 3, tex);
+        cube->add_face(0, 2, 3, mat, 2, 0, 3, tex);
 
         //direita
-        cube->add_face(1, 3, 7, mat, 1, 3, tex);
-        cube->add_face(1, 7, 5, mat, 1, 3, tex);
+        cube->add_face(1, 7, 5, mat, 0, 1, 7, tex);
+        cube->add_face(1, 3, 7, mat, 0, 1, 7, tex);
 
         //frente
-        cube->add_face(4, 5, 7, mat, 4, 5, tex);
-        cube->add_face(4, 7, 6, mat, 4, 5, tex);
+        cube->add_face(4, 5, 7, mat, 2, 4, 7, tex);
+        cube->add_face(4, 7, 6, mat, 2, 4, 7, tex);
 
         //esquerda
-        cube->add_face(0, 4, 6, mat, 0, 4, tex);
-        cube->add_face(0, 6, 2, mat, 0, 4, tex);
+        cube->add_face(0, 4, 6, mat, 0, 0, 6, tex);
+        cube->add_face(0, 6, 2, mat, 0, 0, 6, tex);
 
         //baixo
-        cube->add_face(0, 1, 5, mat, 0, 1, tex);
-        cube->add_face(0, 5, 4, mat, 0, 1, tex);
+        cube->add_face(0, 1, 5, mat, 1, 0, 5, tex);
+        cube->add_face(0, 5, 4, mat, 1, 0, 5, tex);
 
         //cima
-        cube->add_face(2, 6, 7, mat, 2, 6, tex);
-        cube->add_face(2, 7, 3, mat, 2, 6, tex);
+        cube->add_face(2, 6, 7, mat, 1, 2, 7, tex);
+        cube->add_face(2, 7, 3, mat, 1, 2, 7, tex);
     } else {
         //trás
         cube->add_face(0, 3, 1);
@@ -149,8 +149,194 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
     return cube;
 }
 
+void add_umpire_chair(scenario::Scenario &sc, std::shared_ptr<scenario::object::Material> mat, core::util::Vector3 position, double scale = 1.0) {
+    scenario::object::Transformation t_translate;
+    t_translate.add_translation(position);
+
+    std::shared_ptr<scenario::object::Object> back = get_cube(mat, scale*0.1, scale*0.46, scale*0.90);
+    scenario::object::Transformation t_back;
+
+    t_back.add_translation(-back->get_vertice(0)->get_coordinates());
+    t_back.add_to_apply(back);
+    t_back.make_apply();
+
+    t_translate.add_to_apply(back);
+
+    sc.add_object(*back);
+
+    auto mat2 = mat;
+
+    render::raycasting::Color color_red { 1.0, 0.0, 0.0 };
+    render::raycasting::Color color_blue { 0.0, 0.0, 1.0 };
+    render::raycasting::Color color_green { 0.0, 1.0, 0.0 };
+
+    std::shared_ptr<scenario::object::Material> material_red {
+    new scenario::object::Material { 100.0, color_red, color_red, color_red } };
+
+    std::shared_ptr<scenario::object::Material> material_blue {
+    new scenario::object::Material { 100.0, color_blue, color_blue, color_blue } };
+
+    std::shared_ptr<scenario::object::Material> material_green {
+    new scenario::object::Material { 100.0, color_green, color_green, color_green } };
+
+
+    for (int i = 0; i < 3; ++i) {
+
+        if ( i == 1)
+            mat = material_red;
+        if( i == 2)
+            mat = material_blue;
+
+        std::shared_ptr<scenario::object::Object> seat = get_cube(mat, scale*0.50 - i*0.4, scale*0.46, scale*0.2);
+        scenario::object::Transformation t_seat;
+
+        t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
+        t_seat.add_translation(core::util::Vector3 { 0.0, 0.0, scale*i*0.2 });
+        t_seat.add_to_apply(seat);
+        t_seat.make_apply();
+
+        t_translate.add_to_apply(seat);
+
+        sc.add_object(*seat);
+    }
+
+        mat = material_green;
+
+    std::shared_ptr<scenario::object::Object> seat = get_cube(mat, scale*0.23, scale*0.46, scale*0.01);
+    scenario::object::Transformation t_seat;
+
+    t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
+    t_seat.add_translation(core::util::Vector3 { 0.0, 0.0, scale*0.65 });
+    t_seat.add_to_apply(seat);
+    t_seat.make_apply();
+
+    t_translate.add_to_apply(seat);
+
+    sc.add_object(*seat);
+ mat = mat2;
+    std::shared_ptr<scenario::object::Object> left_side = get_cube(mat, scale*0.51, scale*0.1, scale*0.90);
+    scenario::object::Transformation t_left_side;
+
+    t_left_side.add_translation(-left_side->get_vertice(0)->get_coordinates());
+    t_left_side.add_translation(core::util::Vector3 { 0.0, scale*0.46, 0.0 });
+    t_left_side.add_to_apply(left_side);
+    t_left_side.make_apply();
+
+    t_translate.add_to_apply(left_side);
+
+    sc.add_object(*left_side);
+
+    std::shared_ptr<scenario::object::Object> right_side = get_cube(mat, scale*0.51, scale*0.1, scale*0.90);
+    scenario::object::Transformation t_right_side;
+
+    t_right_side.add_translation(-right_side->get_vertice(0)->get_coordinates());
+    t_right_side.add_to_apply(right_side);
+    t_right_side.make_apply();
+
+    t_translate.add_to_apply(right_side);
+
+    sc.add_object(*right_side);
+
+    t_translate.make_apply();
+
+}
+
+void add_chair(scenario::Scenario &sc, std::shared_ptr<scenario::object::Material> mat, core::util::Vector3 position, double scale = 1.0) {
+    scenario::object::Transformation t_translate;
+    t_translate.add_translation(position);
+
+    std::shared_ptr<scenario::object::Object> back = get_cube(mat, scale*0.1, scale*0.46, scale*0.81);
+    scenario::object::Transformation t_back;
+
+    t_back.add_translation(-back->get_vertice(0)->get_coordinates());
+    t_back.add_to_apply(back);
+    t_back.make_apply();
+
+    t_translate.add_to_apply(back);
+
+    sc.add_object(*back);
+
+    std::shared_ptr<scenario::object::Object> seat = get_cube(mat, scale*0.50, scale*0.46, scale*0.1);
+    scenario::object::Transformation t_seat;
+
+    t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
+    t_seat.add_translation(core::util::Vector3 { 0.0, 0.0, scale*0.25 });
+    t_seat.add_to_apply(seat);
+    t_seat.make_apply();
+
+    t_translate.add_to_apply(seat);
+
+    sc.add_object(*seat);
+
+    std::shared_ptr<scenario::object::Object> left_side = get_cube(mat, scale*0.51, scale*0.1, scale*0.81);
+    scenario::object::Transformation t_left_side;
+
+    t_left_side.add_translation(-left_side->get_vertice(0)->get_coordinates());
+    t_left_side.add_translation(core::util::Vector3 { 0.0, scale*0.46, 0.0 });
+    t_left_side.add_to_apply(left_side);
+    t_left_side.make_apply();
+
+    t_translate.add_to_apply(left_side);
+
+    sc.add_object(*left_side);
+
+    std::shared_ptr<scenario::object::Object> right_side = get_cube(mat, scale*0.51, scale*0.1, scale*0.81);
+    scenario::object::Transformation t_right_side;
+
+    t_right_side.add_translation(-right_side->get_vertice(0)->get_coordinates());
+    t_right_side.add_to_apply(right_side);
+    t_right_side.make_apply();
+
+    t_translate.add_to_apply(right_side);
+
+    sc.add_object(*right_side);
+
+    t_translate.make_apply();
+
+}
+
+void add_floodlight(scenario::Scenario &sc, std::shared_ptr<scenario::object::Material> mat, core::util::Vector3 position, bool in_right, double scale = 1.0) {
+    scenario::object::Transformation t_translate;
+    t_translate.add_translation(position);
+
+    std::shared_ptr<scenario::object::Object> rod = get_cube(mat, scale*0.1, scale*0.1, scale*5.0);
+    scenario::object::Transformation t_rod;
+
+    if (in_right)
+        t_rod.add_translation(-rod->get_vertice(0)->get_coordinates());
+    else
+        t_rod.add_translation(-rod->get_vertice(1)->get_coordinates());
+
+    t_rod.add_to_apply(rod);
+    t_rod.make_apply();
+
+    t_translate.add_to_apply(rod);
+
+    sc.add_object(*rod);
+
+    std::shared_ptr<scenario::object::Object> light = get_cube(mat, scale*0.3, scale*0.1, scale*0.1);
+    scenario::object::Transformation t_light;
+
+    if (in_right)
+        t_light.add_translation(-light->get_vertice(0)->get_coordinates());
+    else
+        t_light.add_translation(-light->get_vertice(1)->get_coordinates());
+
+    t_light.add_translation(core::util::Vector3 { 0.0, 0.0, scale*5.0 });
+    t_light.add_to_apply(light);
+    t_light.make_apply();
+
+    t_translate.add_to_apply(light);
+
+    sc.add_object(*light);
+
+    t_translate.make_apply();
+
+}
+
 void MainWindow::on_rc_button_clicked() {
-    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/491830606.jpg" };
+//    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/491830606.jpg" };
+//    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/179023303.jpg" };
 
     render::raycasting::Color color_red { 1.0, 0.0, 0.0 };
     render::raycasting::Color color_blue { 0.0, 0.0, 1.0 };
@@ -202,11 +388,11 @@ void MainWindow::on_rc_button_clicked() {
 
     //
 
-    std::shared_ptr<scenario::object::Object> ground = get_cube(material_ground, 2 * 10.974, 2 * 23.77, 0.001);
+    std::shared_ptr<scenario::object::Object> ground = get_cube(material_ground, 4 * 10.974, 2 * 23.77, 0.001);
     scenario::object::Transformation t_ground;
 
     t_ground.add_translation(-ground->get_vertice(0)->get_coordinates());
-    t_ground.add_translation(core::util::Vector3 { -10.974/2, -23.77/2, -0.002 });
+    t_ground.add_translation(core::util::Vector3 { -10.974*1.5, -23.77/2, -0.002 });
     t_ground.add_to_apply(ground);
     t_ground.make_apply();
 
@@ -360,20 +546,33 @@ void MainWindow::on_rc_button_clicked() {
     t_before_baseline.add_to_apply(before_baseline);
     t_before_baseline.make_apply();
 
-    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0, tex);
+//    auto cubee = get_cube(material_court, 3.0, 3.0, 3.0, tex);
+//    auto cubee = get_cube(material_ground, 100.0, 0.1, 100.0);
 
-        scenario::object::Transformation t_cube;
+//        scenario::object::Transformation t_cube;
 
-        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
-//        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
-//        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
-        t_cube.add_to_apply(cubee);
-        t_cube.make_apply();
+//        t_cube.add_translation(-cubee->get_vertice(0)->get_coordinates());
+////        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+////        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
+//        t_cube.add_to_apply(cubee);
+//        t_cube.make_apply();
+
+//        auto cubee2 = get_cube(material_court, 1.0, 3.0, 1.0);
+
+//            scenario::object::Transformation t_cube2;
+
+//            t_cube2.add_translation(-cubee2->get_vertice(0)->get_coordinates());
+//            t_cube2.add_translation(core::util::Vector3 { 50.0, 0.0, 50.0 });
+//    //        t_cube.add_translation(core::util::Vector3 { 5.0, 0.0, 0.0 });
+//    //        t_cube.add_translation(core::util::Vector3 { 10.974/2-2, 23.77/2-4, 3.0 });
+//            t_cube2.add_to_apply(cubee2);
+//            t_cube2.make_apply();
 
     std::unique_ptr<scenario::light::Light> ambient_light { new scenario::light::PunctualLight { core::util::Vector3 { 0.0, 0.0, 0.0 },
                     render::raycasting::Color { 0.1, 0.1, 0.1 } } };
 
     std::unique_ptr<scenario::light::Light> pl_left_before;
+//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 50.5, 5.0, 50.5 } , render::raycasting::Color { 1.0, 1.0, 1.0 } });
     pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
 //    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
 
@@ -388,11 +587,21 @@ void MainWindow::on_rc_button_clicked() {
 
     scenario::Scenario sc { ambient_light.get() };
 
-    sc.add_object(*cubee);
-//    sc.add_object(*ground);
-//    sc.add_object(*court);
-//    sc.add_object(*left_doubles_sideline);
-//    sc.add_object(*left_singles_sideline);
+    add_umpire_chair(sc, material_court, core::util::Vector3 {-2.2, 23.77/2, 0.0}, 3.5);
+//    add_umpire_chair(sc, material_court, core::util::Vector3 {0, 0, 0.0}, 1.0);
+    add_chair(sc, material_court, core::util::Vector3 {-2.0, 23.77/2 + 4.0, 0.0}, 2.5);
+    add_chair(sc, material_court, core::util::Vector3 {-2.0, 23.77/2 - 4.0, 0.0}, 2.5);
+    add_floodlight(sc, material_court, core::util::Vector3 {0.0000 - 5.0, 23.77 + 3.0, 0.0}, true,  2.0); // left after
+    add_floodlight(sc, material_court, core::util::Vector3 {10.974 + 5.0, 23.77 + 3.0, 0.0}, false, 2.0); // right after
+    add_floodlight(sc, material_court, core::util::Vector3 {0.0000 - 5.0, 0.000 - 3.0, 0.0}, true,  2.0); // left before
+    add_floodlight(sc, material_court, core::util::Vector3 {10.974 + 5.0, 0.000 - 3.0, 0.0}, false, 2.0); // right before
+
+//    sc.add_object(*cubee);
+//    sc.add_object(*cubee2);
+    sc.add_object(*ground);
+    sc.add_object(*court);
+    sc.add_object(*left_doubles_sideline);
+    sc.add_object(*left_singles_sideline);
 //    sc.add_object(*before_center_mark);
 //    sc.add_object(*center_service_line);
 //    sc.add_object(*after_center_mark);
@@ -414,11 +623,11 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
-//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 35.0 };
-//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+    core::util::Vector3 eye     { 10.974/2, 23.77/2, 55.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
 
-    //    core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
+//        core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
 //    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
 //    core::util::Vector3 view_up { 0.0, 5.0,     0.0 };
 
@@ -431,24 +640,37 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
 //    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
-//    core::util::Vector3 eye     { 81.0, 81.0, 81.0 };
-    core::util::Vector3 eye     { 3.5, 3.5, 3.5 };
-    core::util::Vector3 look_at { 3.0, 3.0,  3.0 };
-    core::util::Vector3 view_up { 3.0, 4.0,  3.0 };
+//        core::util::Vector3 eye     { 2.0, -100.0, 1.0 };
+//        core::util::Vector3 look_at { 2.0, 4.0,  0.0 };
+//        core::util::Vector3 view_up { 2.0, 4.0,  3.0 };
 
+//            core::util::Vector3 eye     { 2.0, 0.23, 0.5 };
+//            core::util::Vector3 look_at { 0.0, 0.23,  0.5 };
+//            core::util::Vector3 view_up { 0.5, 1.0,  0.5 };
+
+//    core::util::Vector3 eye     { 81.0, 81.0, 81.0 };
+
+//    core::util::Vector3 eye     { 0.5, 0.5, 4.5 };
+//    core::util::Vector3 look_at { 0.5, 0.5, 0.5 };
+//    core::util::Vector3 view_up { 0.5, 4.5, 0.5 };
+
+
+//    core::util::Vector3 eye     { 50.5, 4.0, 60.5 };
+//    core::util::Vector3 look_at { 50.5, 0.0, 50.5 };
+//    core::util::Vector3 view_up { 50.5, 20.0, 50.5 };
 
     render::raycasting::Camera cam { eye, look_at, view_up };
 
-    double d = 0.0;
-    double w = 9.0;
-    double h = 9.0;
+    double d = 1.4;
+    double w = 1.0;
+    double h = 1.0;
 
 //    render::raycasting::Color bg { 101.0/255, 179.0/255, 253.0/255 };
     render::raycasting::Color bg { 1.0, 0.0, 0.0 };
 
     render::raycasting::RayCasting rc { d, w, h, bg };
 
-    rc.render(cam, sc, render::raycasting::ProjectionType::CABINET, 5.0, 10.0);
+    rc.render(cam, sc, render::raycasting::ProjectionType::PERSPECTIVE);
 
     auto frame = rc.get_frame_buffer();
 

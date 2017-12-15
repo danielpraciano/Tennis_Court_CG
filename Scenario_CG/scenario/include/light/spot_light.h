@@ -11,8 +11,8 @@ class SpotLight : public Light {
 public:
     SpotLight(core::util::Vector3 position, core::util::Vector3 direction_point,
               double openning_angle, render::raycasting::Color intensity) :
-        Light(intensity), openning_angle_(openning_angle), position_(position),
-        direction_point_(direction_point), direction_vec_(direction_point_ - position_) {}
+        Light(intensity), openning_angle_(openning_angle * arma::datum::pi / 180.0), position_(position),
+        direction_point_(direction_point), direction_vec_(normalise(direction_point_ - position_)) {}
 
     inline virtual const core::util::Vector3 &get_position() const override { return position_; }
 
