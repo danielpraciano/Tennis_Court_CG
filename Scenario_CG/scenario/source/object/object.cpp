@@ -50,9 +50,15 @@ void Object::make_ready() {
 
     boundary_.generate(coordinates_min_, coordinates_max_);
 
+    double dx = vertices[1]->get_coordinates()(0) - vertices[0]->get_coordinates()(0);
+    double dy = vertices[2]->get_coordinates()(1) - vertices[0]->get_coordinates()(1);
+    double dz = vertices[4]->get_coordinates()(2) - vertices[0]->get_coordinates()(2);
+
     #pragma omp parallel for
-    for (size_t i = 0; i < faces_.size(); ++i)
+    for (size_t i = 0; i < faces_.size(); ++i) {
         faces_[i].calculate_normal();
+        faces_[i].set_dx_dy_dz(dx, dy, dz);
+    }
 
 //    for (Face &face : faces_)
 //        face.calculate_normal();

@@ -44,7 +44,7 @@ public:
 
     double get_intercept(const render::raycasting::Ray &ray) const;
 
-    inline void set_dx_dy(double dx, double dy) { dx_ = dx; dy_ = dy; }
+    inline void set_dx_dy_dz(double dx, double dy, double dz) { dx_ = dx; dy_ = dy; dz_ = dz; }
     render::raycasting::Color get_rgb_tex(const core::util::Vector3 &p_int) const;
 
 private:
@@ -54,7 +54,7 @@ private:
     int plan_to_tex_; // 0 - x, 1 - y, 2 - z.
     const Vertex *vertex_left_ref_to_tex, *vertex_right_ref_to_tex;
     const Texture *tex;
-    double dx_, dy_;
+    double dx_, dy_, dz_;
 };
 
 }
