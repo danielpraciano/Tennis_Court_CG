@@ -1,6 +1,23 @@
 #include <QtWidgets>
 #include <QtOpenGL>
 #include <main/include/myglwidget.h>
+#include <core/include/io_module.h>
+
+#include <scenario/include/object/transformation.h>
+#include <scenario/include/scenario.h>
+#include <scenario/include/object/vertex.h>
+#include <scenario/include/object/face.h>
+#include <scenario/include/object/object.h>
+#include <scenario/include/light/light.h>
+#include <scenario/include/object/material.h>
+#include <scenario/include/light/punctual_light.h>
+#include <render/include/raycasting/camera.h>
+#include <render/include/raycasting/color.h>
+#include <render/include/raycasting/ray.h>
+#include <render/include/raycasting/ray_casting.h>
+#include <render/include/raycasting/projection_type.h>
+
+#include <scenario/include/object/texture.h>
 
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
@@ -138,7 +155,37 @@ void MyGLWidget::paintGL()
     glLoadIdentity();
     gluLookAt( 2,2,2, 1,1,1, 0,1,0 );
 
-    drawUnitCube();
+    render::raycasting::Color color_orange { 1.0, 140.0/255.0, 0.0 };
+
+    std::shared_ptr<scenario::object::Material> material_orange {
+    new scenario::object::Material { 100.0, color_orange, color_orange, color_orange } };
+
+    core::io_module::ObjReader reader;
+    auto obj = reader.read("/Users/leonardo/Developer/Tennis_Court_CG/Scenario_CG/cube2.obj", material_orange);
+
+    for (const auto &face: obj->get_faces()) {
+        GLfloat ambi[3] = {face.get_material().get_k_ambient().get_values()(0), face.get_material().get_k_ambient().get_values()(1), face.get_material().get_k_ambient().get_values()(2)};
+        GLfloat diffuse[3] = {face.get_material().get_k_diffuse().get_values()(0), face.get_material().get_k_diffuse().get_values()(1), face.get_material().get_k_diffuse().get_values()(2)};
+        GLfloat specular[3] = {face.get_material().get_k_specular().get_values()(0), face.get_material().get_k_specular().get_values()(1), face.get_material().get_k_specular().get_values()(2)};
+        glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
+        glMaterialf(GL_FRONT, GL_SHININESS, face.get_material().get_reflexive_coef());
+
+        glBegin(GL_POLYGON);
+        for (const auto &vertex: obj->get_vertices()) {
+            GLfloat normal[3] = {vertex->get_normal()(0), vertex->get_normal()(1), vertex->get_normal()(2)};
+            GLfloat coord[3] = {vertex->get_coordinates()(0), vertex->get_coordinates()(1), vertex->get_coordinates()(2)};
+            glNormal3fv(normal);
+            glVertex3fv(coord);
+        }
+        glEnd();
+    }
+
+
+
+
+//    drawUnitCube();
 
 //    glLoadIdentity();
 //    glTranslatef(0, -0.5, -10.0);

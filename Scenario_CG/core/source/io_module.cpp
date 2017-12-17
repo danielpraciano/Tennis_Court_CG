@@ -21,13 +21,18 @@ std::shared_ptr<scenario::object::Object> ObjReader::read(const std::string &fil
     while (!in.eof()) {
         std::string letter;
         double x, y, z;
+        int count = 0;
 
         in >> letter >> x >> y >> z;
 
-        if (letter.c_str()[0] == 'v')
+        if (letter.c_str()[0] == 'v') {
             obj->add_vertex(scenario::object::Vertex { x, y, z });
-        else if (letter.c_str()[0] == 'f')
+        } else if (letter.c_str()[0] == 'f') {
             obj->add_face(static_cast<int>(x) - 1, static_cast<int>(y) - 1, static_cast<int>(z) - 1);
+        } else if (letter.c_str()[0] == 'vn') {
+            obj->set_vertice_normal(count, core::util::Vector3 {x, y, z});
+            count++;
+        }
     }
 
     in.close();

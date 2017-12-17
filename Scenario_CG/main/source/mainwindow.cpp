@@ -77,7 +77,7 @@ MainWindow::~MainWindow() {
 //    return cube;
 //}
 
-std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z, scenario::object::Texture *tex = nullptr) {
+std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z) {
     auto cube = std::make_shared<scenario::object::Object>(mat);
 
     cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 0.0 }); //0
@@ -113,31 +113,31 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
 //        //cima
 //        cube->add_face(2, 6, 7, mat, 1, 2, 7, tex);
 //        cube->add_face(2, 7, 3, mat, 1, 2, 7, tex);
-    if (tex != nullptr) {
-        //trás
-        cube->add_face(0, 3, 1, mat, 2, 1, 3, tex);
-        cube->add_face(0, 2, 3, mat, 2, 1, 3, tex);
+//    if (tex != nullptr) {
+//        //trás
+//        cube->add_face(0, 3, 1, mat, 2, 1, 3, tex);
+//        cube->add_face(0, 2, 3, mat, 2, 1, 3, tex);
 
-        //direita
-        cube->add_face(1, 7, 5, mat, 0, 5, 7, tex);
-        cube->add_face(1, 3, 7, mat, 0, 5, 7, tex);
+//        //direita
+//        cube->add_face(1, 7, 5, mat, 0, 5, 7, tex);
+//        cube->add_face(1, 3, 7, mat, 0, 5, 7, tex);
 
-        //frente
-        cube->add_face(4, 5, 7, mat, 2, 4, 7, tex);
-        cube->add_face(4, 7, 6, mat, 2, 4, 7, tex);
+//        //frente
+//        cube->add_face(4, 5, 7, mat, 2, 4, 7, tex);
+//        cube->add_face(4, 7, 6, mat, 2, 4, 7, tex);
 
-        //esquerda
-        cube->add_face(0, 4, 6, mat, 0, 0, 6, tex);
-        cube->add_face(0, 6, 2, mat, 0, 0, 6, tex);
+//        //esquerda
+//        cube->add_face(0, 4, 6, mat, 0, 0, 6, tex);
+//        cube->add_face(0, 6, 2, mat, 0, 0, 6, tex);
 
-        //baixo
-        cube->add_face(0, 1, 5, mat, 1, 4, 5, tex);
-        cube->add_face(0, 5, 4, mat, 1, 4, 5, tex);
+//        //baixo
+//        cube->add_face(0, 1, 5, mat, 1, 4, 5, tex);
+//        cube->add_face(0, 5, 4, mat, 1, 4, 5, tex);
 
-        //cima
-        cube->add_face(2, 6, 7, mat, 1, 3, 7, tex);
-        cube->add_face(2, 7, 3, mat, 1, 3, 7, tex);
-    } else {
+//        //cima
+//        cube->add_face(2, 6, 7, mat, 1, 3, 7, tex);
+//        cube->add_face(2, 7, 3, mat, 1, 3, 7, tex);
+//    } else {
         //trás
         cube->add_face(0, 3, 1);
         cube->add_face(0, 2, 3);
@@ -161,7 +161,7 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
         //cima
         cube->add_face(2, 6, 7);
         cube->add_face(2, 7, 3);
-    }
+//    }
 
     scenario::object::Transformation t_resize;
 
@@ -361,7 +361,7 @@ void add_floodlight(scenario::Scenario &sc, std::shared_ptr<scenario::object::Ma
 void MainWindow::on_rc_button_clicked() {
 //    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/491830606.jpg" };
 //    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/179023303.jpg" };
-    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/clay2.jpg" };
+//    scenario::object::Texture *tex = new scenario::object::Texture { "/home/daniel/Textura_Court/clay2.jpg" };
 
     render::raycasting::Color color_red { 1.0, 0.0, 0.0 };
     render::raycasting::Color color_blue { 0.0, 0.0, 1.0 };
@@ -413,7 +413,7 @@ void MainWindow::on_rc_button_clicked() {
 
     //
 
-    std::shared_ptr<scenario::object::Object> ground = get_cube(material_ground, 4 * 10.974, 2 * 23.77, 0.001, tex);
+    std::shared_ptr<scenario::object::Object> ground = get_cube(material_ground, 4 * 10.974, 2 * 23.77, 0.001);
     scenario::object::Transformation t_ground;
 
     t_ground.add_translation(-ground->get_vertice(0)->get_coordinates());
@@ -627,25 +627,25 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_object(*court);
     sc.add_object(*left_doubles_sideline);
     sc.add_object(*left_singles_sideline);
-//    sc.add_object(*before_center_mark);
-//    sc.add_object(*center_service_line);
-//    sc.add_object(*after_center_mark);
-//    sc.add_object(*right_singles_sideline);
-//    sc.add_object(*right_doubles_sideline);
-//    sc.add_object(*before_baseline);
-//    sc.add_object(*after_service_line);
-//    sc.add_object(*left_support_net);
-//    sc.add_object(*above_support_net);
-//    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
-//    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
-//    sc.add_object(*right_support_net);
-//    sc.add_object(*before_service_line);
-//    sc.add_object(*after_baseline);
+    sc.add_object(*before_center_mark);
+    sc.add_object(*center_service_line);
+    sc.add_object(*after_center_mark);
+    sc.add_object(*right_singles_sideline);
+    sc.add_object(*right_doubles_sideline);
+    sc.add_object(*before_baseline);
+    sc.add_object(*after_service_line);
+    sc.add_object(*left_support_net);
+    sc.add_object(*above_support_net);
+    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
+    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
+    sc.add_object(*right_support_net);
+    sc.add_object(*before_service_line);
+    sc.add_object(*after_baseline);
 
-//    sc.add_light(pl_left_before.get());
-//    sc.add_light(pl_right_before.get());
-//    sc.add_light(pl_left_after.get());
-//    sc.add_light(pl_right_after.get());
+    sc.add_light(pl_left_before.get());
+    sc.add_light(pl_right_before.get());
+    sc.add_light(pl_left_after.get());
+    sc.add_light(pl_right_after.get());
 
     //COURT'S ABOVE ok
     core::util::Vector3 eye     { 10.974/2, 23.77/2, 55.0 };

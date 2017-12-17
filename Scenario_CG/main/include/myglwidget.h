@@ -2,7 +2,7 @@
 #define GLWIDGET_H
 
 #include <QGLWidget>
-#include <GL/glu.h>
+#include <OpenGL/glu.h>
 
 class MyGLWidget : public QGLWidget
 {
