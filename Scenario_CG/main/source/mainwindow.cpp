@@ -210,10 +210,10 @@ void add_umpire_chair(scenario::Scenario &sc, std::shared_ptr<scenario::object::
 
     for (int i = 0; i < 3; ++i) {
 
-        if ( i == 1)
-            mat = material_red;
-        if( i == 2)
-            mat = material_blue;
+//        if ( i == 1)
+//            mat = material_red;
+//        if( i == 2)
+//            mat = material_blue;
 
         std::shared_ptr<scenario::object::Object> seat = get_cube(mat, scale*0.50 - i*0.4, scale*0.46, scale*0.2);
         scenario::object::Transformation t_seat;
@@ -228,7 +228,7 @@ void add_umpire_chair(scenario::Scenario &sc, std::shared_ptr<scenario::object::
         sc.add_object(*seat);
     }
 
-        mat = material_green;
+//        mat = material_green;
 
     std::shared_ptr<scenario::object::Object> seat = get_cube(mat, scale*0.23, scale*0.46, scale*0.01);
     scenario::object::Transformation t_seat;
@@ -409,6 +409,13 @@ void MainWindow::on_rc_button_clicked() {
 
     std::shared_ptr<scenario::object::Material> material_wood {
     new scenario::object::Material { 1.0, k_a_wood, k_d_wood, k_s_wood } };
+
+    render::raycasting::Color k_a_sand { 150.0/255, 113.0/255, 23.0/255 };
+    render::raycasting::Color k_d_sand { 150.0/255, 113.0/255, 23.0/255 };
+    render::raycasting::Color k_s_sand { 150.0/255, 113.0/255, 23.0/255 };
+
+    std::shared_ptr<scenario::object::Material> material_sand {
+    new scenario::object::Material { 1.0, k_a_sand, k_d_sand, k_s_sand } };
 
     std::shared_ptr<scenario::object::Material> material_red {
     new scenario::object::Material { 1.0, color_red, color_red, color_red } };
@@ -614,21 +621,21 @@ void MainWindow::on_rc_button_clicked() {
 //            t_cube2.make_apply();
 
     std::unique_ptr<scenario::light::Light> ambient_light { new scenario::light::PunctualLight { core::util::Vector3 { 0.0, 0.0, 0.0 },
-                    render::raycasting::Color { 0.5, 0.5, 0.5 } } };
+                    render::raycasting::Color { 0.3, 0.3, 0.3 } } };
 
-//    std::unique_ptr<scenario::light::Light> pl_left_before;
-////    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 50.5, 5.0, 50.5 } , render::raycasting::Color { 1.0, 1.0, 1.0 } });
-//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
-////    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
+    std::unique_ptr<scenario::light::Light> pl_left_before;
+//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 50.5, 5.0, 50.5 } , render::raycasting::Color { 1.0, 1.0, 1.0 } });
+    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.20, 0.20, 0.20 } });
+//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
 
-//    std::unique_ptr<scenario::light::Light> pl_right_before;
-//    pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+    std::unique_ptr<scenario::light::Light> pl_right_before;
+    pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.20, 0.20, 0.20 } });
 
-//    std::unique_ptr<scenario::light::Light> pl_left_after;
-//    pl_left_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+    std::unique_ptr<scenario::light::Light> pl_left_after;
+    pl_left_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.20, 0.20, 0.20 } });
 
-//    std::unique_ptr<scenario::light::Light> pl_right_after;
-//    pl_right_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+    std::unique_ptr<scenario::light::Light> pl_right_after;
+    pl_right_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.20, 0.20, 0.20 } });
 
     std::unique_ptr<scenario::light::Light> sl_left_before;
     sl_left_before.reset(new scenario::light::SpotLight { core::util::Vector3 { 0.0000 - 5.0, 0.000 - 3.0, 10.0 } ,
@@ -663,7 +670,7 @@ void MainWindow::on_rc_button_clicked() {
     add_floodlight(sc, material_wood, core::util::Vector3 {10.974 + 5.0, 0.000 - 3.0, 0.0}, false, 2.0); // right before
 
     for (int i = 0; i < 10; ++i) {
-        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 5.0 - i*0.5, 23.77, 0.5);
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_sand, 5.0 - i*0.5, 23.77, 0.5);
         scenario::object::Transformation t_seat;
 
         t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
@@ -675,7 +682,7 @@ void MainWindow::on_rc_button_clicked() {
     }
 
     for (int i = 0; i < 10; ++i) {
-        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 5.0 - i*0.5, 23.77, 0.5);
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_sand, 5.0 - i*0.5, 23.77, 0.5);
         scenario::object::Transformation t_seat;
 
         t_seat.add_translation(-seat->get_vertice(1)->get_coordinates());
@@ -687,7 +694,7 @@ void MainWindow::on_rc_button_clicked() {
     }
 
     for (int i = 0; i < 10; ++i) {
-        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 10.974, 5.0 - i*0.5, 0.5);
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_sand, 10.974, 5.0 - i*0.5, 0.5);
         scenario::object::Transformation t_seat;
 
         t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
@@ -699,7 +706,7 @@ void MainWindow::on_rc_button_clicked() {
     }
 
     for (int i = 0; i < 10; ++i) {
-        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 10.974, 5.0 - i*0.5, 0.5);
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_sand, 10.974, 5.0 - i*0.5, 0.5);
         scenario::object::Transformation t_seat;
 
         t_seat.add_translation(-seat->get_vertice(2)->get_coordinates());
@@ -731,10 +738,10 @@ void MainWindow::on_rc_button_clicked() {
     sc.add_object(*before_service_line);
     sc.add_object(*after_baseline);
 
-//    sc.add_light(pl_left_before.get());
-//    sc.add_light(pl_right_before.get());
-//    sc.add_light(pl_left_after.get());
-//    sc.add_light(pl_right_after.get());
+    sc.add_light(pl_left_before.get());
+    sc.add_light(pl_right_before.get());
+    sc.add_light(pl_left_after.get());
+    sc.add_light(pl_right_after.get());
 
 //    sc.add_light(sl_left_before.get());
 //    sc.add_light(sl_right_before.get());
@@ -742,9 +749,15 @@ void MainWindow::on_rc_button_clicked() {
 //    sc.add_light(sl_right_after.get());
 
     //COURT'S ABOVE ok
-    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+
+    //COURT'S ABOVE ok cavalier
+//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+
 
 //        core::util::Vector3 eye     { 0.0, 0.0, 35.0 };
 //    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
@@ -754,8 +767,38 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 look_at { 0.0, 0.0,  0.0 };
 //    core::util::Vector3 view_up { 1, 30, 1.0 };
 
-    //COURT'S FRONT
-//    core::util::Vector3 eye     { 10.974/2, -10.0, 1.0 };
+    //COURT'S FRONT OLHANDO PRAS CADEIRAS
+//    core::util::Vector3 eye     { 10.974 + 1.0, 23.77/2, 3.0 };
+//    core::util::Vector3 look_at { 0.0, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 0.0, 23.77/2,     3.0 };
+
+    //COURT'S FRONT LADO ESQ (JANELA 3, 3)
+//    core::util::Vector3 eye     { -1.0, -3.0, 1.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+
+//COM 2 PONTOS DE FUGA (JANELA 5, 5)
+//    core::util::Vector3 eye     { -3.0, -5.0, 5.0 };
+//    core::util::Vector3 look_at { 10.974 + 2, 23.77/2 - 2,  2.0 };
+//    core::util::Vector3 view_up { 10.974 + 2, 23.77/2 - 2,     5.0 };
+
+    //COM 1 PONTO DE FUGA (JANELA 5, 5)
+    core::util::Vector3 eye     { 10.974/2, 0.0, 5.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  2.0 };
+    core::util::Vector3 view_up { 10.974/2, 23.77/2,     5.0 };
+
+    //COURT'S FRONT COMECO DA ARQ
+//    core::util::Vector3 eye     { 10.974/2, -5.0, 1.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+
+    //COURT'S FRONT COMECO DA ARQ CAVALIER
+//    core::util::Vector3 eye     { 0.0, 0.0, 0.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
+
+    //COURT'S FRONT DEPOIS DA ARQUI
+//    core::util::Vector3 eye     { 10.974/2, -40.0, 1.0 };
 //    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
 //    core::util::Vector3 view_up { 10.974/2, 23.77/2,     3.0 };
 
@@ -781,8 +824,8 @@ void MainWindow::on_rc_button_clicked() {
     render::raycasting::Camera cam { eye, look_at, view_up };
 
     double d = 1.4;
-    double w = 1.0;
-    double h = 1.0;
+    double w = 5.0;
+    double h = 5.0;
 
     render::raycasting::Color bg { 0.0/255, 0.0/255, 204.0/255 };
 //    render::raycasting::Color bg { 1.0, 0.0, 0.0 };
