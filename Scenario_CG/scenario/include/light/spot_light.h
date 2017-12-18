@@ -17,17 +17,20 @@ public:
     inline virtual const core::util::Vector3 &get_position() const override { return position_; }
 
     inline virtual void apply_matrix(const core::util::Matrix4 &matrix) override {
-        core::util::Vector4 position4, direction4;
+        core::util::Vector4 position4, direction4, direction_p4;
 
         position4.head(3)  = position_;
-        direction4.head(3) = direction_point_;
-        position4(3)       = direction4(3) = 1.0;
+        direction_p4.head(3) = direction_point_;
+
+        position4(3)       = direction_p4(3) = 1.0;
 
         position4  = matrix * position4;
-        direction4 = matrix * direction4;
+        direction_p4 = matrix * direction_p4;
 
         position_        = position4.head(3);
-        direction_point_ = direction4.head(3);
+        direction_point_ = direction_p4.head(3);
+
+        direction_vec_ = normalise(direction_point_ - position_);
     }
 
     inline double get_openning_angle() const { return openning_angle_; }

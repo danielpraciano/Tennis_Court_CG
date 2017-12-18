@@ -12,7 +12,7 @@ render::raycasting::Color SpotLight::get_light_color(const core::util::Vector3 &
 
     double dir_dot_minus_l = dot(direction_vec_, -l);
 
-    if (dir_dot_minus_l > std::cos(openning_angle_ * arma::datum::pi / 180 ))
+    if (dir_dot_minus_l < std::cos(openning_angle_))
         return render::raycasting::Color { 0.0, 0.0, 0.0 };
 
     const core::util::Vector3 v = normalise(ray_origin - p_int);

@@ -78,7 +78,11 @@ MainWindow::~MainWindow() {
 //    return cube;
 //}
 
+uint64_t count_cube = 0;
+
 std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z, scenario::object::Texture *tex = nullptr) {
+    count_cube++;
+
     auto cube = std::make_shared<scenario::object::Object>(mat);
 
     cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 0.0 }); //0
@@ -376,20 +380,36 @@ void MainWindow::on_rc_button_clicked() {
     render::raycasting::Color k_d_ground { 101.0/255, 179.0/255, 253.0/255 };
     render::raycasting::Color k_s_ground { 101.0/255, 179.0/255, 253.0/255 };
 
+//    render::raycasting::Color k_a_ground { 196.0/255, 102.0/255, 70.0/255 };
+//    render::raycasting::Color k_d_ground { 196.0/255, 102.0/255, 70.0/255 };
+//    render::raycasting::Color k_s_ground { 196.0/255, 102.0/255, 70.0/255 };
+
     std::shared_ptr<scenario::object::Material> material_ground {
-    new scenario::object::Material { 100.0, k_a_ground, k_d_ground, k_s_ground } };
+    new scenario::object::Material { 1.0, k_a_ground, k_d_ground, k_s_ground } };
 
     //azulado
-//    render::raycasting::Color k_a_court { 69.0/255, 114.0/255, 172.0/255 };
-//    render::raycasting::Color k_d_court { 69.0/255, 114.0/255, 172.0/255 };
-//    render::raycasting::Color k_s_court { 69.0/255, 114.0/255, 172.0/255 };
+    render::raycasting::Color k_a_court { 69.0/255, 114.0/255, 172.0/255 };
+    render::raycasting::Color k_d_court { 69.0/255, 114.0/255, 172.0/255 };
+    render::raycasting::Color k_s_court { 69.0/255, 114.0/255, 172.0/255 };
 
-    render::raycasting::Color k_a_court { 196.0/255, 102.0/255, 70.0/255 };
-    render::raycasting::Color k_d_court { 196.0/255, 102.0/255, 70.0/255 };
-    render::raycasting::Color k_s_court { 196.0/255, 102.0/255, 70.0/255 };
+//    render::raycasting::Color k_a_court { 196.0/255, 102.0/255, 70.0/255 };
+//    render::raycasting::Color k_d_court { 196.0/255, 102.0/255, 70.0/255 };
+//    render::raycasting::Color k_s_court { 196.0/255, 102.0/255, 70.0/255 };
+
+    //green
+//    render::raycasting::Color k_a_court { 76.0/255, 153.0/255, 0.0/255 };
+//    render::raycasting::Color k_d_court { 76.0/255, 153.0/255, 0.0/255 };
+//    render::raycasting::Color k_s_court { 76.0/255, 153.0/255, 0.0/255 };
 
     std::shared_ptr<scenario::object::Material> material_court {
     new scenario::object::Material { 1.0, k_a_court, k_d_court, k_s_court } };
+
+    render::raycasting::Color k_a_wood { 130.0/255, 82.0/255, 1.0/255 };
+    render::raycasting::Color k_d_wood { 130.0/255, 82.0/255, 1.0/255 };
+    render::raycasting::Color k_s_wood { 130.0/255, 82.0/255, 1.0/255 };
+
+    std::shared_ptr<scenario::object::Material> material_wood {
+    new scenario::object::Material { 1.0, k_a_wood, k_d_wood, k_s_wood } };
 
     std::shared_ptr<scenario::object::Material> material_red {
     new scenario::object::Material { 1.0, color_red, color_red, color_red } };
@@ -613,57 +633,109 @@ void MainWindow::on_rc_button_clicked() {
 
     std::unique_ptr<scenario::light::Light> sl_left_before;
     sl_left_before.reset(new scenario::light::SpotLight { core::util::Vector3 { 0.0000 - 5.0, 0.000 - 3.0, 10.0 } ,
-//                                                          core::util::Vector3 { 0.0000 - 5.0, 0.000 - 3.0, 0.0 }, 180.0,
-                                                          core::util::Vector3 {0,0,0 }, 180.0,
+                                                          core::util::Vector3 {10.974/4, 23.77/4, 0.0}, 30.0,
                                                           render::raycasting::Color { 1.00, 1.00, 1.00 } });
 
     std::unique_ptr<scenario::light::Light> sl_right_before;
     sl_right_before.reset(new scenario::light::SpotLight { core::util::Vector3 { 10.974 + 5.0, 0.000 - 3.0, 10.0 } ,
-                                                           core::util::Vector3 { 10.974 + 5.0, 0.000 - 3.0, 0.0 }, 180.0,
+                                                           core::util::Vector3 { 10.974/2 + 10.974/4, 23.77/4, 0.0 }, 30.0,
                                                            render::raycasting::Color { 1.00, 1.00, 1.00 } });
 
     std::unique_ptr<scenario::light::Light> sl_left_after;
     sl_left_after.reset(new scenario::light::SpotLight { core::util::Vector3 { 0.0000 - 5.0, 23.77 + 3.0, 10.0 } ,
-                                                         core::util::Vector3 { 0.0000 - 5.0, 23.77 + 3.0, 0.0 }, 180.0,
+                                                         core::util::Vector3 { 10.974/4, 23.77/2 + 23.77/4, 0.0 }, 30.0,
                                                          render::raycasting::Color { 1.00, 1.00, 1.00 } });
 
     std::unique_ptr<scenario::light::Light> sl_right_after;
     sl_right_after.reset(new scenario::light::SpotLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 3.0, 10.0 } ,
-                                                          core::util::Vector3 { 10.974 + 5.0, 23.77 + 3.0, 0.0 }, 180.0,
+                                                          core::util::Vector3 { 10.974/2 + 10.974/4, 23.77/2 + 23.77/4, 0.0 }, 30.0,
                                                           render::raycasting::Color { 1.00, 1.00, 1.00 } });
 
 
     scenario::Scenario sc { ambient_light.get() };
 
-    add_umpire_chair(sc, material_court, core::util::Vector3 {-2.2, 23.77/2, 0.0}, 3.5);
+    add_umpire_chair(sc, material_wood, core::util::Vector3 {-3.2, 23.77/2 - (3.5*0.46 / 2), 0.0}, 3.5);
 //    add_umpire_chair(sc, material_court, core::util::Vector3 {0, 0, 0.0}, 1.0);
-    add_chair(sc, material_court, core::util::Vector3 {-2.0, 23.77/2 + 4.0, 0.0}, 2.5);
-    add_chair(sc, material_court, core::util::Vector3 {-2.0, 23.77/2 - 4.0, 0.0}, 2.5);
-    add_floodlight(sc, material_court, core::util::Vector3 {0.0000 - 5.0, 23.77 + 3.0, 0.0}, true,  2.0); // left after
-    add_floodlight(sc, material_court, core::util::Vector3 {10.974 + 5.0, 23.77 + 3.0, 0.0}, false, 2.0); // right after
-    add_floodlight(sc, material_court, core::util::Vector3 {0.0000 - 5.0, 0.000 - 3.0, 0.0}, true,  2.0); // left before
-    add_floodlight(sc, material_court, core::util::Vector3 {10.974 + 5.0, 0.000 - 3.0, 0.0}, false, 2.0); // right before
+    add_chair(sc, material_wood, core::util::Vector3 {-3.0, 23.77/2 + 4.0, 0.0}, 2.5);
+    add_chair(sc, material_wood, core::util::Vector3 {-3.0, 23.77/2 - 4.0, 0.0}, 2.5);
+    add_floodlight(sc, material_wood, core::util::Vector3 {0.0000 - 5.0, 23.77 + 3.0, 0.0}, true,  2.0); // left after
+    add_floodlight(sc, material_wood, core::util::Vector3 {10.974 + 5.0, 23.77 + 3.0, 0.0}, false, 2.0); // right after
+    add_floodlight(sc, material_wood, core::util::Vector3 {0.0000 - 5.0, 0.000 - 3.0, 0.0}, true,  2.0); // left before
+    add_floodlight(sc, material_wood, core::util::Vector3 {10.974 + 5.0, 0.000 - 3.0, 0.0}, false, 2.0); // right before
+
+    for (int i = 0; i < 10; ++i) {
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 5.0 - i*0.5, 23.77, 0.5);
+        scenario::object::Transformation t_seat;
+
+        t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
+        t_seat.add_translation(core::util::Vector3 { -10.0, 0.0, i*0.5 });
+        t_seat.add_to_apply(seat);
+        t_seat.make_apply();
+
+        sc.add_object(*seat);
+    }
+
+    for (int i = 0; i < 10; ++i) {
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 5.0 - i*0.5, 23.77, 0.5);
+        scenario::object::Transformation t_seat;
+
+        t_seat.add_translation(-seat->get_vertice(1)->get_coordinates());
+        t_seat.add_translation(core::util::Vector3 { 10.974 + 10.0, 0.0, i*0.5 });
+        t_seat.add_to_apply(seat);
+        t_seat.make_apply();
+
+        sc.add_object(*seat);
+    }
+
+    for (int i = 0; i < 10; ++i) {
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 10.974, 5.0 - i*0.5, 0.5);
+        scenario::object::Transformation t_seat;
+
+        t_seat.add_translation(-seat->get_vertice(0)->get_coordinates());
+        t_seat.add_translation(core::util::Vector3 { 0.0, -8.0, i*0.5 });
+        t_seat.add_to_apply(seat);
+        t_seat.make_apply();
+
+        sc.add_object(*seat);
+    }
+
+    for (int i = 0; i < 10; ++i) {
+        std::shared_ptr<scenario::object::Object> seat = get_cube(material_wood, 10.974, 5.0 - i*0.5, 0.5);
+        scenario::object::Transformation t_seat;
+
+        t_seat.add_translation(-seat->get_vertice(2)->get_coordinates());
+        t_seat.add_translation(core::util::Vector3 { 0.0, 23.77 + 8.0, i*0.5 });
+        t_seat.add_to_apply(seat);
+        t_seat.make_apply();
+
+        sc.add_object(*seat);
+    }
 
 //    sc.add_object(*cubee);
 //    sc.add_object(*cubee2);
     sc.add_object(*ground);
     sc.add_object(*court);
-//    sc.add_object(*left_doubles_sideline);
-//    sc.add_object(*left_singles_sideline);
-//    sc.add_object(*before_center_mark);
-//    sc.add_object(*center_service_line);
-//    sc.add_object(*after_center_mark);
-//    sc.add_object(*right_singles_sideline);
-//    sc.add_object(*right_doubles_sideline);
-//    sc.add_object(*before_baseline);
-//    sc.add_object(*after_service_line);
-//    sc.add_object(*left_support_net);
-//    sc.add_object(*above_support_net);
-//    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
-//    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
-//    sc.add_object(*right_support_net);
-//    sc.add_object(*before_service_line);
-//    sc.add_object(*after_baseline);
+    sc.add_object(*left_doubles_sideline);
+    sc.add_object(*left_singles_sideline);
+    sc.add_object(*before_center_mark);
+    sc.add_object(*center_service_line);
+    sc.add_object(*after_center_mark);
+    sc.add_object(*right_singles_sideline);
+    sc.add_object(*right_doubles_sideline);
+    sc.add_object(*before_baseline);
+    sc.add_object(*after_service_line);
+    sc.add_object(*left_support_net);
+    sc.add_object(*above_support_net);
+    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
+    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
+    sc.add_object(*right_support_net);
+    sc.add_object(*before_service_line);
+    sc.add_object(*after_baseline);
+
+//    sc.add_light(pl_left_before.get());
+//    sc.add_light(pl_right_before.get());
+//    sc.add_light(pl_left_after.get());
+//    sc.add_light(pl_right_after.get());
 
     sc.add_light(sl_left_before.get());
 //    sc.add_light(sl_right_before.get());
@@ -671,7 +743,7 @@ void MainWindow::on_rc_button_clicked() {
 //    sc.add_light(sl_right_after.get());
 
     //COURT'S ABOVE ok
-    core::util::Vector3 eye     { 10.974/2, 23.77/2, 55.0 };
+    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
     core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
     core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
 
@@ -713,8 +785,8 @@ void MainWindow::on_rc_button_clicked() {
     double w = 1.0;
     double h = 1.0;
 
-//    render::raycasting::Color bg { 101.0/255, 179.0/255, 253.0/255 };
-    render::raycasting::Color bg { 1.0, 0.0, 0.0 };
+    render::raycasting::Color bg { 0.0/255, 0.0/255, 204.0/255 };
+//    render::raycasting::Color bg { 1.0, 0.0, 0.0 };
 
     render::raycasting::RayCasting rc { d, w, h, bg };
 
@@ -741,4 +813,8 @@ void MainWindow::on_rc_button_clicked() {
     ui->graphics_view->setScene(scene);
     ui->graphics_view->show();
     ui->widget->hide();
+
+    std::cout << "Cubes: " << count_cube << std::endl;
+    std::cout << "Faces: " << count_cube * 12 << std::endl;
+
 }
