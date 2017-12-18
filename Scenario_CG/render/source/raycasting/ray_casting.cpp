@@ -120,8 +120,8 @@ Color RayCasting::calculate_color(const Ray &viewing_ray, const scenario::Scenar
             color_values += light->get_light_color(viewing_ray.get_origin(), *face_int, p_int).get_values();
     }
 
-    if (face_int->has_tex())
-        color_values += face_int->get_rgb_tex(p_int).get_values();
+//    if (face_int->has_tex())
+//        color_values += face_int->get_rgb_tex(p_int).get_values();
 
     color_values = round(color_values * 255.0);
 

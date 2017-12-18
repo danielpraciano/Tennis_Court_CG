@@ -15,9 +15,16 @@ public:
 //    inline const core::util::Vector3 &get_coordinates() const {
 //        return _coordinates.head(3);
 //    }
+    inline core::util::Vector3 get_normal() const {
+        return _normal;
+    }
 
     inline core::util::Vector3 get_coordinates() const {
         return _coordinates.head(3);
+    }
+
+    inline void set_normal(core::util::Vector3 normal) {
+        _normal = normal;
     }
 
     inline void apply_matrix(const core::util::Matrix4 &matrix) {
@@ -26,7 +33,7 @@ public:
 
 private:
     core::util::Vector4 _coordinates;
-
+    core::util::Vector3 _normal;
 };
 
 }

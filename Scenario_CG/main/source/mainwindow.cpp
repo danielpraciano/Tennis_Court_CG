@@ -80,9 +80,8 @@ MainWindow::~MainWindow() {
 
 uint64_t count_cube = 0;
 
-std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z, scenario::object::Texture *tex = nullptr) {
+std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::object::Material> mat, double x, double y, double z) {
     count_cube++;
-
     auto cube = std::make_shared<scenario::object::Object>(mat);
 
     cube->add_vertex(scenario::object::Vertex { 0.0, 0.0, 0.0 }); //0
@@ -118,31 +117,31 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
 //        //cima
 //        cube->add_face(2, 6, 7, mat, 1, 2, 7, tex);
 //        cube->add_face(2, 7, 3, mat, 1, 2, 7, tex);
-    if (tex != nullptr) {
-        //trás
-        cube->add_face(0, 3, 1, mat, 2, 1, 3, tex);
-        cube->add_face(0, 2, 3, mat, 2, 1, 3, tex);
+//    if (tex != nullptr) {
+//        //trás
+//        cube->add_face(0, 3, 1, mat, 2, 1, 3, tex);
+//        cube->add_face(0, 2, 3, mat, 2, 1, 3, tex);
 
-        //direita
-        cube->add_face(1, 7, 5, mat, 0, 5, 7, tex);
-        cube->add_face(1, 3, 7, mat, 0, 5, 7, tex);
+//        //direita
+//        cube->add_face(1, 7, 5, mat, 0, 5, 7, tex);
+//        cube->add_face(1, 3, 7, mat, 0, 5, 7, tex);
 
-        //frente
-        cube->add_face(4, 5, 7, mat, 2, 4, 7, tex);
-        cube->add_face(4, 7, 6, mat, 2, 4, 7, tex);
+//        //frente
+//        cube->add_face(4, 5, 7, mat, 2, 4, 7, tex);
+//        cube->add_face(4, 7, 6, mat, 2, 4, 7, tex);
 
-        //esquerda
-        cube->add_face(0, 4, 6, mat, 0, 0, 6, tex);
-        cube->add_face(0, 6, 2, mat, 0, 0, 6, tex);
+//        //esquerda
+//        cube->add_face(0, 4, 6, mat, 0, 0, 6, tex);
+//        cube->add_face(0, 6, 2, mat, 0, 0, 6, tex);
 
-        //baixo
-        cube->add_face(0, 1, 5, mat, 1, 4, 5, tex);
-        cube->add_face(0, 5, 4, mat, 1, 4, 5, tex);
+//        //baixo
+//        cube->add_face(0, 1, 5, mat, 1, 4, 5, tex);
+//        cube->add_face(0, 5, 4, mat, 1, 4, 5, tex);
 
-        //cima
-        cube->add_face(2, 6, 7, mat, 1, 3, 7, tex);
-        cube->add_face(2, 7, 3, mat, 1, 3, 7, tex);
-    } else {
+//        //cima
+//        cube->add_face(2, 6, 7, mat, 1, 3, 7, tex);
+//        cube->add_face(2, 7, 3, mat, 1, 3, 7, tex);
+//    } else {
         //trás
         cube->add_face(0, 3, 1);
         cube->add_face(0, 2, 3);
@@ -166,7 +165,7 @@ std::shared_ptr<scenario::object::Object> get_cube(std::shared_ptr<scenario::obj
         //cima
         cube->add_face(2, 6, 7);
         cube->add_face(2, 7, 3);
-    }
+//    }
 
     scenario::object::Transformation t_resize;
 
@@ -737,7 +736,7 @@ void MainWindow::on_rc_button_clicked() {
 //    sc.add_light(pl_left_after.get());
 //    sc.add_light(pl_right_after.get());
 
-    sc.add_light(sl_left_before.get());
+//    sc.add_light(sl_left_before.get());
 //    sc.add_light(sl_right_before.get());
 //    sc.add_light(sl_left_after.get());
 //    sc.add_light(sl_right_after.get());

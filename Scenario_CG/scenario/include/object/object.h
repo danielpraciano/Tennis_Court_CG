@@ -26,14 +26,16 @@ public:
 
     inline size_t get_vertices_size() const { return vertices.size(); }
     inline size_t get_faces_size()    const { return faces_.size(); }
+    inline const std::vector<Face> &get_faces()    const { return faces_; }
+    inline const std::vector<std::shared_ptr<Vertex>> &get_vertices()    const { return vertices; }
 
+    inline void set_vertice_normal(int id, core::util::Vector3 normal) { vertices[id]->set_normal(normal); }
     inline const std::shared_ptr<Vertex> &get_vertice(int id) const { return vertices[id]; }
     inline const Boundary &get_boundary() const { return boundary_; }
 
     inline void add_vertex(Vertex v) { vertices.push_back(std::make_shared<Vertex>(v)); }
 
-    void add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<Material> mat = nullptr, int plan_to_tex = -1,
-                  int index_vertex_left_ref_to_tex = -1, int index_vertex_right_ref_to_tex = -1, const Texture *tex = nullptr);
+    void add_face(int index_v1, int index_v2, int index_v3, std::shared_ptr<Material> mat = nullptr);
 
     void apply_matrix(const core::util::Matrix4 &transformation);
 
@@ -52,7 +54,7 @@ private:
     std::vector<std::shared_ptr<Vertex>> vertices;
     core::util::Vector3 coordinates_min_;
     core::util::Vector3 coordinates_max_;
-    std::vector<Face> faces_;
+    std::vector<Face> faces_;    
     Boundary boundary_;
 
     void update_min_and_max(const core::util::Vector3 &coordinates);
