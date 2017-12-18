@@ -9,8 +9,9 @@
 #include <scenario/include/object/face.h>
 #include <scenario/include/object/object.h>
 #include <scenario/include/light/light.h>
-#include <scenario/include/object/material.h>
 #include <scenario/include/light/punctual_light.h>
+#include <scenario/include/light/spot_light.h>
+#include <scenario/include/object/material.h>
 #include <render/include/raycasting/camera.h>
 #include <render/include/raycasting/color.h>
 #include <render/include/raycasting/ray.h>
@@ -388,28 +389,28 @@ void MainWindow::on_rc_button_clicked() {
     render::raycasting::Color k_s_court { 196.0/255, 102.0/255, 70.0/255 };
 
     std::shared_ptr<scenario::object::Material> material_court {
-    new scenario::object::Material { 100.0, k_a_court, k_d_court, k_s_court } };
+    new scenario::object::Material { 1.0, k_a_court, k_d_court, k_s_court } };
 
     std::shared_ptr<scenario::object::Material> material_red {
-    new scenario::object::Material { 100.0, color_red, color_red, color_red } };
+    new scenario::object::Material { 1.0, color_red, color_red, color_red } };
 
     std::shared_ptr<scenario::object::Material> material_blue {
-    new scenario::object::Material { 100.0, color_blue, color_blue, color_blue } };
+    new scenario::object::Material { 1.0, color_blue, color_blue, color_blue } };
 
     std::shared_ptr<scenario::object::Material> material_green {
-    new scenario::object::Material { 100.0, color_green, color_green, color_green } };
+    new scenario::object::Material { 1.0, color_green, color_green, color_green } };
 
     std::shared_ptr<scenario::object::Material> material_white {
-    new scenario::object::Material { 100.0, color_white, color_white, color_white } };
+    new scenario::object::Material { 1.0, color_white, color_white, color_white } };
 
     std::shared_ptr<scenario::object::Material> material_black {
-    new scenario::object::Material { 100.0, color_black, color_black, color_black } };
+    new scenario::object::Material { 1.0, color_black, color_black, color_black } };
 
     std::shared_ptr<scenario::object::Material> material_yellow {
-    new scenario::object::Material { 100.0, color_yellow, color_yellow, color_yellow } };
+    new scenario::object::Material { 1.0, color_yellow, color_yellow, color_yellow } };
 
     std::shared_ptr<scenario::object::Material> material_orange {
-    new scenario::object::Material { 100.0, color_orange, color_orange, color_orange } };
+    new scenario::object::Material { 1.0, color_orange, color_orange, color_orange } };
 
     //
 
@@ -431,7 +432,7 @@ void MainWindow::on_rc_button_clicked() {
 
     std::shared_ptr<scenario::object::Object> left_doubles_sideline = get_cube(material_white, 7.62/100, 23.77, 0.001);
     scenario::object::Transformation t_left_doubles_sideline;
-
+//    std::cout << -left_doubles_sideline->get_vertice(0)->get_coordinates() << std::endl;
     t_left_doubles_sideline.add_translation(-left_doubles_sideline->get_vertice(0)->get_coordinates());
     t_left_doubles_sideline.add_to_apply(left_doubles_sideline);
     t_left_doubles_sideline.make_apply();
@@ -594,21 +595,43 @@ void MainWindow::on_rc_button_clicked() {
 //            t_cube2.make_apply();
 
     std::unique_ptr<scenario::light::Light> ambient_light { new scenario::light::PunctualLight { core::util::Vector3 { 0.0, 0.0, 0.0 },
-                    render::raycasting::Color { 0.1, 0.1, 0.1 } } };
+                    render::raycasting::Color { 0.5, 0.5, 0.5 } } };
 
-    std::unique_ptr<scenario::light::Light> pl_left_before;
-//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 50.5, 5.0, 50.5 } , render::raycasting::Color { 1.0, 1.0, 1.0 } });
-    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
-//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
+//    std::unique_ptr<scenario::light::Light> pl_left_before;
+////    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 50.5, 5.0, 50.5 } , render::raycasting::Color { 1.0, 1.0, 1.0 } });
+//    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+////    pl_left_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.0, 0.0, 10.0 } , render::raycasting::Color { 0.7, 0.7, 0.7 } });
 
-    std::unique_ptr<scenario::light::Light> pl_right_before;
-    pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+//    std::unique_ptr<scenario::light::Light> pl_right_before;
+//    pl_right_before.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, -5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
 
-    std::unique_ptr<scenario::light::Light> pl_left_after;
-    pl_left_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+//    std::unique_ptr<scenario::light::Light> pl_left_after;
+//    pl_left_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { -5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
 
-    std::unique_ptr<scenario::light::Light> pl_right_after;
-    pl_right_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+//    std::unique_ptr<scenario::light::Light> pl_right_after;
+//    pl_right_after.reset(new scenario::light::PunctualLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 5.0, 15.0 } , render::raycasting::Color { 0.25, 0.25, 0.25 } });
+
+    std::unique_ptr<scenario::light::Light> sl_left_before;
+    sl_left_before.reset(new scenario::light::SpotLight { core::util::Vector3 { 0.0000 - 5.0, 0.000 - 3.0, 10.0 } ,
+//                                                          core::util::Vector3 { 0.0000 - 5.0, 0.000 - 3.0, 0.0 }, 180.0,
+                                                          core::util::Vector3 {0,0,0 }, 180.0,
+                                                          render::raycasting::Color { 1.00, 1.00, 1.00 } });
+
+    std::unique_ptr<scenario::light::Light> sl_right_before;
+    sl_right_before.reset(new scenario::light::SpotLight { core::util::Vector3 { 10.974 + 5.0, 0.000 - 3.0, 10.0 } ,
+                                                           core::util::Vector3 { 10.974 + 5.0, 0.000 - 3.0, 0.0 }, 180.0,
+                                                           render::raycasting::Color { 1.00, 1.00, 1.00 } });
+
+    std::unique_ptr<scenario::light::Light> sl_left_after;
+    sl_left_after.reset(new scenario::light::SpotLight { core::util::Vector3 { 0.0000 - 5.0, 23.77 + 3.0, 10.0 } ,
+                                                         core::util::Vector3 { 0.0000 - 5.0, 23.77 + 3.0, 0.0 }, 180.0,
+                                                         render::raycasting::Color { 1.00, 1.00, 1.00 } });
+
+    std::unique_ptr<scenario::light::Light> sl_right_after;
+    sl_right_after.reset(new scenario::light::SpotLight { core::util::Vector3 { 10.974 + 5.0, 23.77 + 3.0, 10.0 } ,
+                                                          core::util::Vector3 { 10.974 + 5.0, 23.77 + 3.0, 0.0 }, 180.0,
+                                                          render::raycasting::Color { 1.00, 1.00, 1.00 } });
+
 
     scenario::Scenario sc { ambient_light.get() };
 
@@ -625,27 +648,27 @@ void MainWindow::on_rc_button_clicked() {
 //    sc.add_object(*cubee2);
     sc.add_object(*ground);
     sc.add_object(*court);
-    sc.add_object(*left_doubles_sideline);
-    sc.add_object(*left_singles_sideline);
-    sc.add_object(*before_center_mark);
-    sc.add_object(*center_service_line);
-    sc.add_object(*after_center_mark);
-    sc.add_object(*right_singles_sideline);
-    sc.add_object(*right_doubles_sideline);
-    sc.add_object(*before_baseline);
-    sc.add_object(*after_service_line);
-    sc.add_object(*left_support_net);
-    sc.add_object(*above_support_net);
-    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
-    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
-    sc.add_object(*right_support_net);
-    sc.add_object(*before_service_line);
-    sc.add_object(*after_baseline);
+//    sc.add_object(*left_doubles_sideline);
+//    sc.add_object(*left_singles_sideline);
+//    sc.add_object(*before_center_mark);
+//    sc.add_object(*center_service_line);
+//    sc.add_object(*after_center_mark);
+//    sc.add_object(*right_singles_sideline);
+//    sc.add_object(*right_doubles_sideline);
+//    sc.add_object(*before_baseline);
+//    sc.add_object(*after_service_line);
+//    sc.add_object(*left_support_net);
+//    sc.add_object(*above_support_net);
+//    for (int i = 0; i < 4; i++) sc.add_object(*net_lines[i]);
+//    for (int j = 0; j < 62; j++) sc.add_object(*net_columns[j]);
+//    sc.add_object(*right_support_net);
+//    sc.add_object(*before_service_line);
+//    sc.add_object(*after_baseline);
 
-    sc.add_light(pl_left_before.get());
-    sc.add_light(pl_right_before.get());
-    sc.add_light(pl_left_after.get());
-    sc.add_light(pl_right_after.get());
+//    sc.add_light(sl_left_before.get());
+//    sc.add_light(sl_right_before.get());
+//    sc.add_light(sl_left_after.get());
+//    sc.add_light(sl_right_after.get());
 
     //COURT'S ABOVE ok
     core::util::Vector3 eye     { 10.974/2, 23.77/2, 55.0 };
@@ -717,4 +740,5 @@ void MainWindow::on_rc_button_clicked() {
 
     ui->graphics_view->setScene(scene);
     ui->graphics_view->show();
+    ui->widget->hide();
 }

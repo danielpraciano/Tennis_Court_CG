@@ -248,13 +248,13 @@
     <string/>
    </property>
   </widget>
-  <widget class="MyGLWidget" name="openGLWidget">
+  <widget class="MyGLWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
      <x>100</x>
      <y>40</y>
-     <width>601</width>
-     <height>601</height>
+     <width>600</width>
+     <height>600</height>
     </rect>
    </property>
   </widget>
@@ -262,8 +262,9 @@
  <customwidgets>
   <customwidget>
    <class>MyGLWidget</class>
-   <extends>QOpenGLWidget</extends>
+   <extends>QWidget</extends>
    <header>myglwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
