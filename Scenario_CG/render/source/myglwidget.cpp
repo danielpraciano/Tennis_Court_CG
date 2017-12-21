@@ -19,6 +19,824 @@
 
 #include <core/include/util.h>
 
+GLuint  Court;
+GLuint  Net;
+
+void draw_court_lines() {
+   glPushMatrix ();
+   glScalef(1.5, 1.0, 1.0);
+   glCallList (Court);
+   glPopMatrix ();
+   return;
+}
+
+void draw_net_lines() {
+   glPushMatrix ();
+   glScalef(1.5, 1.0, 1.0);
+   glCallList (Net);
+   glPopMatrix ();
+   return;
+}
+
+void add_court_matrix() {
+    GLfloat k_a_white[] = { 1.0, 1.0, 1.0 };
+    GLfloat k_d_white[] = { 1.0, 1.0, 1.0 };
+    GLfloat k_s_white[] = { 1.0, 1.0, 1.0 };
+    GLfloat m_white     = 1.0;
+
+   Court = glGenLists (1);
+   glNewList (Court, GL_COMPILE);
+   {
+          //sidelines doubles
+          glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_white);
+          glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_white);
+          glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_white);
+          glMaterialf (GL_FRONT, GL_SHININESS, m_white);
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f  (0.0, 0.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f  (0.0, 0.0, 24.002);
+          glTexCoord2f(1.0, 1.0); glVertex3f  (0.1, 0.0, 24.002);
+          glTexCoord2f(1.0, 0.0); glVertex3f  (0.1, 0.0, 0.0);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f  (8.2, 0.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f  (8.2, 0.0, 24.002);
+          glTexCoord2f(1.0, 1.0); glVertex3f  (8.3, 0.0, 24.002);
+          glTexCoord2f(1.0, 0.0); glVertex3f  (8.3, 0.0, 0.0);
+       glEnd();
+
+       //sidelines single
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f  (1.0, 0.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f  (1.0, 0.0, 24.002);
+          glTexCoord2f(1.0, 1.0); glVertex3f  (1.1, 0.0, 24.002);
+          glTexCoord2f(1.0, 0.0); glVertex3f  (1.1, 0.0, 0.0);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (7.2, 0.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f (7.2, 0.0, 24.002);
+          glTexCoord2f(1.0, 1.0); glVertex3f (7.3, 0.0, 24.002);
+          glTexCoord2f(1.0, 0.0); glVertex3f (7.3, 0.0, 0.0);
+       glEnd();
+
+       //baselines
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (0.0, 0.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f (0.0, 0.0, 0.1);//35
+          glTexCoord2f(1.0, 1.0); glVertex3f (8.2, 0.0, 0.1);
+          glTexCoord2f(1.0, 0.0); glVertex3f (8.2, 0.0, 0.0);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (0.0, 0.0, 23.90);
+          glTexCoord2f(0.0, 1.0); glVertex3f (0.0, 0.0, 24.00);
+          glTexCoord2f(1.0, 1.0); glVertex3f (8.2, 0.0, 24.00);
+          glTexCoord2f(1.0, 0.0); glVertex3f (8.2, 0.0, 23.90);
+       glEnd();
+
+       //service lines
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (1.05, 0.0, 5.6);
+          glTexCoord2f(0.0, 1.0); glVertex3f (1.05, 0.0, 5.7);
+          glTexCoord2f(1.0, 1.0); glVertex3f (7.2, 0.0, 5.7);
+          glTexCoord2f(1.0, 0.0); glVertex3f (7.2, 0.0, 5.6);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (1.05, 0.0, 18.3);
+          glTexCoord2f(0.0, 1.0); glVertex3f (1.05, 0.0, 18.4);
+          glTexCoord2f(1.0, 1.0); glVertex3f (7.2, 0.0, 18.4);
+          glTexCoord2f(1.0, 0.0); glVertex3f (7.2, 0.0, 18.3);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (4.0, 0.0, 5.7);
+          glTexCoord2f(0.0, 1.0); glVertex3f (4.0, 0.0, 18.3);
+          glTexCoord2f(1.0, 1.0); glVertex3f (4.1, 0.0, 18.3);
+          glTexCoord2f(1.0, 0.0); glVertex3f (4.1, 0.0, 5.7);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (4.0, 0.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f (4.0, 0.0, 0.5);
+          glTexCoord2f(1.0, 1.0); glVertex3f (4.1, 0.0, 0.5);
+          glTexCoord2f(1.0, 0.0); glVertex3f (4.1, 0.0, 0.0);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (4.0, 0.0, 23.50);
+          glTexCoord2f(0.0, 1.0); glVertex3f (4.0, 0.0, 24.002);
+          glTexCoord2f(1.0, 1.0); glVertex3f (4.1, 0.0, 24.002);
+          glTexCoord2f(1.0, 0.0); glVertex3f (4.1, 0.0, 23.50);
+       glEnd();
+   }
+
+   glEndList();
+}
+
+void add_net_matrix() {
+    GLfloat k_a_white[] = { 1.0, 1.0, 1.0 };
+    GLfloat k_d_white[] = { 1.0, 1.0, 1.0 };
+    GLfloat k_s_white[] = { 1.0, 1.0, 1.0 };
+    GLfloat m_white     = 1.0;
+
+    GLfloat k_a_black[] = { 0.0, 0.0, 0.0 };
+    GLfloat k_d_black[] = { 0.0, 0.0, 0.0 };
+    GLfloat k_s_black[] = { 0.0, 0.0, 0.0 };
+    GLfloat m_black     = 1.0;
+
+
+   Net = glGenLists (1);
+   glNewList (Net, GL_COMPILE);
+   {
+       glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_white);
+       glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_white);
+       glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_white);
+       glMaterialf (GL_FRONT, GL_SHININESS, m_white);
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (-0.55, 0.0, 12.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f (-0.4, 0.0, 12.0);
+          glTexCoord2f(1.0, 1.0); glVertex3f (-0.4, 1.0, 12.0);
+          glTexCoord2f(1.0, 0.0); glVertex3f (-0.55, 1.0, 12.0);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 0.0); glVertex3f (8.65, 0.0, 12.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f (8.8, 0.0, 12.0);
+          glTexCoord2f(1.0, 1.0); glVertex3f (8.8, 1.0, 12.0);
+          glTexCoord2f(1.0, 0.0); glVertex3f (8.65, 1.0, 12.0);
+       glEnd();
+
+       glBegin(GL_QUADS);
+          glNormal3f (0.0, 1.0, 0.0);
+          glTexCoord2f(0.0, 1.0); glVertex3f (-0.39, 0.89, 12.1);
+          glTexCoord2f(0.0, 0.0); glVertex3f (8.64, 0.89, 12.1);
+          glTexCoord2f(1.0, 0.0); glVertex3f (8.64, 1.0, 12.0);
+          glTexCoord2f(1.0, 1.0); glVertex3f (-0.39, 1.0, 12.0);
+
+       glEnd();
+
+       glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_black);
+       glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_black);
+       glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_black);
+       glMaterialf (GL_FRONT, GL_SHININESS, m_black);
+
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.87, 12.0);
+          glVertex3f(-0.38, 0.87, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.8, 12.0);
+          glVertex3f(-0.38, 0.8, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.73, 12.0);
+          glVertex3f(-0.38, 0.73, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.66, 12.0);
+          glVertex3f(-0.38, 0.66, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.59, 12.0);
+          glVertex3f(-0.38, 0.59, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.52, 12.0);
+          glVertex3f(-0.38, 0.52, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.45, 12.0);
+          glVertex3f(-0.38, 0.45, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.38, 12.0);
+          glVertex3f(-0.38, 0.38, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.31, 12.0);
+          glVertex3f(-0.38,0.31 , 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.24, 12.0);
+          glVertex3f(-0.38, 0.24, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.17, 12.0);
+          glVertex3f(-0.38, 0.17, 12.0);
+
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.10, 12.0);
+          glVertex3f(-0.38, 0.10, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.03, 12.0);
+          glVertex3f(-0.38, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(-0.38, 0.94, 12.0);
+          glVertex3f(-0.38, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(-0.3, 0.94, 12.0);
+          glVertex3f(-0.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(-0.2, 0.94, 12.0);
+          glVertex3f(-0.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(-0.1, 0.94, 12.0);
+          glVertex3f(-0.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(-0.0, 0.94, 12.0);
+          glVertex3f(-0.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.1, 0.94, 12.0);
+          glVertex3f(0.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.2, 0.94, 12.0);
+          glVertex3f(0.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.3, 0.94, 12.0);
+          glVertex3f(0.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.4, 0.94, 12.0);
+
+          glVertex3f(0.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.5, 0.94, 12.0);
+          glVertex3f(0.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.6, 0.94, 12.0);
+          glVertex3f(0.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.7, 0.94, 12.0);
+          glVertex3f(0.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.8, 0.94, 12.0);
+          glVertex3f(0.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(0.9, 0.94, 12.0);
+          glVertex3f(0.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.0, 0.94, 12.0);
+          glVertex3f(1.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.1, 0.94, 12.0);
+          glVertex3f(1.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.2, 0.94, 12.0);
+          glVertex3f(1.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.3, 0.94, 12.0);
+          glVertex3f(1.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.4, 0.94, 12.0);
+          glVertex3f(1.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+
+          glVertex3f(1.5, 0.94, 12.0);
+          glVertex3f(1.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.6, 0.94, 12.0);
+          glVertex3f(1.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.7, 0.94, 12.0);
+          glVertex3f(1.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.8, 0.94, 12.0);
+          glVertex3f(1.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(1.9, 0.94, 12.0);
+          glVertex3f(1.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.0, 0.94, 12.0);
+          glVertex3f(2.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.1, 0.94, 12.0);
+          glVertex3f(2.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.2, 0.94, 12.0);
+          glVertex3f(2.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.3, 0.94, 12.0);
+          glVertex3f(2.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.4, 0.94, 12.0);
+          glVertex3f(2.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.5, 0.94, 12.0);
+          glVertex3f(2.5, 0.03, 12.0);
+       }
+       glEnd();
+
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.6, 0.94, 12.0);
+          glVertex3f(2.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.7, 0.94, 12.0);
+          glVertex3f(2.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.8, 0.94, 12.0);
+          glVertex3f(2.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(2.9, 0.94, 12.0);
+          glVertex3f(2.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.0, 0.94, 12.0);
+          glVertex3f(3.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.1, 0.94, 12.0);
+          glVertex3f(3.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.2, 0.94, 12.0);
+          glVertex3f(3.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.3, 0.94, 12.0);
+          glVertex3f(3.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.4, 0.94, 12.0);
+          glVertex3f(3.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.5, 0.94, 12.0);
+          glVertex3f(3.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.6, 0.94, 12.0);
+          glVertex3f(3.6, 0.03, 12.0);
+       }
+
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.7, 0.94, 12.0);
+          glVertex3f(3.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.8, 0.94, 12.0);
+          glVertex3f(3.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(3.9, 0.94, 12.0);
+          glVertex3f(3.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.0, 0.94, 12.0);
+          glVertex3f(4.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.1, 0.94, 12.0);
+          glVertex3f(4.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.2, 0.94, 12.0);
+          glVertex3f(4.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.3, 0.94, 12.0);
+          glVertex3f(4.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.4, 0.94, 12.0);
+          glVertex3f(4.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.5, 0.94, 12.0);
+          glVertex3f(4.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.6, 0.94, 12.0);
+          glVertex3f(4.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.7, 0.94, 12.0);
+
+          glVertex3f(4.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.8, 0.94, 12.0);
+          glVertex3f(4.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(4.9, 0.94, 12.0);
+          glVertex3f(4.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.0, 0.94, 12.0);
+          glVertex3f(5.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.1, 0.94, 12.0);
+          glVertex3f(5.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.2, 0.94, 12.0);
+          glVertex3f(5.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.3, 0.94, 12.0);
+          glVertex3f(5.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.4, 0.94, 12.0);
+          glVertex3f(5.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.5, 0.94, 12.0);
+          glVertex3f(5.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.6, 0.94, 12.0);
+          glVertex3f(5.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.7, 0.94, 12.0);
+          glVertex3f(5.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+
+       {
+          glVertex3f(5.8, 0.94, 12.0);
+          glVertex3f(5.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(5.9, 0.94, 12.0);
+          glVertex3f(5.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.0, 0.94, 12.0);
+          glVertex3f(6.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.1, 0.94, 12.0);
+          glVertex3f(6.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.2, 0.94, 12.0);
+          glVertex3f(6.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.3, 0.94, 12.0);
+          glVertex3f(6.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.4, 0.94, 12.0);
+          glVertex3f(6.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.5, 0.94, 12.0);
+          glVertex3f(6.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.6, 0.94, 12.0);
+          glVertex3f(6.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.7, 0.94, 12.0);
+          glVertex3f(6.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.8, 0.94, 12.0);
+          glVertex3f(6.8, 0.03, 12.0);
+       }
+       glEnd();
+
+       glBegin(GL_LINES);
+       {
+          glVertex3f(6.9, 0.94, 12.0);
+          glVertex3f(6.9, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.0, 0.94, 12.0);
+          glVertex3f(7.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.1, 0.94, 12.0);
+          glVertex3f(7.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.2, 0.94, 12.0);
+          glVertex3f(7.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.3, 0.94, 12.0);
+          glVertex3f(7.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.4, 0.94, 12.0);
+          glVertex3f(7.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.5, 0.94, 12.0);
+          glVertex3f(7.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.6, 0.94, 12.0);
+          glVertex3f(7.6, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.7, 0.94, 12.0);
+          glVertex3f(7.7, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.8, 0.94, 12.0);
+          glVertex3f(7.8, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(7.9, 0.94, 12.0);
+          glVertex3f(7.9, 0.03, 12.0);
+
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.0, 0.94, 12.0);
+          glVertex3f(8.0, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.1, 0.94, 12.0);
+          glVertex3f(8.1, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.2, 0.94, 12.0);
+          glVertex3f(8.2, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.3, 0.94, 12.0);
+          glVertex3f(8.3, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.4, 0.94, 12.0);
+          glVertex3f(8.4, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.5, 0.94, 12.0);
+          glVertex3f(8.5, 0.03, 12.0);
+       }
+       glEnd();
+       glBegin(GL_LINES);
+       {
+          glVertex3f(8.63, 0.94, 12.0);
+          glVertex3f(8.63, 0.03, 12.0);
+       }
+       glEnd();
+   }
+   glEndList();
+   return;
+}
+
+
 MyGLWidget::MyGLWidget(QWidget *parent) :
     QGLWidget(parent)
 //    QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
@@ -30,8 +848,9 @@ MyGLWidget::MyGLWidget(QWidget *parent) :
 
 void MyGLWidget::initializeGL()
 {
-    // Color: SkyBlue
-    glClearColor(0.529, 0.808, 0.922, 1.0);
+//    SkyBlue
+//    glClearColor(0.529, 0.808, 0.922, 1.0);
+    glClearColor(0.0/255, 0.0/255, 204.0/255, 1.0);
 
     glEnable( GL_NORMALIZE );
     glEnable( GL_CULL_FACE );
@@ -47,94 +866,42 @@ void MyGLWidget::initializeGL()
     glEnable( GL_LIGHTING );
     glEnable( GL_LIGHT0 );
 
-    // White
-    GLfloat ambient[] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat diffuse[] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat specular[] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat position[] = {0.0, 500.0, 0.0, 0.0};
+    GLfloat ambient[] = {0.5, 0.5, 0.5, 1.0};
+    GLfloat diffuse[] = {0.5, 0.5, 0.5, 1.0};
+    GLfloat specular[] = {0.5, 0.5, 0.5, 1.0};
+
+    GLfloat position0[] = {-5.0, 10.0, -5.0, 0.0};
+    GLfloat position1[] = {-5.0, 10.0, 23.77+5, 0.0};
+    GLfloat position2[] = {12.974+5.0, 10.0, -5, 0.0};
+    GLfloat position3[] = {12.974+5.0, 10.0, 23.77+5, 0.0};
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-    glLightfv(GL_LIGHT0, GL_POSITION, position);
+    glLightfv(GL_LIGHT0, GL_POSITION, position0);
     glLightf (GL_LIGHT0, GL_LINEAR_ATTENUATION, 1.);
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT1, GL_POSITION, position1);
+    glLightf (GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.);
+
+    glLightfv(GL_LIGHT2, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT2, GL_POSITION, position2);
+    glLightf (GL_LIGHT2, GL_LINEAR_ATTENUATION, 1.);
+
+    glLightfv(GL_LIGHT3, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT3, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT3, GL_POSITION, position3);
+    glLightf (GL_LIGHT3, GL_LINEAR_ATTENUATION, 1.);
 
     glFrontFace(GL_CCW);
     glShadeModel(GL_SMOOTH);
 
-//    glEnable(GL_COLOR_MATERIAL);
-//    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-//    // Camera default values
-//    gluLookAt( 0.0,20.0,35.0, 0,0,0, 0,1,0 );
-
-//    // Camera default position
-//    this->positionX = 10.974/2;
-//    this->positionY = -10.0;
-//    this->positionZ = 1.0;
-
-//    // Camera default lookAt
-//    this->lookAtX = 10.974/2;
-//    this->lookAtY = 23.77/2;
-//    this->lookAtZ = 0.0;
-
-//    // Camera default viewUp
-//    this->viewUpX = 10.974/2 - this->positionX;
-//    this->viewUpY = 23.77/2 - this->positionY;
-//    this->viewUpZ = 3.0 - this->positionZ;
-
-//    //Above
-//    // Camera default position
-//    this->positionX = 10.974/2;
-//    this->positionY = 23.77/2;
-//    this->positionZ = 55.0;
-
-//    // Camera default lookAt
-//    this->lookAtX = 10.974/2;
-//    this->lookAtY = 23.77/2;
-//    this->lookAtZ = 0.0;
-
-//    // Camera default viewUp
-//    this->viewUpX = 10.974/2 - this->positionX;
-//    this->viewUpY = 20.0 - this->positionY;
-//    this->viewUpZ = 0.0 - this->positionZ;
-
-    // Camera default position
-    this->positionX = 0.0;
-    this->positionY = 0.0; //20
-    this->positionZ = 50.0; //35
-
-    // Camera default lookAt
-    this->lookAtX = 0.0;
-    this->lookAtY = 0.0;
-    this->lookAtZ = 0.0;
-
-    // Camera default viewUp
-    this->viewUpX = 0.0;
-    this->viewUpY = 1.0;
-    this->viewUpZ = 0.0;
-}
-
-void add_cube(GLfloat *k_amb, GLfloat *k_dif, GLfloat *k_spec, GLfloat m,
-              double factor_x, double factor_y, double factor_z, GLfloat final_pos_x, GLfloat final_pos_y, GLfloat final_pos_z) {
-    glPushMatrix();
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, k_amb);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, k_dif);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, k_spec);
-    glMaterialf (GL_FRONT, GL_SHININESS, m);
-    glTranslatef(final_pos_x, final_pos_y, final_pos_z);
-    glTranslatef(0, 0, 0);
-    glScalef(factor_x, factor_y, factor_z);
-
-    glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
-    glNormalPointer(GL_FLOAT, 0, cubeNormals);
-    glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
-
-    glPopMatrix();
 }
 
 void MyGLWidget::paintGL()
@@ -142,15 +909,20 @@ void MyGLWidget::paintGL()
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
-    gluLookAt( this->positionX,this->positionY,this->positionZ, this->lookAtX,this->lookAtY,this->lookAtZ, this->viewUpX,this->viewUpY,this->viewUpZ );
+    gluLookAt(positionX, positionY, positionZ, lookAtX, lookAtY, lookAtZ, viewUpX, viewUpY, viewUpZ);
 
-    // ----- Objects -----
+    add_court_matrix();
+    draw_court_lines();
+    add_net_matrix();
+    draw_net_lines();
+
+//    // ----- Objects -----
 
     //ground
-    GLfloat k_a_ground[] = {1.0, 0.0, 0.0};
-    GLfloat k_d_ground[] = {1.0, 0.0, 0.0};
-    GLfloat k_s_ground[] = {1.0, 0.0, 0.0};
-    GLfloat m_ground     = 10.0;
+    GLfloat k_a_ground[] = { 101.0/255, 179.0/255, 253.0/255 };
+    GLfloat k_d_ground[] = { 101.0/255, 179.0/255, 253.0/255 };
+    GLfloat k_s_ground[] = { 101.0/255, 179.0/255, 253.0/255 };
+    GLfloat m_ground     = 1.0;
 
     glPushMatrix();
 
@@ -158,10 +930,11 @@ void MyGLWidget::paintGL()
     glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_ground);
     glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_ground);
     glMaterialf (GL_FRONT, GL_SHININESS, m_ground);
+
 //    glTranslatef(-10.974*1.5, -23.77/2, -0.002);
-    glTranslatef(0, 0, -0.002);
+    glTranslatef(10.974/2+1, -0.2, 23.77/2);
     glTranslatef(0, 0, 0);
-    glScalef(4 * 10.974, 2 * 23.77, 0.001);
+    glScalef(4.5 * 10.974, 0.001, 2.5 * 23.77);
 
     glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
     glNormalPointer(GL_FLOAT, 0, cubeNormals);
@@ -169,11 +942,11 @@ void MyGLWidget::paintGL()
 
     glPopMatrix();
 
-    //court
-    GLfloat k_a_court[] = {0.0, 1.0, 0.0};
-    GLfloat k_d_court[] = {0.0, 1.0, 0.0};
-    GLfloat k_s_court[] = {0.0, 1.0, 0.0};
-    GLfloat m_court     = 10.0;
+//    court
+    GLfloat k_a_court[] = { 69.0/255, 114.0/255, 172.0/255 };
+    GLfloat k_d_court[] = { 69.0/255, 114.0/255, 172.0/255 };
+    GLfloat k_s_court[] = { 69.0/255, 114.0/255, 172.0/255 };
+    GLfloat m_court     = 1.0;
 
     glPushMatrix();
 
@@ -181,9 +954,9 @@ void MyGLWidget::paintGL()
     glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_court);
     glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_court);
     glMaterialf (GL_FRONT, GL_SHININESS, m_court);
-    glTranslatef(0.0, 0.0, -0.001);
+    glTranslatef(12.3/2, -0.0001, 24.00/2);
     glTranslatef(0, 0, 0);
-    glScalef(10.974, 23.77, 0.001);
+    glScalef(12.3, 0.001, 23.77);
 
     glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
     glNormalPointer(GL_FLOAT, 0, cubeNormals);
@@ -191,691 +964,176 @@ void MyGLWidget::paintGL()
 
     glPopMatrix();
 
-    //left_doubles_sideline
-    GLfloat k_a_line[] = {1.0, 1.0, 1.0};
-    GLfloat k_d_line[] = {1.0, 1.0, 1.0};
-    GLfloat k_s_line[] = {1.0, 1.0, 1.0};
-    GLfloat m_line     = 10.0;
+    GLfloat k_a_wood[] = { 130.0/255, 82.0/255, 1.0/255 };
+    GLfloat k_d_wood[] = { 130.0/255, 82.0/255, 1.0/255 };
+    GLfloat k_s_wood[] = { 130.0/255, 82.0/255, 1.0/255 };
+    GLfloat m_wood     = 1.0;
 
+    // Lamp 1
     glPushMatrix();
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_line);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_line);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_line);
-    glMaterialf (GL_FRONT, GL_SHININESS, m_line);
-//    glTranslatef(0.0, 0.0, -0.001);
-    glTranslatef(0, 0, 0);
-    //7.62/100
-    glScalef(7.62/100, 23.77, 0.001);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_wood);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_wood);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_wood);
+    glMaterialf (GL_FRONT, GL_SHININESS, m_wood);
 
-    glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
-    glNormalPointer(GL_FLOAT, 0, cubeNormals);
-    glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
+    glTranslatef(-5.0, 0.0, -5.0);
+    glTranslatef(0.0, 0.0, 0.0);
+    glScalef(10.0, 20.0, 10.0);
+
+    // set input data to arrays
+    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
+    glNormalPointer(GL_FLOAT, 0, LampNormals);
+
+    // draw data
+    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
 
     glPopMatrix();
 
+    // Lamp 2
+    glPushMatrix();
 
-//    GLfloat k_a[]  = {0.0, 1.0, 0.0};
-//    GLfloat k_d[]  = {0.0, 1.0, 0.0};
-//    GLfloat k_s[] = {0.0, 1.0, 0.0};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_wood);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_wood);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_wood);
+    glMaterialf (GL_FRONT, GL_SHININESS, m_wood);
 
-//    add_cube(k_a, k_d, k_s, m, 10.974, 23.77, 0.01, 0, 23.77, 0);
+    glTranslatef(-5.0, 0.0, 23.77 + 5.0);
+    glTranslatef(0.0, 0.0, 0.0);
+    glScalef(10.0, 20.0, 10.0);
 
-//    // Terrain
-//    glPushMatrix();
+    // set input data to arrays
+    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
+    glNormalPointer(GL_FLOAT, 0, LampNormals);
 
-//    // Color: LawnGreen
-////    glColor3f(0.486, 0.988, 0.000);
+    // draw data
+    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
 
-//    glMaterialfv(GL_FRONT, GL_AMBIENT, new GLfloat[3] { 1.0, 0.0, 0.0 });
-//    glMaterialfv(GL_FRONT, GL_DIFFUSE, new GLfloat[3] { 1.0, 0.0, 0.0 });
-//    glMaterialfv(GL_FRONT, GL_SPECULAR, new GLfloat[3] { 1.0, 0.0, 0.0 });
-//    glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+    glPopMatrix();
 
-//    glTranslatef(0.0, 23.77, 0.0);
-//    glScalef(10.974, 23.77, 0.01);
+    // Lamp 3
+    glPushMatrix();
 
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
-//    glNormalPointer(GL_FLOAT, 0, cubeNormals);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_wood);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_wood);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_wood);
+    glMaterialf (GL_FRONT, GL_SHININESS, m_wood);
 
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
+    glTranslatef(12.974 + 5.0, 0.0, -5.0);
+    glTranslatef(0.0, 0.0, 0.0);
+    glScalef(10.0, 20.0, 10.0);
 
-//    glPopMatrix();
+    // set input data to arrays
+    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
+    glNormalPointer(GL_FLOAT, 0, LampNormals);
 
-    // ------------------------------------------------------------
+    // draw data
+    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
 
-//    // Fence 1 - North
-//    glPushMatrix();
+    glPopMatrix();
 
-//    glMaterialfv(GL_FRONT, GL_AMBIENT, new GLfloat[3] { 0.0, 1.0, 0.0 });
-//    glMaterialfv(GL_FRONT, GL_DIFFUSE, new GLfloat[3] { 0.0, 1.0, 0.0 });
-//    glMaterialfv(GL_FRONT, GL_SPECULAR, new GLfloat[3] { 0.0, 1.0, 0.0 });
-//    glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+    // Lamp 4
+    glPushMatrix();
 
-//    // Color: BurlyWood
-////    glColor3f(0.871, 0.722, 0.529);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(10.0, 5.0, 5.0);
-//    glTranslatef(-1.0, 0.25, -3.0);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_wood);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_wood);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_wood);
+    glMaterialf (GL_FRONT, GL_SHININESS, m_wood);
 
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, FenceVerts);
-//    glNormalPointer(GL_FLOAT, 0, FenceNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, FenceTexCoords);
+    glTranslatef(12.974 + 5.0, 0.0, 23.77 + 5.0);
+    glTranslatef(0.0, 0.0, 0.0);
+    glScalef(10.0, 20.0, 10.0);
 
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, FenceNumVerts);
+    // set input data to arrays
+    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
+    glNormalPointer(GL_FLOAT, 0, LampNormals);
 
-//    glPopMatrix();
+    // draw data
+    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
 
-//    // ------------------------------------------------------------
+    glPopMatrix();
 
-//    // Fence 2 - South
-//    glPushMatrix();
+    GLfloat k_a_sand[] = { 150.0/255, 113.0/255, 23.0/255 };
+    GLfloat k_d_sand[] = { 150.0/255, 113.0/255, 23.0/255 };
+    GLfloat k_s_sand[] = { 150.0/255, 113.0/255, 23.0/255 };
+    double m_sand    = 1.0;
 
-//    // Color: BurlyWood
-//    glColor3f(0.871, 0.722, 0.529);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(10.0, 5.0, 5.0);
-//    glTranslatef(-1.0, 0.25, -1.0);
+    for (int i = 0; i < 10; i++) {
+            glPushMatrix();
 
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, FenceVerts);
-//    glNormalPointer(GL_FLOAT, 0, FenceNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, FenceTexCoords);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_sand);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_sand);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_sand);
+            glMaterialf (GL_FRONT, GL_SHININESS, m_sand);
 
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, FenceNumVerts);
+            glTranslatef(-6.5 - i*0.5, i*0.8, 24.002/2);
+            glTranslatef(0, 0, 0);
+            glScalef(3.0 + (10-i) * 0.5, 0.8, 24.002);
 
-//    glPopMatrix();
+            glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
+            glNormalPointer(GL_FLOAT, 0, cubeNormals);
+            glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
 
-//    // ------------------------------------------------------------
+            glPopMatrix();
+    }
 
-//    // Fence 3 - East
-//    glPushMatrix();
+    for (int i = 0; i < 10; i++) {
+            glPushMatrix();
 
-//    // Color: BurlyWood
-//    glColor3f(0.871, 0.722, 0.529);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glRotatef(90.0, 0.0, 1.0, 0.0);
-//    glScalef(10.0, 5.0, 5.0);
-//    glTranslatef(1.0, 0.25, -1.0);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_sand);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_sand);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_sand);
+            glMaterialf (GL_FRONT, GL_SHININESS, m_sand);
 
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, FenceVerts);
-//    glNormalPointer(GL_FLOAT, 0, FenceNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, FenceTexCoords);
+            glTranslatef(13+6.5 + i*0.5, i*0.8, 24.002/2);
+            glTranslatef(0, 0, 0);
+            glScalef(3.0 + (10-i) * 0.5, 0.8, 24.002);
 
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, FenceNumVerts);
+            glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
+            glNormalPointer(GL_FLOAT, 0, cubeNormals);
+            glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
 
-//    glPopMatrix();
+            glPopMatrix();
+    }
 
-//    // ------------------------------------------------------------
+    for (int i = 0; i < 10; i++) {
+            glPushMatrix();
 
-//    // Fence 4 - West
-//    glPushMatrix();
+            glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_sand);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_sand);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_sand);
+            glMaterialf (GL_FRONT, GL_SHININESS, m_sand);
 
-//    // Color: BurlyWood
-//    glColor3f(0.871, 0.722, 0.529);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glRotatef(90.0, 0.0, 1.0, 0.0);
-//    glScalef(10.0, 5.0, 5.0);
-//    glTranslatef(1.0, 0.25, -3.0);
+            glTranslatef(6.1, i*0.8,  24.002 + 6.0 + i*0.5);
+            glTranslatef(0, 0, 0);
+            glScalef(12.2, 0.8, 3.0 + (10-i) * 0.5);
 
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, FenceVerts);
-//    glNormalPointer(GL_FLOAT, 0, FenceNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, FenceTexCoords);
+            glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
+            glNormalPointer(GL_FLOAT, 0, cubeNormals);
+            glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
 
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, FenceNumVerts);
+            glPopMatrix();
+    }
 
-//    glPopMatrix();
+    for (int i = 0; i < 10; i++) {
+            glPushMatrix();
 
-//    // ------------------------------------------------------------
+            glMaterialfv(GL_FRONT, GL_AMBIENT, k_a_sand);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, k_d_sand);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, k_s_sand);
+            glMaterialf (GL_FRONT, GL_SHININESS, m_sand);
 
-//    // Cow 1 - Big
-//    glPushMatrix();
+            glTranslatef(6.4, i*0.8, -6.5 - i*0.5);
+            glTranslatef(0, 0, 0);
+            glScalef(12.4, 0.8, 3.0 + (10-i) * 0.5);
 
-//    // Color: White
-//    glColor3f(1.0, 1.0, 1.0);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(4.0, 4.0, 4.0);
-//    glTranslatef(-3.25, 0.5, -3.0);
+            glVertexPointer(3, GL_FLOAT, 0, cubeVerts);
+            glNormalPointer(GL_FLOAT, 0, cubeNormals);
+            glDrawArrays(GL_TRIANGLES, 0, cubeNumVerts);
 
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CowVerts);
-//    glTexCoordPointer(2, GL_FLOAT, 0, CowTexCoords);
+            glPopMatrix();
+    }
 
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CowNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Cow 2 - Big
-//    glPushMatrix();
-
-//    // Color: Black
-//    glColor3f(0.0, 0.0, 0.0);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(4.0, 4.0, 4.0);
-//    glTranslatef(-2.75, 0.5, -2.5);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CowVerts);
-//    glTexCoordPointer(2, GL_FLOAT, 0, CowTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CowNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Cow 3 - Small
-//    glPushMatrix();
-
-//    // Color: Maroon
-//    glColor3f(0.502, 0.502, 0.502);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glRotatef(45.0, 0.0, 1.0, 0.0);
-//    glScalef(2.5, 2.5, 2.5);
-//    glTranslatef(0.5, 0.5, -5.5);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CowVerts);
-//    glTexCoordPointer(2, GL_FLOAT, 0, CowTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CowNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Cow 4 - Small
-//    glPushMatrix();
-
-//    // Maroon
-//    glColor3f(0.502, 0.502, 0.502);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glRotatef(-45.0, 0.0, 1.0, 0.0);
-//    glScalef(2.5, 2.5, 2.5);
-//    glTranslatef(-4.0, 0.5, -0.25);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CowVerts);
-//    glTexCoordPointer(2, GL_FLOAT, 0, CowTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CowNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Hay 1 - Big block - Level 0 - Northwest
-//    glPushMatrix();
-
-//    // Color: Khaki
-//    glColor3f(0.941, 0.902, 0.549);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(1.5, 1.5, 1.5);
-//    glTranslatef(-9.0, 0.75, -2.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, HayVerts);
-//    glNormalPointer(GL_FLOAT, 0, HayNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, HayNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Hay 2 - Big block - Level 0 - SouthWest
-//    glPushMatrix();
-
-//    // Color: Khaki
-//    glColor3f(0.941, 0.902, 0.549);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(1.5, 1.5, 1.5);
-//    glTranslatef(-9.0, 0.75, -0.75);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, HayVerts);
-//    glNormalPointer(GL_FLOAT, 0, HayNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, HayNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Hay 3 - Big block - Level 0 - East
-//    glPushMatrix();
-
-//    // Color: Khaki
-//    glColor3f(0.941, 0.902, 0.549);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(1.5, 1.5, 1.5);
-//    glTranslatef(-8.0, 0.75, -1.25);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, HayVerts);
-//    glNormalPointer(GL_FLOAT, 0, HayNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, HayNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Hay 4 - Big block - Level +1 - Center
-//    glPushMatrix();
-
-//    // Color: Khaki
-//    glColor3f(0.941, 0.902, 0.549);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(1.5, 1.5, 1.5);
-//    glTranslatef(-8.5, 1.75, -1.25);
-//    glRotatef(-30.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, HayVerts);
-//    glNormalPointer(GL_FLOAT, 0, HayNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, HayNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Hay 5 - Small block - Level 0 - Center
-//    glPushMatrix();
-
-//    // Color: Khaki
-//    glColor3f(0.941, 0.902, 0.549);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(1.5, 1.5, 1.5);
-//    glTranslatef(-6.0, 0.75, -1.25);
-//    glRotatef(30.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, HayVerts);
-//    glNormalPointer(GL_FLOAT, 0, HayNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, HayNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Tree 1 - North
-//    glPushMatrix();
-
-//    // Color: ForestGreen
-//    glColor3f(0.133, 0.545, 0.133);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8, 8, 8);
-//    glTranslatef(-0.5, 0.5625, -1.5);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, TreeVerts);
-//    glNormalPointer(GL_FLOAT, 0, TreeNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, TreeTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, TreeNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Tree 2 - West
-//    glPushMatrix();
-
-//    // Color: ForestGreen
-//    glColor3f(0.133, 0.545, 0.133);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(6, 6, 6);
-//    glTranslatef(-1.0, 0.625, -0.375);
-//    glRotatef(-45.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, TreeVerts);
-//    glNormalPointer(GL_FLOAT, 0, TreeNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, TreeTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, TreeNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Tree 3 - East
-//    glPushMatrix();
-
-//    // Color: ForestGreen
-//    glColor3f(0.133, 0.545, 0.133);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(7, 7, 7);
-//    glTranslatef(0.25, 0.625, -0.75);
-//    glRotatef(135.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, TreeVerts);
-//    glNormalPointer(GL_FLOAT, 0, TreeNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, TreeTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, TreeNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Mill
-//    glPushMatrix();
-
-//    // Color: Sienna
-//    glColor3f(0.627, 0.322, 0.176);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(12.5, 12.5, 12.5);
-//    glTranslatef(0.625, 0.375, -0.5);
-//    glRotatef(22.5, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, MillVerts);
-//    glNormalPointer(GL_FLOAT, 0, MillNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, MillTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, MillNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Barn
-//    glPushMatrix();
-
-//    // Color: FireBrick
-//    glColor3f(0.698, 0.133, 0.133);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(9.0, 9.0, 9.0);
-//    glTranslatef(0.75, 0.5, 0.625);
-//    glRotatef(-125.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, BarnVerts);
-//    glNormalPointer(GL_FLOAT, 0, BarnNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, BarnTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, BarnNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Silo
-//    glPushMatrix();
-
-//    // Color: Silver
-//    glColor3f(0.753, 0.753, 0.753);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(9.0, 9.0, 9.0);
-//    glTranslatef(0.5, 0.75, 1.25);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, SiloVerts);
-//    glNormalPointer(GL_FLOAT, 0, SiloNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, SiloTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, SiloNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Lamp 1 - North
-//    glPushMatrix();
-
-//    // Color: Black
-//    glColor3f(0.000, 0.000, 0.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8.0, 6.0, 8.0);
-//    glTranslatef(-0.375, 0.625, -0.75);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
-//    glNormalPointer(GL_FLOAT, 0, LampNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Lamp 2 - Northeast
-//    glPushMatrix();
-
-//    // Color: Black
-//    glColor3f(0.000, 0.000, 0.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8.0, 6.0, 8.0);
-//    glTranslatef(0.5, 0.625, -1.375);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
-//    glNormalPointer(GL_FLOAT, 0, LampNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Lamp 3 - East
-//    glPushMatrix();
-
-//    // Color: Black
-//    glColor3f(0.000, 0.000, 0.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8.0, 6.0, 8.0);
-//    glTranslatef(0.875, 0.625, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
-//    glNormalPointer(GL_FLOAT, 0, LampNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Lamp 4 - Southeast
-//    glPushMatrix();
-
-//    // Color: Black
-//    glColor3f(0.000, 0.000, 0.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8.0, 6.0, 8.0);
-//    glTranslatef(0.125, 0.625, 1.125);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
-//    glNormalPointer(GL_FLOAT, 0, LampNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Lamp 5 - West
-//    glPushMatrix();
-
-//    // Color: Black
-//    glColor3f(0.000, 0.000, 0.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8.0, 6.0, 8.0);
-//    glTranslatef(-1.75, 0.625, 0.25);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, LampVerts);
-//    glNormalPointer(GL_FLOAT, 0, LampNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, LampNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Farmer
-//    glPushMatrix();
-
-//    // Color: Blue
-//    glColor3f(0.000, 0.0, 1.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(4.0, 3.75, 4.0);
-//    glTranslatef(-2.25, 0.75, 1.5);
-//    glRotatef(115.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, FarmerVerts);
-//    glTexCoordPointer(2, GL_FLOAT, 0, FarmerTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, FarmerNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Dog 1 - Away from farmer
-//    glPushMatrix();
-
-//    // Color: SandyBrown
-//    glColor3f(0.957, 0.643, 0.376);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(4.0, 3.5, 4.0);
-//    glTranslatef(-0.375, 0.5, 1.0);
-//    glRotatef(135.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, DogVerts);
-//    glNormalPointer(GL_FLOAT, 0, DogNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, DogTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, DogNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Dog 2 - Near the farmer
-//    glPushMatrix();
-
-//    // Color: SandyBrown
-//    glColor3f(0.957, 0.643, 0.376);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(3.0, 3.0, 3.0);
-//    glTranslatef(-2.75, 0.5, 2.75);
-//    glRotatef(100.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, DogVerts);
-//    glNormalPointer(GL_FLOAT, 0, DogNormals);
-//    glTexCoordPointer(2, GL_FLOAT, 0, DogTexCoords);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, DogNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Cloud 1 - Northwest
-//    glPushMatrix();
-
-//    // Color: White
-//    glColor3f(1.000, 1.000, 1.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(8.0, 8.0, 8.0);
-//    glTranslatef(-0.625, 2.75, -0.75);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CloudVerts);
-//    glNormalPointer(GL_FLOAT, 0, CloudNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CloudNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Cloud 2 - Northeast
-//    glPushMatrix();
-
-//    // Color: White
-//    glColor3f(1.000, 1.000, 1.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(5.0, 5.0, 5.0);
-//    glTranslatef(1.25, 4.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CloudVerts);
-//    glNormalPointer(GL_FLOAT, 0, CloudNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CloudNumVerts);
-
-//    glPopMatrix();
-
-//    // ------------------------------------------------------------
-
-//    // Cloud 3 - Southwest
-//    glPushMatrix();
-
-//    // Color: White
-//    glColor3f(1.000, 1.000, 1.000);
-//    glTranslatef(0.0, 0.0, 0.0);
-//    glScalef(9.0, 4.0, 4.0);
-//    glTranslatef(-0.625, 5.5, 2.0);
-//    glRotatef(180.0, 0.0, 1.0, 0.0);
-
-//    // set input data to arrays
-//    glVertexPointer(3, GL_FLOAT, 0, CloudVerts);
-//    glNormalPointer(GL_FLOAT, 0, CloudNormals);
-
-//    // draw data
-//    glDrawArrays(GL_TRIANGLES, 0, CloudNumVerts);
-
-//    glPopMatrix();
-
-    // ------------------------------------------------------------
 }
 
 void MyGLWidget::resizeGL(int width, int height)
@@ -883,7 +1141,110 @@ void MyGLWidget::resizeGL(int width, int height)
     glViewport(0, 0, width, height);
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    gluPerspective( 45, width/height, 0.01, 1000 );
+//    gluPerspective( 45, width/height, 0.01, 1000 );
+
+//        // Camera default position
+//        this->positionX = 10.974/2;
+//        this->positionY = 23.77/2;
+//        this->positionZ = 40.0;
+
+//        // Camera default lookAt
+//        this->lookAtX = 10.974/2;
+//        this->lookAtY = 23.77/2;
+//        this->lookAtZ = 0.0;
+
+//        // Camera default viewUp
+//        this->viewUpX = 10.974/2 - this->positionX;
+//        this->viewUpY = 20.0 - this->positionY;
+//        this->viewUpZ = 0.0 - this->positionZ;
+
+
+    //arquibancada
+    // Camera default position
+    this->positionX = 6.1;
+    this->positionY = 0.5;
+    this->positionZ = 12.0;
+
+    // Camera default lookAt
+    this->lookAtX = 6.1;
+    this->lookAtY = 1.5;
+    this->lookAtZ = 0.0;
+
+    // Camera default viewUp
+    this->viewUpX = 0;
+    this->viewUpY = 1;
+    this->viewUpZ = 0;
+
+    // de lado
+    // Camera default position
+    this->positionX = -6.1;
+    this->positionY = 6.5;
+    this->positionZ = 25.0;
+
+    // Camera default lookAt
+    this->lookAtX = 12.1;
+    this->lookAtY = 4.1;
+    this->lookAtZ = 0.0;
+
+    // Camera default viewUp
+    this->viewUpX = 0;
+    this->viewUpY = 1;
+    this->viewUpZ = 0;
+
+    // de frente pegando arquibancada
+    // Camera default position
+    this->positionX = 12.1;
+    this->positionY = 6.5;
+    this->positionZ = 25.0;
+
+    // Camera default lookAt
+    this->lookAtX = 12.1;
+    this->lookAtY = 4.1;
+    this->lookAtZ = 0.0;
+
+    // Camera default viewUp
+    this->viewUpX = 0;
+    this->viewUpY = 1;
+    this->viewUpZ = 0;
+
+    // de frente na rede
+    // Camera default position
+    this->positionX = 6.1;
+    this->positionY = 6.5;
+    this->positionZ = 25.0;
+
+    // Camera default lookAt
+    this->lookAtX = 6.1;
+    this->lookAtY = 4.1;
+    this->lookAtZ = 0.0;
+
+    // Camera default viewUp
+    this->viewUpX = 0;
+    this->viewUpY = 1;
+    this->viewUpZ = 0;
+
+    //ABOVE
+    // Camera default position
+    this->positionX = 6.1;
+    this->positionY = 76.5;
+    this->positionZ = 12.0;
+
+    // Camera default lookAt
+    this->lookAtX = 6.1;
+    this->lookAtY = 0.0;
+    this->lookAtZ = 12.0;
+
+    // Camera default viewUp
+    this->viewUpX = 0;
+    this->viewUpY = 0;
+    this->viewUpZ = 1;
+
+//    gluPerspective(80.0, width/height, 0.01, 100.0); /*Perspective defined*/
+    gluPerspective(45.0, width/height, 0.01, 100.0); /*Perspective defined*/
+//    gluLookAt(positionX, positionY, positionZ, lookAtX, lookAtY, lookAtZ, viewUpX, viewUpY, viewUpZ); /*Camera position defined*/
+//    gluLookAt(-1.0, 6.5, 43.0, -1.0, 0.0, 0.0, 0.0, 1.0, 0.0); /*Camera position defined*/
+//    gluLookAt(4.1, 6.5, 50.0, 4.1, 4.1, 0.0, 0.0, 1.0, 0.0); /*Camera position defined*/
+//    gluLookAt(-1.0, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0); /*Camera position defined*/
     updateGL();
 }
 
@@ -955,3 +1316,5 @@ void MyGLWidget::resizeGL(int width, int height)
 //        updateGL();
 //    }
 //}
+
+

@@ -749,9 +749,9 @@ void MainWindow::on_rc_button_clicked() {
 //    sc.add_light(sl_right_after.get());
 
     //COURT'S ABOVE ok
-//    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
-//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
-//    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
+    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
+    core::util::Vector3 look_at { 10.974/2, 23.77/2,  0.0 };
+    core::util::Vector3 view_up { 10.974/2, 20.0,     0.0 };
 
     //COURT'S ABOVE ok cavalier
 //    core::util::Vector3 eye     { 10.974/2, 23.77/2, 60.0 };
@@ -783,9 +783,9 @@ void MainWindow::on_rc_button_clicked() {
 //    core::util::Vector3 view_up { 10.974 + 2, 23.77/2 - 2,     5.0 };
 
     //COM 1 PONTO DE FUGA (JANELA 5, 5)
-    core::util::Vector3 eye     { 10.974/2, 0.0, 5.0 };
-    core::util::Vector3 look_at { 10.974/2, 23.77/2,  2.0 };
-    core::util::Vector3 view_up { 10.974/2, 23.77/2,     5.0 };
+//    core::util::Vector3 eye     { 10.974/2, 0.0, 5.0 };
+//    core::util::Vector3 look_at { 10.974/2, 23.77/2,  2.0 };
+//    core::util::Vector3 view_up { 10.974/2, 23.77/2,     5.0 };
 
     //COURT'S FRONT COMECO DA ARQ
 //    core::util::Vector3 eye     { 10.974/2, -5.0, 1.0 };
@@ -824,8 +824,8 @@ void MainWindow::on_rc_button_clicked() {
     render::raycasting::Camera cam { eye, look_at, view_up };
 
     double d = 1.4;
-    double w = 5.0;
-    double h = 5.0;
+    double w = 1.0;
+    double h = 1.0;
 
     render::raycasting::Color bg { 0.0/255, 0.0/255, 204.0/255 };
 //    render::raycasting::Color bg { 1.0, 0.0, 0.0 };
